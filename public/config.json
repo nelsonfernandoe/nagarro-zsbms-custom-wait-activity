@@ -18,7 +18,7 @@
         "inArguments": [
         ],
         "outArguments": [],
-        "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/execute/",
+        "url": "https://custom-dynamic-wait.vercel.app/journeybuilder/execute/",
         "verb": "POST",
         "body": "",
         "header": "",
@@ -31,17 +31,17 @@
     "validate": {
         "verb": "POST",
         "format": "json",
-        "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/validate/"
+        "url": "https://custom-dynamic-wait.vercel.app/journeybuilder/validate/"
     },
     "publish": {
         "verb": "POST",
         "format": "json",
-        "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/publish/"
+        "url": "https://custom-dynamic-wait.vercel.app/journeybuilder/publish/"
     },
     "Save": {
       "verb": "POST",
       "format": "json",
-      "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/save/"
+      "url": "https://custom-dynamic-wait.vercel.app/journeybuilder/save/"
   }
   },
     "wizardSteps": [
