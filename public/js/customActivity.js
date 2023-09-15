@@ -5,6 +5,7 @@ define([
 ) {
     'use strict';
 
+    
     var connection = new Postmonger.Session();
     var authTokens = {};
     var payload = {};
