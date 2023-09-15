@@ -58,30 +58,7 @@
         "arguments": {
             "execute": {
               "inArguments": [
-                {
-                  "EmailAddress": {
-                    "access": "Hidden",
-                    "dataType": "Text",
-                    "direction": "In",
-                    "isNullable": false,
-                    "readOnly": false
-                  },
-                  "FirstName": {
-                    "access": "Hidden",
-                    "dataType": "Text",
-                    "direction": "In",
-                    "isNullable": false,
-                    "readOnly": false
-                  },
-                  "LastName": {
-                    "access": "Hidden",
-                    "dataType": "Text",
-                    "direction": "In",
-                    "isNullable": false,
-                    "readOnly": false
-                  }
-                }
-              ],
+                ],
                 "outArguments": []
             }
         }
