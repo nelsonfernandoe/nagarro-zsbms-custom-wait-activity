@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type='text/css' />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/salesforce_style.css">
+    <script type="text/javascript" src="//code.jquery.com/git/jquery-git.min.js"></script>
+    <script type="text/javascript" src="js/require.js"></script>
+    <script type="text/javascript">
+        (function () {
+            var config = {
+                baseUrl: 'js'
+            };
+
+            var dependencies = [
+                'customActivity'
+            ];
+
+            require(config, dependencies);
+        })();
+    </script>
+</head>
+
+<body>
+    <div id="step1" class="step">
+        <div class="slds-grid">
+
+            <main class="slds-col slds-size--1-of-3 slds-p-horizontal--small">
+                <div class="slds-form slds-form_stacked">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="postcard-url">
+                            Image URL</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" id="postcard-url" class="slds-input" />
+                            </div>
+                    </div> <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="postcard-text">
+                            Postcard Text </label>
+                            <div class="slds-form-element__control">
+                             <textarea id="postcard-text" class="slds-textarea" rows="3"></textarea>
+                            </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <button id="btn-preview" class="slds-button slds-button_brand">Preview Image</button>
+                    </div>
+                </div>
+            </main>
+            <aside class="slds-col slds-size--2-of-3 slds-border_left slds-p-horizontal--small">
+                <div class="postcard-preview">
+                    <div class="postcard-preview-content" style="height:80vh;background-size: cover; background-repeat:no-repeat"> 
+                        <p id="postcard-preview-text">Postcard text</p> 
+                    </div>
+                </div> 
+            </aside>
+    </div>
+ </div>
+    
+</body>
+
+</html>

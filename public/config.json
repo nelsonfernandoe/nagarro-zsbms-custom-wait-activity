@@ -1,0 +1,89 @@
+{
+    "workflowApiVersion": "1.1",
+    "metaData": {
+        "icon": "images/icon.png",
+        "iconSmall": "images/iconSmall.png",
+        "category": "custom"
+    },
+    "type": "REST",
+    "lang": {
+        "en-US": {
+           "name": "Template",
+          "description": "A custom Journey Builder activity",
+          "step1Label": "Configure Activity"
+        }
+    },
+    "arguments": {
+      "execute": {
+        "inArguments": [
+        ],
+        "outArguments": [],
+        "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/execute/",
+        "verb": "POST",
+        "body": "",
+        "header": "",
+        "format": "json",
+        "useJwt": true,
+        "timeout": 10000
+      }
+    },
+  "configurationArguments": {
+    "validate": {
+        "verb": "POST",
+        "format": "json",
+        "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/validate/"
+    },
+    "publish": {
+        "verb": "POST",
+        "format": "json",
+        "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/publish/"
+    },
+    "Save": {
+      "verb": "POST",
+      "format": "json",
+      "url": "https://sfmc-custom-activity-n.vercel.app/journeybuilder/save/"
+  }
+  },
+    "wizardSteps": [
+        { "label": "Configure Activity", "key": "step1" }
+    ],
+    "userInterfaces": {
+        "configModal": {
+            "height": 400,
+            "width": 1000,
+          "fullscreen": false
+        }
+    },
+    "schema": {
+        "arguments": {
+            "execute": {
+              "inArguments": [
+                {
+                  "EmailAddress": {
+                    "access": "Hidden",
+                    "dataType": "Text",
+                    "direction": "In",
+                    "isNullable": false,
+                    "readOnly": false
+                  },
+                  "FirstName": {
+                    "access": "Hidden",
+                    "dataType": "Text",
+                    "direction": "In",
+                    "isNullable": false,
+                    "readOnly": false
+                  },
+                  "LastName": {
+                    "access": "Hidden",
+                    "dataType": "Text",
+                    "direction": "In",
+                    "isNullable": false,
+                    "readOnly": false
+                  }
+                }
+              ],
+                "outArguments": []
+            }
+        }
+    }
+}
