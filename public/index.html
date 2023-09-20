@@ -207,10 +207,10 @@
     </div>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <!-- <script src="firstapp/public/js/timezones.full.js"></script>
-  <script src="firstapp/public/js/timezones.js"></script> -->
+   <script src="firstapp/public/js/timezones.full.js"></script>
+  <!-- <script src="firstapp/public/js/timezones.js"></script> -->
   <script>
-   // $('.select').timezones();
+    $('.select').timezones();
   </script>
   <script>
       $(document).ready(function(){
@@ -220,7 +220,7 @@
 
       });
       $(document).on('click','.select',function(){
-       // $('.select').timezones();
+        $('.select').timezones();
       });
       $(document).on('click', '.dynamicgroup', function(event) {
         var getlength=$(this).attr('data-length');
@@ -228,7 +228,7 @@
         if($(this).attr('data-tab') != undefined){
           $(".dynamic-tabs1").css('display','none');
           $("#"+$(this).attr('data-tab')).css('display','block');
-        //   $('.select').timezones();
+         $('.select').timezones();
         }
         $(".dynamic-tabs1").css('display','none');
         $(".dynamic-tabs").removeClass('active');
