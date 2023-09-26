@@ -69,7 +69,7 @@
                 </div>
                 <div class="col-sm-8">
                   <div class="tab-content" id="v-pills-tabContent">
-                    <div role="tabpanel" id="v-pills-dynamic1"  aria-labelledby="v-pills-dynamic1-tab" class="tab-pane fade show active dynamic-tabs">
+                    <div role="tabpanel" id="v-pills-dynamic1"  aria-labelledby="v-pills-dynamic1-tab" class="tab-pane fade show active dynamic-tabs1">
                       <form class="">
                         <div class="container">
                           <div class="row">
@@ -180,9 +180,9 @@
                           </div>
                           <div class="row">
                             <div class="col-lg-2 col-md col"></div>
-                            <div class="col-lg-5 col-md col">
+                            <!--<div class="col-lg-5 col-md col">
                               <button id="close" class="btn btn-danger btn-sm" style="text-decoration: none; margin-top: 100px;">Close</button>
-                            </div>
+                            </div>-->
                             <div class="col-lg-5 col-md col">
                               <button id="done" class="btn btn-primary btn-sm" style="text-decoration: none; margin-top: 100px;">Done</button>
                             </div>
@@ -231,7 +231,7 @@
          $('.select').timezones();
         }
         $(".dynamic-tabs1").css('display','none');
-        $(".dynamic-tabs").removeClass('active');
+        $(".dynamic-tabs1").removeClass('active');
         $(".dynamicgroup").removeClass('active');
         $("#v-pills-dynamic"+getlength+"-tab").addClass('active');
         $("#v-pills-dynamic"+getlength).addClass('show active');
@@ -354,9 +354,9 @@
                           '<div class="col-lg-4 col-md col">'+
                               '<button  data-id="v-pills-dynamic'+grouplength+'" data-length="'+grouplength+'"  class="removeGroup btn btn-danger btn-sm" style="text-decoration: none; margin-top: 100px;">Remove group</button>'+
                             '</div>'+
-                            '<div class="col-lg-4 col-md col">'+
+                            /*'<div class="col-lg-4 col-md col">'+
                               '<button id="close" class="btn btn-warning btn-sm" style="text-decoration: none; margin-top: 100px;">Close</button>'+
-                            '</div>'+
+                            '</div>'+*/
                            
                             '<div class="col-lg-4 col-md col">'+
                               '<button id="done" class="btn btn-primary btn-sm" style="text-decoration: none; margin-top: 100px;">Done</button>'+
@@ -370,7 +370,7 @@
         $("#v-pills-dynamic1-tab").parent().append(addGroup);
         $("#v-pills-tabContent").parent().append(addnewTab);
         $('#v-pills-dynamic'+grouplength).addClass('active');
-        $(".dynamic-tabs").removeClass('active');
+        $(".dynamic-tabs1").removeClass('active');
         $(".dynamicgroup").removeClass('active');
         $("#v-pills-dynamic"+grouplength+"-tab").addClass('active');
         $("#v-pills-dynamic"+grouplength).addClass('show active');
@@ -385,7 +385,7 @@
             var lengthid = $(this).attr('data-length')-1;
             $("#"+removeId).remove();
             $("#"+removeId+'-tab').remove();
-            $(".dynamic-tabs").removeClass('active');
+            $(".dynamic-tabs1").removeClass('active');
             $(".dynamicgroup").removeClass('active');
             $("#v-pills-dynamic"+lengthid+"-tab").addClass('active');
             $("#v-pills-dynamic"+lengthid).addClass('show active');
