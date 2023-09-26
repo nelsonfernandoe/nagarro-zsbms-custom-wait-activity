@@ -1,7 +1,29 @@
+html {
+    background: #ffffff;
+}
+
 body {
     padding: 20px;
     margin: 0;
 }
-html {
-    background: #ffffff;
+
+.step {
+    display: none;
+}
+
+#step1 {
+    display: block;
+}
+
+.form-control{
+    font-size: 12px !important;
+}
+
+#addGroup {
+    margin-right: 1rem;
+    padding: 1rem;
+}
+
+#addGroup i {
+    font-size: 2.5em;
 }
