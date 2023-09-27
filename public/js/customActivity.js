@@ -52,13 +52,13 @@ define([
        // var getattributes = [];
         $(".attribute-select").html('');
         $(".attibute-date").html('');
-        for(var i=0;i<schema.schema.length;i++){
+        /*for(var i=0;i<schema.schema.length;i++){
           //  getattributes.push(schema.schema[i].name);
             $(".attribute-select").append('<option value="'+schema.schema[i].name+'">'+schema.schema[i].name+'</option>');
             if(schema.schema[i].type=='Date'){
                 $(".attibute-date").append('<option value="'+schema.schema[i].name+'">'+schema.schema[i].name+'</option>');
             }
-        }
+        }*/
 
     }
 
