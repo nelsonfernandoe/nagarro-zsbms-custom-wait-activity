@@ -105,13 +105,13 @@ function addGroup() {
         '  <div class="col-lg-12 col-md col mt-3">' +
         ' <div class="justify-content-md-left justify-content-lg-left row">' +
         ' <div class="col-lg-7 col">' +
-        '  <h5 style="font-size: 15px; text-align: left;">Dynamic Attribute</h5>' +
+        '  <h5 style="font-size: 15px; text-align: left;">Date Attribute</h5>' +
         ' </div>' +
         '  <div class="col-lg-5 col"></div>' +
         ' </div>' +
         ' <div class="row ">' +
         ' <div class="col"> <select aria-label="Dynamic Attribute" class="attibute-date form-select w-75" style="font-size: 12px;">' +
-        '    <option>Dynamic Attribute</option>' +
+        '    <option>Date Attribute</option>' +
         '   <option value="2">2</option>' +
         '    <option value="3">3</option>' +
         '    <option value="4">4</option>' +
