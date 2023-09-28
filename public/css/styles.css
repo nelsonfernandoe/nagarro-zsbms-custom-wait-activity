@@ -1,5 +1,6 @@
 html {
     background: #ffffff;
+    --bms-primary: rgb(190, 43, 188);
 }
 
 body {
@@ -15,8 +16,19 @@ body {
     display: block;
 }
 
-.form-control{
+.form-control {
     font-size: 12px !important;
+}
+
+#title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#title img {
+    object-fit: none;
+    margin-right: 1rem;
 }
 
 #addGroup {
@@ -26,4 +38,21 @@ body {
 
 #addGroup i {
     font-size: 2.5em;
+}
+
+button.nav-link.dynamicgroup {
+    color: var(--bms-primary) !important;
+}
+
+button.nav-link.active {
+    background-color: var(--bms-primary) !important;
+    color: white !important;
+}
+
+#addGroup i::before{
+    color: var(--bms-primary);
+}
+
+button#remove {
+    background-color: var(--bms-primary);
 }

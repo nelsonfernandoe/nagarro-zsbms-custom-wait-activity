@@ -171,7 +171,7 @@ function addGroup() {
         ' </div>' +
         ' <div class="row">' +
         '<div class="col-lg-4 col-md col">' +
-        '<button  data-id="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '"  class="removeGroup btn btn-danger btn-sm" style="text-decoration: none; margin-top: 100px;">Remove group</button>' +
+        '<button  id="remove" data-id="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '"  class="removeGroup btn btn-danger btn-sm" style="text-decoration: none; margin-top: 100px;">Remove group</button>' +
         '</div>' +
         /*'<div class="col-lg-4 col-md col">'+
           '<button id="close" class="btn btn-warning btn-sm" style="text-decoration: none; margin-top: 100px;">Close</button>'+
