@@ -1,8 +1,8 @@
 {
     "workflowApiVersion": "1.1",
     "metaData": {
-        "icon": "images/icon.png",
-        "iconSmall": "images/iconSmall.png",
+        "icon": "images/icon-gear.png",
+        "iconSmall": "images/icon-gear.png",
         "category": "custom"
     },
     "type": "REST",
