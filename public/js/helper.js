@@ -70,7 +70,7 @@ function addGroup() {
         '<div class="col-lg-12 col-md col">' +
         '  <div class="justify-content-md-left row">' +
         '  <div class="col-lg-7 col">' +
-        '   <h5 style="font-size: 15px; text-align: left;">Dynamic Attribute' + grouplength + '</h5>' +
+        '   <h5 style="font-size: 15px; text-align: left;">Dynamic Attribute</h5>' +
         '  </div>' +
         '  <div class="col-lg-5 col"></div>' +
         '  </div>' +
