@@ -34,7 +34,6 @@ $(document).on('click', '#addGroup', function (event) {
     addGroup();
 });
 
-
 $(document).on('click', '.removeGroup', function (event) {
     var removeId = $(this).attr('data-id');
     var lengthid = $(this).attr('data-length') - 1;
@@ -64,7 +63,8 @@ function addGroup() {
 
     var addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
 
-    var addnewTab = '       <div role="tabpanel" id="v-pills-dynamic' + grouplength + '" aria-labelledby="v-pills-dynamic' + grouplength + '-tab" class="fade tab-pane dynamic-tabs1"> <form class="">' +
+    var addnewTab = '       <div role="tabpanel" id="v-pills-dynamic' + grouplength + '" aria-labelledby="v-pills-dynamic' + grouplength + '-tab" class="fade tab-pane dynamic-tabs1"> ' +
+        '<form class="" onsubmit="return false">' +
         ' <div class="container">' +
         '  <div class="row">' +
         '<div class="col-lg-12 col-md col">' +
@@ -76,7 +76,8 @@ function addGroup() {
         '  </div>' +
         ' <div class="row">' +
         ' <div class="col-md-4">' +
-        ' <select aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
+        ' <select id = "dynamicAtt-prop-'+ grouplength +
+            '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
         '   <option>Dynamic Attribute</option>' +
         '   <option value="2">2</option>' +
         '   <option value="3">3</option>' +
@@ -84,20 +85,20 @@ function addGroup() {
         '  </select>' +
         ' </div>' +
         '  <div class="col-md-4">' +
-        ' <select aria-label="Dynamic Attribute" class="form-select " style="font-size: 12px;">' +
-        '  <option>Select Relationship</option>' +
+        ' <select id = "dynamicAtt-op-'+ grouplength +
+        '"   aria-label="Dynamic Attribute" class="form-select " style="font-size: 12px;">' +
+        // '  <option>Select Relationship</option>' +
         '  <option value="2">equals</option>' +
-        '  <option value="3">greater </option>' +
-        '  <option value="4">greater than</option>' +
-        '  <option value="3">less </option>' +
-        '  <option value="4">less than</option>' +
+        '  <option value="3">greater than</option>' +
+        '  <option value="4">greater than equals</option>' +
+        '  <option value="3">lesser than </option>' +
+        '  <option value="4">lesser than equals</option>' +
         '  </select>' +
         '  </div>' +
         '    <div class="col-md-4">' +
 
         '  <div class="form-input">' +
-
-        '   <input type="text" class="form-control" id="usr">' +
+        '   <input id = "dynamicAtt-operand-'+ grouplength + '"  type="text" class="form-control" id="usr">' +
         '  </div>' +
         ' </div>' +
         ' </div>' +
@@ -110,7 +111,8 @@ function addGroup() {
         '  <div class="col-lg-5 col"></div>' +
         ' </div>' +
         ' <div class="row ">' +
-        ' <div class="col"> <select aria-label="Dynamic Attribute" class="attibute-date form-select w-75" style="font-size: 12px;">' +
+        ' <div class="col"> ' +
+        '<select id = "dateAtt-prop-' + grouplength + '" aria-label="Dynamic Attribute" class="attibute-date form-select w-75" style="font-size: 12px;">' +
         '    <option>Date Attribute</option>' +
         '   <option value="2">2</option>' +
         '    <option value="3">3</option>' +
@@ -124,7 +126,7 @@ function addGroup() {
         '<div class="mt-2 row">' +
         '<div class="col-lg-2 col-md col">' +
         '  <label class="form-label" style="font-size: 12px;">Duration</label>' +
-        '  <select aria-label="1" class="form-select" style="font-size: 12px;">' +
+        '  <select id = "dateAtt-duration-' + grouplength + '" aria-label="1" class="form-select" style="font-size: 12px;">' +
         '   <option>1</option>' +
         '  <option value="2">2</option>' +
         '  <option value="3">3</option>' +
@@ -133,7 +135,7 @@ function addGroup() {
         ' </div>' +
         '<div class="col-lg-5 col-md col">' +
         '  <label class="form-label">&nbsp;</label>' +
-        '  <select aria-label="Days" class="form-select" style="font-size: 12px;">' +
+        '  <select id = "dateAtt-unit-' + grouplength + '" aria-label="Days" class="form-select" style="font-size: 12px;">' +
         '  <option>Days</option>' +
         ' <option value="2">Weeks</option>' +
         '  <option value="3">Months</option>' +
@@ -142,7 +144,7 @@ function addGroup() {
         ' </div>' +
         ' <div class="col-lg-5 col-md col">' +
         '  <label class="form-label">&nbsp;</label>' +
-        '  <select aria-label="After" class="form-select" style="font-size: 12px;">' +
+        '  <select id = "dateAtt-timeline-' + grouplength + '" aria-label="After" class="form-select" style="font-size: 12px;">' +
         '   <option>Before</option>' +
         '  <option value="2">After</option>' +
         '    <option value="3">On</option>' +
@@ -154,7 +156,8 @@ function addGroup() {
 
         ' <div class="row ">' +
         '  <label class="form-label text-center" style="font-size: 12px;">Timezone</label>' +
-        '<div class="col"> <select name="timezone" id="timezone" aria-label="Dynamic Attribute" class="form-select select" ' + 'style="font-size: 12px;">' +
+        '<div class="col"> ' +
+        '<select id = "dateAtt-tz-' + grouplength + '" name="timezone" id="timezone" aria-label="Dynamic Attribute" class="form-select select" ' + 'style="font-size: 12px;">' +
         '  <option data-offset="+5:30" value="Asia/Calcutta">(GMT +5:30) Asia/Calcutta</option>' +
         ' </select>' +
         ' </div>' +
@@ -164,7 +167,7 @@ function addGroup() {
         '<div class="mt-2 row">' +
         ' <div class="col-lg-10 col-md col">' +
         ' <div class="checkbox text-center" style="font-size: 12px;">' +
-        '  <input type="checkbox" value=""> Extend wait duration untill specific time' +
+        '  <input id = "dateAtt-extend-' + grouplength + '" type="checkbox" value="1"> Extend wait duration untill specific time' +
         '</div>' +
 
         ' </div>' +
