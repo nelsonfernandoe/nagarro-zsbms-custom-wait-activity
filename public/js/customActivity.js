@@ -85,15 +85,12 @@ define([
         console.log(eventDefinitionModel);
     }
 
-    /* TODO: configure this method to reload UI values from payload */
     function initialize(data) {
-        console.log('initialize: ', data);
+        console.log('initialize started: ', data);
         if (data) {
             payload = data;
         }
         // var newData = handelSchema();
-
-        // console.log("$$$$$$$$$$$$ New Data coming $$$$$$$",JSON.stringify(newData));
 
         var hasInArguments = Boolean(
             payload['arguments'] &&
@@ -104,19 +101,43 @@ define([
 
         var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
 
-        console.log(inArguments);
-
+        /* based on the payload config, repopulate the UI */
         $.each(inArguments, function (index, inArgument) {
-            $.each(inArgument, function (key, val) {
-                if (key === 'postcardURL') {
-                    $('#postcard-url').val(val);
-                    $('.postcard - preview - content').css('background - image', "url('" + $('#postcard-url').val());
+            const userConfigs = inArgument.userConfig || [];
+
+            $.each(userConfigs, function (index, userConfig) {
+                console.log({index, userConfig});
+                let pos = index + 1;
+                /* no need to add group for first config, since it is added by default */
+                if (pos !== 1) {
+                    addGroup();
                 }
 
-                if (key === "postcardText")
-                    $('#postcard-text').val(val);
-                $('#postcard-preview-text').html($('#postcard - text').val());
+                /* populate the values */
+                $(`#dynamicAtt-prop-${pos}`).val(userConfig.dynamicAttribute.property);
+                $(`#dynamicAtt-op-${pos}`).val(userConfig.dynamicAttribute.operator);
+                $(`#dynamicAtt-operand-${pos}`).val(userConfig.dynamicAttribute.operand);
 
+                $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
+                $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
+                $(`#dateAtt-unit-${pos}`).val(userConfig.dateAttribute.unit);
+                $(`#dateAtt-timeline-${pos}`).val(userConfig.dateAttribute.timeline);
+                $(`#dateAtt-tz-${pos}`).val(userConfig.dateAttribute.timeZone);
+                $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait);
+
+                if (userConfig.dateAttribute.extendWait) {
+                    $('#extend-time-list-' + pos).css('display', 'block');
+                    $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
+                }
+
+                /* to activate tab1 */
+                $(".dynamic-tabs1").css('display', 'none');
+                $(".dynamic-tabs1").removeClass('active');
+                $(".dynamicgroup").removeClass('active');
+                $("#v-pills-dynamic1-tab").addClass('active');
+                // $('#v-pills-dynamic' + grouplength).addClass('active');
+                $("#v-pills-dynamic1").addClass('show active');
+                $("#v-pills-dynamic1").css('display', 'block');
             });
         });
 
@@ -158,33 +179,10 @@ define([
     }
 
     function parseUserConfig() {
-        /*
-        example config
-        let a = [
-            {
-                dynamicAttribute : {
-                    property: {
-                        name: 'firstName',
-                        type: 'string'
-                    },
-                    operator: 'equals',
-                    operand: 'John'
-                },
-                dateAttribute: {
-                    property: 'scheduledDate',
-                    duration: 1,
-                    unit: 'day',
-                    timeline: 'Before',
-                    timeZone: '+5:30'
-                }
-            }
-
-        ];
-        */
         const userConfig = [];
         const totalTabs = $('.removeGroup').length;
-        for (let i = 1; i <= totalTabs; i++) {
 
+        for (let i = 1; i <= totalTabs; i++) {
             /* Read UI values */
             let dynamicAttProp = $(`#dynamicAtt-prop-${i}`).val();
             let dynamicAttOp = $(`#dynamicAtt-op-${i}`).val();
@@ -196,6 +194,7 @@ define([
             let dateAttTimeline = $(`#dateAtt-timeline-${i}`).val();
             let dateAttTz = $(`#dateAtt-tz-${i}`).val();
             let dateAttExtendWait = $(`#dateAtt-extend-${i}`).is(":checked");
+            let dateAttExtendTime = $(`#dateAtt-extend-time-${i}`).val();
 
             /* Add to array of configs */
             userConfig.push({
@@ -210,7 +209,8 @@ define([
                     unit: dateAttUnit,
                     timeline: dateAttTimeline,
                     timeZone: dateAttTz,
-                    extendWait: dateAttExtendWait
+                    extendWait: dateAttExtendWait,
+                    extendTime: dateAttExtendTime
                 }
             });
 
@@ -218,6 +218,8 @@ define([
                 break;
             }
         }
+        console.log({userConfig});
+
         return userConfig;
     }
 
@@ -308,12 +310,56 @@ define([
             }]
         };
 
-        /* events */
-
-        /* TODO: remove for SFMC (this is for local test) */
+        /* this is for local test */
         $(document).on('click', '#done', function (event) {
             // save();
             parseUserConfig();
         });
+
+        initialize({
+                arguments: {
+                    execute: {
+                        inArguments: [
+                            {
+                                userConfig: [
+                                    {
+                                        "dynamicAttribute": {
+                                            "property": "LastName",
+                                            "operator": "gt",
+                                            "operand": "Henry"
+                                        },
+                                        "dateAttribute": {
+                                            "property": "LoginDate",
+                                            "duration": "2",
+                                            "unit": "week",
+                                            "timeline": "3",
+                                            "timeZone": "Asia/Calcutta",
+                                            "extendWait": true,
+                                            "extendTime": "03:30 AM"
+                                        }
+                                    },
+                                    {
+                                        "dynamicAttribute": {
+                                            "property": "FirstName",
+                                            "operator": "le",
+                                            "operand": "Johny"
+                                        },
+                                        "dateAttribute": {
+                                            "property": "LogoutDate",
+                                            "duration": "4",
+                                            "unit": "month",
+                                            "timeline": "2",
+                                            "timeZone": "Asia/Calcutta",
+                                            "extendWait": false,
+                                            "extendTime": ""
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        );
     }
 });

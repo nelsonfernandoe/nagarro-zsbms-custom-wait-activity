@@ -76,8 +76,8 @@ function addGroup() {
         '  </div>' +
         ' <div class="row">' +
         ' <div class="col-md-4">' +
-        ' <select id = "dynamicAtt-prop-'+ grouplength +
-            '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
+        ' <select id = "dynamicAtt-prop-' + grouplength +
+        '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
         '   <option>Dynamic Attribute</option>' +
         '   <option value="2">2</option>' +
         '   <option value="3">3</option>' +
@@ -85,20 +85,20 @@ function addGroup() {
         '  </select>' +
         ' </div>' +
         '  <div class="col-md-4">' +
-        ' <select id = "dynamicAtt-op-'+ grouplength +
+        ' <select id = "dynamicAtt-op-' + grouplength +
         '"   aria-label="Dynamic Attribute" class="form-select " style="font-size: 12px;">' +
         // '  <option>Select Relationship</option>' +
-        '  <option value="2">equals</option>' +
-        '  <option value="3">greater than</option>' +
-        '  <option value="4">greater than equals</option>' +
-        '  <option value="3">lesser than </option>' +
-        '  <option value="4">lesser than equals</option>' +
+        '  <option value="eq">equals</option>' +
+        '  <option value="gt">greater than</option>' +
+        '  <option value="ge">greater than equals</option>' +
+        '  <option value="lt">lesser than </option>' +
+        '  <option value="le">lesser than equals</option>' +
         '  </select>' +
         '  </div>' +
         '    <div class="col-md-4">' +
 
         '  <div class="form-input">' +
-        '   <input id = "dynamicAtt-operand-'+ grouplength + '"  type="text" class="form-control" id="usr">' +
+        '   <input id = "dynamicAtt-operand-' + grouplength + '"  type="text" class="form-control" id="usr">' +
         '  </div>' +
         ' </div>' +
         ' </div>' +
@@ -126,20 +126,16 @@ function addGroup() {
         '<div class="mt-2 row">' +
         '<div class="col-lg-2 col-md col">' +
         '  <label class="form-label" style="font-size: 12px;">Duration</label>' +
-        '  <select id = "dateAtt-duration-' + grouplength + '" aria-label="1" class="form-select" style="font-size: 12px;">' +
-        '   <option>1</option>' +
-        '  <option value="2">2</option>' +
-        '  <option value="3">3</option>' +
-        '  <option value="4">4</option>' +
-        ' </select>' +
+        ' <input id = "dateAtt-duration-' + grouplength + '" type="number" min="0" class="form-control"/>' +
         ' </div>' +
         '<div class="col-lg-5 col-md col">' +
         '  <label class="form-label">&nbsp;</label>' +
         '  <select id = "dateAtt-unit-' + grouplength + '" aria-label="Days" class="form-select" style="font-size: 12px;">' +
-        '  <option>Days</option>' +
-        ' <option value="2">Weeks</option>' +
-        '  <option value="3">Months</option>' +
-
+        ' <option value="min">Minutes</option>' +
+        ' <option value="hour">Hours</option>' +
+        ' <option value="day">Days</option>' +
+        ' <option value="week">Weeks</option>' +
+        ' <option value="month">Months</option>' +
         '   </select>' +
         ' </div>' +
         ' <div class="col-lg-5 col-md col">' +
@@ -168,8 +164,12 @@ function addGroup() {
         ' <div class="col-lg-10 col-md col">' +
         ' <div class="checkbox text-center" style="font-size: 12px;">' +
         '  <input id = "dateAtt-extend-' + grouplength + '" type="checkbox" value="1"> Extend wait duration untill specific time' +
-        '</div>' +
-
+        ' </div>' +
+        ' <div id="extend-time-list-' + grouplength + '" style="width: 50%"> ' +
+        '  <label class="form-label" style="font-size: 12px;">Time</label>' +
+        '  <input id="dateAtt-extend-time-' + grouplength + '" type="text" list="times" class="form-select" style="font-size: 12px;"/>' +
+        '   <datalist id="times"></datalist>' +
+        ' </div>' +
         ' </div>' +
         ' </div>' +
         ' <div class="row">' +
@@ -188,15 +188,57 @@ function addGroup() {
         '</form></div>';
 
     // $('.select').timezones();
-    $(".dynamic-tabs1").css('display', 'none');
+
+    /*
+    * #v-pills-tab - all tab parent
+    * #v-pills-dynamic1-tab - tab button
+    * #v-pills-dynamic1 - tab content
+    * .dynamicgroup - each tab
+    * .dynamic-tabs1 - each tab content
+    * */
     $("#v-pills-tab").append(addGroup);
     $("#v-pills-tabContent").append(addnewTab);
-    $('#v-pills-dynamic' + grouplength).addClass('active');
+
+    $(".dynamic-tabs1").css('display', 'none');
     $(".dynamic-tabs1").removeClass('active');
     $(".dynamicgroup").removeClass('active');
     $("#v-pills-dynamic" + grouplength + "-tab").addClass('active');
+    // $('#v-pills-dynamic' + grouplength).addClass('active');
     $("#v-pills-dynamic" + grouplength).addClass('show active');
     $("#v-pills-dynamic" + grouplength).css('display', 'block');
 
+    $('#extend-time-list-' + grouplength).css('display', 'none');
+
+
+    /* check box change event */
+    $('#dateAtt-extend-' + grouplength).change(function () {
+        if (this.checked) {
+            $('#extend-time-list-' + grouplength).css('display', 'block');
+        } else {
+            $('#extend-time-list-' + grouplength).css('display', 'none');
+        }
+        // $('#textbox1').val(this.checked);
+    });
+
+    /* add time values to the data list */
+    configureTimesDataList();
+
+    /* remove button functionality */
     configureRemoveGroupBtn();
+}
+
+function configureTimesDataList() {
+    const start = new Date();
+    start.setHours(0, 0, 0); //8 AM
+    const end = new Date();
+    end.setHours(23, 59, 0); //5 PM
+
+    let html = '';
+    while (start <= end) {
+        let time = start.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'});
+        html += `<option>${time}</option>`;
+        start.setMinutes(start.getMinutes() + 30);
+    }
+
+    $('#times').html(html);
 }
