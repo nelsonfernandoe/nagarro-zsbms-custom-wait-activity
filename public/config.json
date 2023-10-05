@@ -16,6 +16,9 @@
     "arguments": {
       "execute": {
         "inArguments": [
+          {
+          "contact": "{{Contact}}"
+          }
         ],
         "outArguments": [],
         "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",

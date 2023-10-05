@@ -72,11 +72,6 @@ exports.save = function (req, res) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function (req, res) {
-    console.log('req: ', JSON.stringify(req.body));
-    console.log(req.body);
-    // console.log('res: ', JSON.stringify(res));
-    // console.log(res);
-    // example on how to decode JWT
     JWT(req.body, process.env.jwtSecret, (err, decoded) => {
 
         // verification error -> unauthorized request
@@ -86,16 +81,18 @@ exports.execute = function (req, res) {
         }
 
         if (decoded && decoded.inArguments && decoded.inArguments.length > 0) {
-            
+
             // decoded in arguments
             var decodedArgs = decoded.inArguments[0];
             var request = require('request');
-           // var url = 'https://eog9ptmlw13tnd1.m.pipedream.net';
+            var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
+            console.log('In execute, decoded args: ', decodedArgs);
 
             request({
                 url: url,
                 method: "POST",
-                json: decoded.inArguments[0]
+                json: decoded.inArguments[0],
+                decoded: decoded
             }, function (error, response, body) {
                 if (!error) {
                     console.log(body);

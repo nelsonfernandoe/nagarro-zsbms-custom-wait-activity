@@ -85,8 +85,9 @@ define([
         console.log(eventDefinitionModel);
     }
 
+    /* TODO: configure this method to reload UI values from payload */
     function initialize(data) {
-        console.log(data);
+        console.log('initialize: ', data);
         if (data) {
             payload = data;
         }
