@@ -34,8 +34,8 @@ define([
 
     if (isLocal) {
         preLocalSetup();
-        handelSchema(local.schema);
         postLocalSetup();
+        handelSchema(local.schema);
     }
 
     /* local: ends */
@@ -345,7 +345,7 @@ define([
                                             "duration": "2",
                                             "unit": "week",
                                             "timeline": "3",
-                                            "timeZone": "Asia/Calcutta",
+                                            "timeZone": "Indian/Maldives",
                                             "extendWait": true,
                                             "extendTime": "03:30 AM"
                                         }
@@ -377,7 +377,7 @@ define([
                                             "duration": "4",
                                             "unit": "month",
                                             "timeline": "2",
-                                            "timeZone": "Asia/Calcutta",
+                                            "timeZone": "Australia/Melbourne",
                                             "extendWait": true,
                                             "extendTime": "04:45 PM"
                                         }

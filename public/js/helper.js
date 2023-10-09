@@ -8,10 +8,11 @@ $(document).ready(function () {
         $("#customDiv").toggle();
     });
 
+    // $('.select').timezones();
 });
 
 $(document).on('click', '.select', function () {
-    $('.select').timezones();
+    // $('.select').timezones();
 });
 
 $(document).on('click', '.dynamicgroup', function (event) {
@@ -20,7 +21,7 @@ $(document).on('click', '.dynamicgroup', function (event) {
     if ($(this).attr('data-tab') != undefined) {
         $(".dynamic-tabs1").css('display', 'none');
         $("#" + $(this).attr('data-tab')).css('display', 'block');
-        $('.select').timezones();
+        // $('.select').timezones();
     }
     $(".dynamic-tabs1").css('display', 'none');
     $(".dynamic-tabs1").removeClass('active');
@@ -219,6 +220,9 @@ function addGroup() {
         }
         // $('#textbox1').val(this.checked);
     });
+
+    /* add timezones */
+    $('.select').timezones();
 
     /* add time values to the data list */
     configureTimesDataList();
