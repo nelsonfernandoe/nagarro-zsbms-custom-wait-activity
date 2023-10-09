@@ -17,10 +17,10 @@ define([
 
     $(window).ready(onRender);
 
+    connection.on('requestedSchema', handelSchema)
     connection.on('initActivity', initialize);
     connection.on('requestedTokens', onGetTokens);
     connection.on('requestedEndpoints', onGetEndpoints);
-    connection.on('requestedSchema', handelSchema)
     //connection.on('requestedInteraction', onRequestedInteraction);
     //connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
     //connection.on('requestedDataSources', onRequestedDataSources);
@@ -33,8 +33,9 @@ define([
     console.log({isLocal});
 
     if (isLocal) {
-        localSetup();
+        preLocalSetup();
         handelSchema(local.schema);
+        postLocalSetup();
     }
 
     /* local: ends */
@@ -62,16 +63,6 @@ define([
         console.log('*** Schema ***', JSON.stringify(schema))
         schemadata = schema;
         // var getattributes = [];
-        $(".attribute-select").html('');
-        $(".attibute-date").html('');
-        for (var i = 0; i < schema.schema.length; i++) {
-            //  getattributes.push(schema.schema[i].name);
-            $(".attribute-select").append('<option value="' + schema.schema[i].name + '">' + schema.schema[i].name + '</option>');
-            if (schema.schema[i].type == 'Date') {
-                $(".attibute-date").append('<option value="' + schema.schema[i].name + '">' + schema.schema[i].name + '</option>');
-            }
-        }
-
     }
 
 
@@ -101,6 +92,27 @@ define([
 
         var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
 
+        $.each(inArguments, function (index, inArgument) {
+            const userConfigs = inArgument.userConfig || [];
+            $.each(userConfigs, function (index, userConfig) {
+                if (index != 0) {
+                    addGroup();
+                }
+            })
+        });
+
+        /* update UI dropdowns from schema */
+        $(".attribute-select").html('');
+        $(".attibute-date").html('');
+        for (var i = 0; i < schemadata.schema.length; i++) {
+            //  getattributes.push(schema.schema[i].name);
+            $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+            if (schemadata.schema[i].type == 'Date') {
+                $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+            }
+        }
+
+
         /* based on the payload config, repopulate the UI */
         $.each(inArguments, function (index, inArgument) {
             const userConfigs = inArgument.userConfig || [];
@@ -108,10 +120,6 @@ define([
             $.each(userConfigs, function (index, userConfig) {
                 console.log({index, userConfig});
                 let pos = index + 1;
-                /* no need to add group for first config, since it is added by default */
-                if (pos !== 1) {
-                    addGroup();
-                }
 
                 /* populate the values */
                 $(`#dynamicAtt-prop-${pos}`).val(userConfig.dynamicAttribute.property);
@@ -123,12 +131,8 @@ define([
                 $(`#dateAtt-unit-${pos}`).val(userConfig.dateAttribute.unit);
                 $(`#dateAtt-timeline-${pos}`).val(userConfig.dateAttribute.timeline);
                 $(`#dateAtt-tz-${pos}`).val(userConfig.dateAttribute.timeZone);
-                $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait);
-
-                if (userConfig.dateAttribute.extendWait) {
-                    $('#extend-time-list-' + pos).css('display', 'block');
-                    $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
-                }
+                $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait).change();
+                $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
 
                 /* to activate tab1 */
                 $(".dynamic-tabs1").css('display', 'none');
@@ -256,7 +260,7 @@ define([
         $('.postcard-preview-content').css('background-image', "url('" + $('#postcard-url').val() + "')");
     });
 
-    function localSetup() {
+    function preLocalSetup() {
         local = {};
         local.schema = {
             "schema": [{
@@ -316,6 +320,10 @@ define([
             parseUserConfig();
         });
 
+
+    }
+
+    function postLocalSetup() {
         initialize({
                 arguments: {
                     execute: {
@@ -352,6 +360,22 @@ define([
                                             "timeZone": "Asia/Calcutta",
                                             "extendWait": false,
                                             "extendTime": ""
+                                        }
+                                    },
+                                    {
+                                        "dynamicAttribute": {
+                                            "property": "FirstName",
+                                            "operator": "eq",
+                                            "operand": "Pro"
+                                        },
+                                        "dateAttribute": {
+                                            "property": "LogoutDate",
+                                            "duration": "4",
+                                            "unit": "month",
+                                            "timeline": "2",
+                                            "timeZone": "Asia/Calcutta",
+                                            "extendWait": true,
+                                            "extendTime": "04:45 PM"
                                         }
                                     }
                                 ]
