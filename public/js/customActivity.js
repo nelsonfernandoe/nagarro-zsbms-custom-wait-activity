@@ -63,6 +63,7 @@ define([
         console.log('*** Schema ***', JSON.stringify(schema))
         schemadata = schema;
         // var getattributes = [];
+        reloadUserConfig();
     }
 
 
@@ -81,69 +82,7 @@ define([
         if (data) {
             payload = data;
         }
-        // var newData = handelSchema();
 
-        var hasInArguments = Boolean(
-            payload['arguments'] &&
-            payload['arguments'].execute &&
-            payload['arguments'].execute.inArguments &&
-            payload['arguments'].execute.inArguments.length > 0
-        );
-
-        var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
-
-        $.each(inArguments, function (index, inArgument) {
-            const userConfigs = inArgument.userConfig || [];
-            $.each(userConfigs, function (index, userConfig) {
-                if (index != 0) {
-                    addGroup();
-                }
-            })
-        });
-
-        /* update UI dropdowns from schema */
-        $(".attribute-select").html('');
-        $(".attibute-date").html('');
-        for (var i = 0; i < schemadata.schema.length; i++) {
-            //  getattributes.push(schema.schema[i].name);
-            $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
-            if (schemadata.schema[i].type == 'Date') {
-                $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
-            }
-        }
-
-
-        /* based on the payload config, repopulate the UI */
-        $.each(inArguments, function (index, inArgument) {
-            const userConfigs = inArgument.userConfig || [];
-
-            $.each(userConfigs, function (index, userConfig) {
-                console.log({index, userConfig});
-                let pos = index + 1;
-
-                /* populate the values */
-                $(`#dynamicAtt-prop-${pos}`).val(userConfig.dynamicAttribute.property);
-                $(`#dynamicAtt-op-${pos}`).val(userConfig.dynamicAttribute.operator);
-                $(`#dynamicAtt-operand-${pos}`).val(userConfig.dynamicAttribute.operand);
-
-                $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
-                $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
-                $(`#dateAtt-unit-${pos}`).val(userConfig.dateAttribute.unit);
-                $(`#dateAtt-timeline-${pos}`).val(userConfig.dateAttribute.timeline);
-                $(`#dateAtt-tz-${pos}`).val(userConfig.dateAttribute.timeZone);
-                $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait).change();
-                $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
-
-                /* to activate tab1 */
-                $(".dynamic-tabs1").css('display', 'none');
-                $(".dynamic-tabs1").removeClass('active');
-                $(".dynamicgroup").removeClass('active');
-                $("#v-pills-dynamic1-tab").addClass('active');
-                // $('#v-pills-dynamic' + grouplength).addClass('active');
-                $("#v-pills-dynamic1").addClass('show active');
-                $("#v-pills-dynamic1").css('display', 'block');
-            });
-        });
 
         connection.trigger('updateButton', {
             button: 'next',
@@ -225,6 +164,71 @@ define([
         console.log({userConfig});
 
         return userConfig;
+    }
+    function reloadUserConfig() {
+        // var newData = handelSchema();
+
+        var hasInArguments = Boolean(
+            payload['arguments'] &&
+            payload['arguments'].execute &&
+            payload['arguments'].execute.inArguments &&
+            payload['arguments'].execute.inArguments.length > 0
+        );
+
+        var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
+
+        $.each(inArguments, function (index, inArgument) {
+            const userConfigs = inArgument.userConfig || [];
+            $.each(userConfigs, function (index, userConfig) {
+                if (index != 0) {
+                    addGroup();
+                }
+            })
+        });
+
+        /* update UI dropdowns from schema */
+        $(".attribute-select").html('');
+        $(".attibute-date").html('');
+        for (var i = 0; i < schemadata.schema.length; i++) {
+            //  getattributes.push(schema.schema[i].name);
+            $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+            if (schemadata.schema[i].type == 'Date') {
+                $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+            }
+        }
+
+
+        /* based on the payload config, repopulate the UI */
+        $.each(inArguments, function (index, inArgument) {
+            const userConfigs = inArgument.userConfig || [];
+
+            $.each(userConfigs, function (index, userConfig) {
+                console.log({index, userConfig});
+                let pos = index + 1;
+
+                /* populate the values */
+                $(`#dynamicAtt-prop-${pos}`).val(userConfig.dynamicAttribute.property);
+                $(`#dynamicAtt-op-${pos}`).val(userConfig.dynamicAttribute.operator);
+                $(`#dynamicAtt-operand-${pos}`).val(userConfig.dynamicAttribute.operand);
+
+                $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
+                $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
+                $(`#dateAtt-unit-${pos}`).val(userConfig.dateAttribute.unit);
+                $(`#dateAtt-timeline-${pos}`).val(userConfig.dateAttribute.timeline);
+                $(`#dateAtt-tz-${pos}`).val(userConfig.dateAttribute.timeZone);
+                $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait).change();
+                $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
+
+                /* to activate tab1 */
+                $(".dynamic-tabs1").css('display', 'none');
+                $(".dynamic-tabs1").removeClass('active');
+                $(".dynamicgroup").removeClass('active');
+                $("#v-pills-dynamic1-tab").addClass('active');
+                // $('#v-pills-dynamic' + grouplength).addClass('active');
+                $("#v-pills-dynamic1").addClass('show active');
+                $("#v-pills-dynamic1").css('display', 'block');
+            });
+        });
     }
 
     function save() {
