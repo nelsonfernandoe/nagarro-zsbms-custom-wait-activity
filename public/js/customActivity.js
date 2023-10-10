@@ -239,8 +239,8 @@ define([
 
         payload['arguments'].execute.inArguments = [{
             tokens: authTokens,
-            journeyData: "{{Event." + eventDefinitionKey + '"}}',
-            firstName: "{{Event." + eventDefinitionKey + '."FirstName"}}',
+            journeyData: "{{Event." + eventDefinitionKey + '}}',
+            firstName: "{{Event." + eventDefinitionKey + '.FirstName}}',
             userConfig
         }];
 
