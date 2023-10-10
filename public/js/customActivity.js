@@ -22,11 +22,11 @@ define([
     connection.on('initActivity', initialize);
     connection.on('requestedTokens', onGetTokens);
     connection.on('requestedEndpoints', onGetEndpoints);
+    connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
+    connection.on('clickedNext', save);
     //connection.on('requestedInteraction', onRequestedInteraction);
-    //connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
     //connection.on('requestedDataSources', onRequestedDataSources);
 
-    connection.on('clickedNext', save);
 
     /* for local data mocking */
     let local;
@@ -73,11 +73,6 @@ define([
     function onRequestedInteraction(interaction) {
         console.log('*** requestedInteraction ***');
         console.log(interaction);
-    }
-
-    function onRequestedTriggerEventDefinition(eventDefinitionModel) {
-        console.log('*** requestedTriggerEventDefinition ***');
-        console.log(eventDefinitionModel);
     }
 
     function initialize(data) {
@@ -168,6 +163,7 @@ define([
 
         return userConfig;
     }
+
     function reloadUserConfig() {
         // var newData = handelSchema();
 
@@ -251,19 +247,16 @@ define([
         connection.trigger('updateActivity', payload);
     }
 
+    function onRequestedTriggerEventDefinition(eventDefinitionModel) {
+        if (eventDefinitionModel) {
+            eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+            console.log(">>>Event Definition Key " + eventDefinitionKey);
+            /*If you want to see all*/
+            console.log('>>>Request Trigger',
+                JSON.stringify(eventDefinitionModel));
+        }
 
-    connection.on('requestedTriggerEventDefinition',
-        function(eventDefinitionModel) {
-            if(eventDefinitionModel){
-
-                eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
-                console.log(">>>Event Definition Key " + eventDefinitionKey);
-                /*If you want to see all*/
-                console.log('>>>Request Trigger',
-                    JSON.stringify(eventDefinitionModel));
-            }
-
-        });
+    }
 
     $(document).on('click', '#addGroup', function (event) {
 
