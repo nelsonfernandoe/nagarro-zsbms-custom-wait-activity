@@ -241,6 +241,7 @@ define([
             tokens: authTokens,
             journeyData: "{{Event." + eventDefinitionKey + '}}',
             firstName: "{{Event." + eventDefinitionKey + '.FirstName}}',
+            firstNameStr: "{{Event." + eventDefinitionKey + '."FirstName"}}',
             userConfig
         }];
 
