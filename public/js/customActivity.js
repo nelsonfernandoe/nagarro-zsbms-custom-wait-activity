@@ -11,6 +11,7 @@ define([
     var lastStepEnabled = false;
     var steps = [{"label": "Configure Postcard", "key": "step1"}];
     var schemadata = {};
+    var eventDefinitionKey;
 
     var currentStep = steps[0].key;
 
@@ -46,7 +47,9 @@ define([
 
         connection.trigger('requestTokens');
         connection.trigger('requestEndpoints');
-        connection.trigger('requestSchema')
+        connection.trigger('requestSchema');
+        connection.trigger('requestTriggerEventDefinition');
+
         //connection.trigger('requestInteraction');
         //connection.trigger('requestTriggerEventDefinition');
         //connection.trigger('requestDataSources');  
@@ -235,15 +238,31 @@ define([
         const userConfig = parseUserConfig();
 
         payload['arguments'].execute.inArguments = [{
-            "tokens": authTokens,
+            tokens: authTokens,
+            journeyData: "{{Event." + eventDefinitionKey + '"}}',
+            firstName: "{{Event." + eventDefinitionKey + '."FirstName"}}',
             userConfig
         }];
 
         payload['metaData'].isConfigured = true;
 
-        console.log(payload);
+        console.log('Save done: ', {payload});
         connection.trigger('updateActivity', payload);
     }
+
+
+    connection.on('requestedTriggerEventDefinition',
+        function(eventDefinitionModel) {
+            if(eventDefinitionModel){
+
+                eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+                console.log(">>>Event Definition Key " + eventDefinitionKey);
+                /*If you want to see all*/
+                console.log('>>>Request Trigger',
+                    JSON.stringify(eventDefinitionModel));
+            }
+
+        });
 
     $(document).on('click', '#addGroup', function (event) {
 
