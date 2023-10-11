@@ -242,7 +242,7 @@ define([
                 });
                 inArgs.push(uc.dateAttribute.property);
             });
-            return inArgs.map(ia => `{{Event.${eventDefinitionKey}.ia}}`);
+            return inArgs.map(ia => ({[ia]: `{{Event.${eventDefinitionKey}.ia}}`}));
         }
 
         function save() {
