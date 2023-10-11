@@ -103,15 +103,15 @@ define([
             const res = {
                 valid: true,
                 errorMsgs: []
-            }
+            };
 
-                /* validate the operand */
-                (config[0].dynamicAttribute || []).forEach((da, i) => {
-                    if (!da.operand) {
-                        res.valid = false;
-                        res.errorMsgs.push(`${i + 1} Dynamic attribute value cannot be empty`);
-                    }
-                });
+            /* validate the operand */
+            (config[0].dynamicAttribute || []).forEach((da, i) => {
+                if (!da.operand) {
+                    res.valid = false;
+                    res.errorMsgs.push(`${i + 1} Dynamic attribute value cannot be empty`);
+                }
+            });
 
             if (!res.valid) {
                 $('#modalTitle').text(`Invalid configuration (Group ${group})`);
