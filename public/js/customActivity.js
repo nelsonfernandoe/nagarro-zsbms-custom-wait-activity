@@ -246,7 +246,7 @@ define([
             });
 
             inArgs.forEach(ia => {
-                inArgsObj[ia] = `{{Event.${eventDefinitionKey}.${ia}}`;
+                inArgsObj[ia] = `{{Event.${eventDefinitionKey}.${ia}}}`;
             });
             return inArgsObj;
         }
