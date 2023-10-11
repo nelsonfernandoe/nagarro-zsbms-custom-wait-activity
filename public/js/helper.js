@@ -132,11 +132,12 @@ function addGroup() {
         '<div class="col-lg-5 col-md col">' +
         '  <label class="form-label">&nbsp;</label>' +
         '  <select id = "dateAtt-unit-' + grouplength + '" aria-label="Days" class="form-select" style="font-size: 12px;">' +
-        ' <option value="min">Minutes</option>' +
-        ' <option value="hour">Hours</option>' +
-        ' <option value="day">Days</option>' +
-        ' <option value="week">Weeks</option>' +
-        ' <option value="month">Months</option>' +
+        ' <option value="minutes">Minutes</option>' +
+        ' <option value="hours">Hours</option>' +
+        ' <option value="days">Days</option>' +
+        ' <option value="weeks">Weeks</option>' +
+        ' <option value="weeks">Months</option>' +
+        // ' <option value="years">Years</option>' +
         '   </select>' +
         ' </div>' +
         ' <div class="col-lg-5 col-md col">' +

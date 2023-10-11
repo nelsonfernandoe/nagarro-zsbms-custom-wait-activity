@@ -72,6 +72,75 @@ exports.save = function (req, res) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function (req, res) {
+    function computeWaitTime(decoded) {
+        let date;
+        const inArgs = decoded.inArguments[0] || {};
+        for (let uc of (inArgs.userConfig || [])) {
+            const eachConditionResults = (uc.dynamicAttribute || []).map(da => {
+                console.log({da})
+
+                /* TODO: lt gt operator to be used only for int types */
+                switch (da.operator) {
+                    case "eq":
+                        return inArgs[da.property] === da.operand;
+                    case "ne":
+                        return inArgs[da.property] !== da.operand;
+                    case "lt":
+                        return inArgs[da.property] < da.operand;
+                    case "le":
+                        return inArgs[da.property] <= da.operand;
+                    case "gt":
+                        return inArgs[da.property] > da.operand;
+                    case "ge":
+                        return inArgs[da.property] >= da.operand;
+                    default:
+                        return false;
+                }
+            });
+
+            let isAnd = uc.dynamicAttributeLogicalOperator === 'and';
+            const dgConditionMatches = eachConditionResults.reduce((acc, curr) => isAnd ? acc && curr : acc || curr);
+            console.log({bools: eachConditionResults, out: dgConditionMatches});
+
+            /* dynamic attributes matches the specified condition for the Journey data */
+            if (dgConditionMatches) {
+                let dateAttribute = uc.dateAttribute;
+                const dateStr = inArgs[dateAttribute.property]; // eg. 10/4/2023 12:00:00 AM
+                console.log({dateStr, dateAttributeF: dateAttribute})
+                date = moment.tz(dateStr, 'M/D/YYYY hh:mm:ss A', dateAttribute.timeZone);
+                console.log('Moment datetime: ', {date, str: date.toString()});
+
+                switch (dateAttribute.timeline) {
+                    case 'on':
+                        break;
+
+                    case 'Before':
+                        date.subtract(dateAttribute.duration, dateAttribute.unit);
+                        break;
+
+                    case 'After':
+                        date.add(dateAttribute.duration, dateAttribute.unit);
+                }
+                console.log('date after logic: ', date.toString());
+
+                /* if extend is chosen */
+                if (dateAttribute.extendWait) {
+                    const dtStr = moment(date).format('YYYY-MM-DD') + ' ' + dateAttribute.extendTime;
+                    const extendedDate = moment.tz(dtStr, 'M/D/YYYY hh:mm:ss A', dateAttribute.timeZone);
+
+                    if (extendedDate.isBefore(date)) {
+                        date = extendedDate;
+                    }
+                    console.log('date after extend logic: ', date.toString());
+                }
+
+                /* breaking as the first matched condition is taken and rest are ignored */
+                break;
+            }
+        }// loop ends
+        return date;
+    }
+
     JWT(req.body, process.env.jwtSecret, (err, decoded) => {
 
         // verification error -> unauthorized request
@@ -81,6 +150,12 @@ exports.execute = function (req, res) {
         }
 
         if (decoded && decoded.inArguments && decoded.inArguments.length > 0) {
+
+            /* determine the wait date time */
+            const waitTime = computeWaitTime(decoded);
+
+            /* TODO: write it back to the Data Extension as attribute */
+
 
             // decoded in arguments
             var decodedArgs = decoded.inArguments[0];
@@ -93,6 +168,7 @@ exports.execute = function (req, res) {
                 method: "POST",
                 json: {
                     inArg: decoded.inArguments[0],
+                    computedWait: waitTime,
                     decoded: decoded
                 },
             }, function (error, response, body) {

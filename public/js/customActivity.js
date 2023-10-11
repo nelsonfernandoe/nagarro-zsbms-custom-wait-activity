@@ -141,7 +141,9 @@ define([
                 let dateAttExtendTime = $(`#dateAtt-extend-time-${i}`).val();
 
                 /* Add to array of configs */
+                /* TODO: logical op is hardcoded for now */
                 userConfig.push({
+                    dynamicAttributeLogicalOperator: 'and',
                     dynamicAttribute: [{
                         property: dynamicAttProp,
                         operator: dynamicAttOp,
