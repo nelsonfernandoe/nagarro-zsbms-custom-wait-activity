@@ -236,13 +236,19 @@ define([
 
         function getInArgFromConfig(userConfigs) {
             const inArgs = [];
+            const inArgsObj = {};
+
             userConfigs.forEach(uc => {
                 (uc.dynamicAttribute || []).forEach(da => {
                     inArgs.push(da.property);
                 });
                 inArgs.push(uc.dateAttribute.property);
             });
-            return inArgs.map(ia => ({[ia]: `{{Event.${eventDefinitionKey}.ia}}`}));
+
+            inArgs.forEach(ia => {
+                inArgsObj[ia] = `{{Event.${eventDefinitionKey}.ia}}`;
+            });
+            return inArgsObj;
         }
 
         function save() {
