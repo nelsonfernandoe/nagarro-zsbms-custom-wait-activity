@@ -127,7 +127,7 @@ exports.execute = function (req, res) {
                 /* if extend is chosen */
                 if (dateAttribute.extendWait) {
                     console.log("extend time logic....")
-                    const dtStr = moment(date).format('YYYY-MM-DD') + ' ' + dateAttribute.extendTime;
+                    const dtStr = moment(date).format('M/D/YYYY') + ' ' + dateAttribute.extendTime;
                     console.log("extend time logic: Current date with extended time str = ", dtStr);
                     const extendedDate = moment.tz(dtStr, 'M/D/YYYY hh:mm:ss A', dateAttribute.timeZone);
                     console.log("extend time logic: Current date with extended time moment = ", extendedDate);
