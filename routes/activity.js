@@ -1,6 +1,6 @@
 'use strict';
 var util = require('util');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 // Deps
 const Path = require('path');
