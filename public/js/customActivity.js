@@ -299,6 +299,34 @@ define([
             $('.postcard-preview-content').css('background-image', "url('" + $('#postcard-url').val() + "')");
         });
 
+        $('select.timeline-select').on('change', function (e) {
+            const optionSelected = $("option:selected", this);
+            const value = optionSelected.val();
+
+            /* for on timeline, disable duration and unit inputs */
+            const selectId = this.id;
+            const currentTabId = selectId.split('dateAtt-timeline-')[1];
+            const dateDurationId = `dateAtt-duration-${currentTabId}`;
+            const dateUnitId = `dateAtt-unit-${currentTabId}`;
+            if (value === 'On') {
+                $(`#${dateDurationId}`).prop('disabled', true);
+                $(`#${dateUnitId}`).prop('disabled', true);
+            } else {
+                $(`#${dateDurationId}`).prop('disabled', false);
+                $(`#${dateUnitId}`).prop('disabled', false);
+            }
+            console.log({optionSelected});
+        });
+
+        $('input.duration-input').on('change', function (e) {
+            const value = this.value;
+            const numVal = Number(value) || 1;
+            if (numVal > 999) {
+                this.value = 999;
+            }
+            console.log({value});
+        });
+
         function preLocalSetup() {
             local = {};
             local.schema = {
@@ -378,8 +406,8 @@ define([
                                             "dateAttribute": {
                                                 "property": "LoginDate",
                                                 "duration": "2",
-                                                "unit": "week",
-                                                "timeline": "3",
+                                                "unit": "weeks",
+                                                "timeline": "On",
                                                 "timeZone": "Indian/Maldives",
                                                 "extendWait": true,
                                                 "extendTime": "03:30 AM"
@@ -394,8 +422,8 @@ define([
                                             "dateAttribute": {
                                                 "property": "LogoutDate",
                                                 "duration": "4",
-                                                "unit": "month",
-                                                "timeline": "2",
+                                                "unit": "months",
+                                                "timeline": "After",
                                                 "timeZone": "Asia/Calcutta",
                                                 "extendWait": false,
                                                 "extendTime": ""
@@ -410,8 +438,8 @@ define([
                                             "dateAttribute": {
                                                 "property": "LogoutDate",
                                                 "duration": "4",
-                                                "unit": "month",
-                                                "timeline": "2",
+                                                "unit": "months",
+                                                "timeline": "Before",
                                                 "timeZone": "Australia/Melbourne",
                                                 "extendWait": true,
                                                 "extendTime": "04:45 PM"

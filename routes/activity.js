@@ -112,7 +112,7 @@ exports.execute = function (req, res) {
                 console.log('Moment datetime: ', {date, str: date.toString()});
 
                 switch (dateAttribute.timeline) {
-                    case 'on':
+                    case 'On':
                         break;
 
                     case 'Before':

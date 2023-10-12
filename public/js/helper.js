@@ -127,7 +127,7 @@ function addGroup() {
         '<div class="mt-2 row">' +
         '<div class="col-lg-2 col-md col">' +
         '  <label class="form-label" style="font-size: 12px;">Duration</label>' +
-        ' <input id = "dateAtt-duration-' + grouplength + '" type="number" min="0" class="form-control"/>' +
+        ' <input id = "dateAtt-duration-' + grouplength + '" type="number" min="1"  max="999" class="form-control duration-input"/>' +
         ' </div>' +
         '<div class="col-lg-5 col-md col">' +
         '  <label class="form-label">&nbsp;</label>' +
@@ -136,16 +136,16 @@ function addGroup() {
         ' <option value="hours">Hours</option>' +
         ' <option value="days">Days</option>' +
         ' <option value="weeks">Weeks</option>' +
-        ' <option value="weeks">Months</option>' +
+        ' <option value="months">Months</option>' +
         // ' <option value="years">Years</option>' +
         '   </select>' +
         ' </div>' +
         ' <div class="col-lg-5 col-md col">' +
         '  <label class="form-label">&nbsp;</label>' +
-        '  <select id = "dateAtt-timeline-' + grouplength + '" aria-label="After" class="form-select" style="font-size: 12px;">' +
-        '   <option>Before</option>' +
-        '  <option value="2">After</option>' +
-        '    <option value="3">On</option>' +
+        '  <select id = "dateAtt-timeline-' + grouplength + '" aria-label="After" class="form-select timeline-select" style="font-size: 12px;">' +
+        '   <option value="Before">Before</option>' +
+        '  <option value="After">After</option>' +
+        '    <option value="On">On</option>' +
 
         '   </select>' +
         '   </div>' +
