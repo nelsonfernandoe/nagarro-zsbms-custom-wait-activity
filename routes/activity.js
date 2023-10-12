@@ -1,5 +1,6 @@
 'use strict';
 var util = require('util');
+const moment = require('moment');
 
 // Deps
 const Path = require('path');
