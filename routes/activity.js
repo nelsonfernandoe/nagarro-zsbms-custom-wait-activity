@@ -134,7 +134,7 @@ exports.execute = function (req, res) {
 
                     console.log("extendedDate.isBefore(date) ? ", extendedDate.isBefore(date));
                     console.log("extendedDate.isAfter(date) ? ", extendedDate.isAfter(date));
-                    if (extendedDate.isBefore(date)) {
+                    if (extendedDate.isAfter(date)) {
                         date = extendedDate;
                     }
                     console.log('date after extend logic: ', date.toString());
