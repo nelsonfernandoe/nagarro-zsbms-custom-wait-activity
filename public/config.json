@@ -1,71 +1,98 @@
 {
-    "workflowApiVersion": "1.1",
-    "metaData": {
-        "icon": "images/icon-gear.png",
-        "iconSmall": "images/icon-gear.png",
-        "category": "custom"
-    },
-    "type": "REST",
-    "lang": {
-        "en-US": {
-           "name": "Custom Wait Activity Demo",
-          "description": "A custom Journey Builder activity",
-          "step1Label": "Configure Activity"
-        }
-    },
-    "arguments": {
-      "execute": {
-        "inArguments": [
-          {
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "images/icon-gear.png",
+    "iconSmall": "images/icon-gear.png",
+    "category": "custom"
+  },
+  "type": "REST",
+  "lang": {
+    "en-US": {
+      "name": "Custom Wait Activity Demo",
+      "description": "A custom Journey Builder activity",
+      "step1Label": "Configure Activity"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "inArguments": [
+        {
           "contact": "{{Contact}}"
+        }
+      ],
+      "outArguments": [
+        {
+          "discountCode": {
+            "dataType": "Text",
+            "direction": "out",
+            "access": "visible"
+          },
+          "discount": {
+            "dataType": "Number",
+            "direction": "out",
+            "access": "visible"
           }
-        ],
-        "outArguments": [{
-          "waitTime": "hello"
-        }],
-        "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
-        "verb": "POST",
-        "body": "",
-        "header": "",
-        "format": "json",
-        "useJwt": true,
-        "timeout": 10000
-      }
-    },
+        }
+      ],
+      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
+      "verb": "POST",
+      "body": "",
+      "header": "",
+      "format": "json",
+      "useJwt": true,
+      "timeout": 10000
+    }
+  },
   "configurationArguments": {
     "validate": {
-        "verb": "POST",
-        "format": "json",
-        "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/validate/"
+      "verb": "POST",
+      "format": "json",
+      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/validate/"
     },
     "publish": {
-        "verb": "POST",
-        "format": "json",
-        "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/publish/"
+      "verb": "POST",
+      "format": "json",
+      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/publish/"
     },
     "Save": {
       "verb": "POST",
       "format": "json",
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/save/"
-  }
-  },
-    "wizardSteps": [
-        { "label": "Configure Activity", "key": "step1" }
-    ],
-    "userInterfaces": {
-        "configModal": {
-            "height": 400,
-            "width": 1000,
-          "fullscreen": false
-        }
-    },
-    "schema": {
-        "arguments": {
-            "execute": {
-              "inArguments": [
-                ],
-                "outArguments": []
-            }
-        }
     }
+  },
+  "wizardSteps": [
+    {
+      "label": "Configure Activity",
+      "key": "step1"
+    }
+  ],
+  "userInterfaces": {
+    "configModal": {
+      "height": 400,
+      "width": 1000,
+      "fullscreen": false
+    }
+  },
+  "schema": {
+    "arguments": {
+      "execute": {
+        "inArguments": [
+        ],
+        "outArguments": [
+          {
+            "discountCode": {
+              "dataType": "Text",
+              "direction": "out",
+              "access": "visible"
+            },
+            "discount": {
+              "dataType": "Number",
+              "direction": "out",
+              "access": "visible"
+            }
+          }
+        ]
+      }
+    }
+  }
 }

@@ -183,16 +183,16 @@ define([
 
         function reloadUserConfig() {
 
-            var hasInArguments = Boolean(
+            const hasInArguments = Boolean(
                 payload['arguments'] &&
                 payload['arguments'].execute &&
                 payload['arguments'].execute.inArguments &&
                 payload['arguments'].execute.inArguments.length > 0
             );
+            const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
+            const hasUserConfig = inArguments[0].userConfig &&  inArguments[0].userConfig.length;
 
-            var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
-
-            if (!hasInArguments) {
+            if (!hasInArguments || !hasUserConfig) {
                 addGroup();
                 return;
             }
@@ -413,8 +413,8 @@ define([
                         execute: {
                             inArguments: [
                                 {
-                                    userConfig: [
-                                        {
+                                    userConfig: [],
+                                     empty:[   {
                                             "dynamicAttributes": [{
                                                 "property": "FirstName",
                                                 "operator": "lt",
