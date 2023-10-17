@@ -81,7 +81,7 @@
         "outArguments": [
           {
             "discountCode": {
-              "dataType": "Text",
+              "dataType": "Date",
               "direction": "out",
               "access": "visible"
             },
