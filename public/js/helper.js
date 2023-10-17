@@ -1,8 +1,12 @@
+/* todo:
+*   1. remove group btn - issues select next available, add group number issue
+*   2. check extend time input valid or not */
+
 $('.select').timezones();
 
 $(document).ready(function () {
     /* add initial tab data on page load */
-    addGroup();
+    // addGroup();
 
     $("#dynamicSetting,#close").on("click", function () {
         $("#customDiv").toggle();
@@ -51,6 +55,31 @@ $(document).on('click', '.removeGroup', function (event) {
     configureRemoveGroupBtn();
 });
 
+$(document).on('click', 'button.add-da', function (event) {
+    let currentTab = $(this).attr('data-group-pos');
+    const dynamicAttribute = getDynamicAttributeHTML(currentTab);
+    let currentActionDiv = $($($(this).parent())).parent();
+    $(dynamicAttribute).insertAfter(currentActionDiv);
+    configureRemoveDArow(currentTab);
+});
+
+$(document).on('click', 'button.remove-da', function (event) {
+    let currentTab = $(this).attr('data-group-pos');
+    let currentActionDiv = $($($(this).parent())).parent();
+    currentActionDiv.remove();
+    configureRemoveDArow(currentTab);
+});
+
+function configureRemoveDArow(tab) {
+    const rows = $(`div.dynamic-attribute-row-${tab}`).length;
+    if (rows > 1) {
+        $(`.dynamic-attribute-row-${tab} button.remove-da`).css('display', 'inline-block');
+    } else {
+        $(`.dynamic-attribute-row-${tab} button.remove-da`).css('display', 'none');
+    }
+
+}
+
 function configureRemoveGroupBtn() {
     const totalTabs = $('.removeGroup').length;
     if (totalTabs <= 1)
@@ -59,50 +88,26 @@ function configureRemoveGroupBtn() {
         $(".removeGroup").css('display', 'block');
 }
 
-function addGroup() {
-    var grouplength = $(".dynamicgroup").length + 1;
+function addGroup(dynamicAttLength = 1) {
+    const grouplength = $(".dynamicgroup").length + 1;
 
-    var addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
+    const addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
 
-    var addnewTab = '       <div role="tabpanel" id="v-pills-dynamic' + grouplength + '" aria-labelledby="v-pills-dynamic' + grouplength + '-tab" class="fade tab-pane dynamic-tabs1"> ' +
+    const dynamicAttributes = Array(dynamicAttLength)
+        .fill(1).map((v, i) => getDynamicAttributeHTML(grouplength, i + 1)).join("");
+
+    const addnewTab = '       <div role="tabpanel" id="v-pills-dynamic' + grouplength + '" aria-labelledby="v-pills-dynamic' + grouplength + '-tab" class="fade tab-pane dynamic-tabs1"> ' +
         '<form class="" onsubmit="return false">' +
         ' <div class="container">' +
         '  <div class="row">' +
-        '<div class="col-lg-12 col-md col">' +
-        '  <div class="justify-content-md-left row">' +
-        '  <div class="col-lg-7 col">' +
+        '   <div id="dynamicAttribute-' + grouplength + '" class="col-lg-12 col-md col">' +
+        '     <div class="justify-content-md-left row">' +
+        '           <div class="col-lg-7 col">' +
         '   <h5 style="font-size: 15px; text-align: left;">Dynamic Attribute</h5>' +
         '  </div>' +
         '  <div class="col-lg-5 col"></div>' +
         '  </div>' +
-        ' <div class="row">' +
-        ' <div class="col-md-4">' +
-        ' <select id = "dynamicAtt-prop-' + grouplength +
-        '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
-        '   <option>Dynamic Attribute</option>' +
-        '   <option value="2">2</option>' +
-        '   <option value="3">3</option>' +
-        '   <option value="4">4</option>' +
-        '  </select>' +
-        ' </div>' +
-        '  <div class="col-md-4">' +
-        ' <select id = "dynamicAtt-op-' + grouplength +
-        '"   aria-label="Dynamic Attribute" class="form-select " style="font-size: 12px;">' +
-        // '  <option>Select Relationship</option>' +
-        '  <option value="eq">equals</option>' +
-        '  <option value="gt">greater than</option>' +
-        '  <option value="ge">greater than equals</option>' +
-        '  <option value="lt">lesser than </option>' +
-        '  <option value="le">lesser than equals</option>' +
-        '  </select>' +
-        '  </div>' +
-        '    <div class="col-md-4">' +
-
-        '  <div class="form-input">' +
-        '   <input id = "dynamicAtt-operand-' + grouplength + '"  type="text" class="form-control" id="usr">' +
-        '  </div>' +
-        ' </div>' +
-        ' </div>' +
+        dynamicAttributes +
         ' </div>' +
         '  <div class="col-lg-12 col-md col mt-3">' +
         ' <div class="justify-content-md-left justify-content-lg-left row">' +
@@ -230,6 +235,48 @@ function addGroup() {
 
     /* remove button functionality */
     configureRemoveGroupBtn();
+
+    /* remove DA row button functionality */
+    configureRemoveDArow(grouplength);
+}
+
+
+function getDynamicAttributeHTML(tab) {
+    return ' <div class="row dynamic-attribute-row dynamic-attribute-row-'+ tab +' mb-3" data-group-pos="' + tab + '">' +
+        ' <div class="col-md-3">' +
+        ' <select id = "dynamicAtt-prop-' + tab +
+        '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
+        '   <option>Dynamic Attribute</option>' +
+        '   <option value="2">2</option>' +
+        '   <option value="3">3</option>' +
+        '   <option value="4">4</option>' +
+        '  </select>' +
+        ' </div>' +
+        '  <div class="col-md-3">' +
+        ' <select id = "dynamicAtt-op-' + tab +
+        '"   aria-label="Dynamic Attribute" class="form-select operator-select" style="font-size: 12px;">' +
+        // '  <option>Select Relationship</option>' +
+        '  <option value="eq">equals</option>' +
+        '  <option value="gt">greater than</option>' +
+        '  <option value="ge">greater than equals</option>' +
+        '  <option value="lt">lesser than </option>' +
+        '  <option value="le">lesser than equals</option>' +
+        '  </select>' +
+        '  </div>' +
+        '  <div class="col-md-3">' +
+        '       <div class="form-input">' +
+        '           <input id = "dynamicAtt-operand-' + tab + '"  type="text" class="form-control operand-input" id="usr">' +
+        '       </div>' +
+        '  </div>' +
+        '  <div class="col-md-3 actions">' +
+        '    <button class="btn add-da" data-group-pos="' + tab + '">' +
+        '        <i class="fa fa-plus"></i></i>' +
+        '    </button>' +
+        '    <button class="btn remove-da" data-group-pos="' + tab + '">' +
+        '        <i class="fa fa-remove"></i></i>' +
+        '    </button>' +
+        '  </div>' +
+        ' </div>';
 }
 
 function configureTimesDataList() {

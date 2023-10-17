@@ -77,7 +77,7 @@ exports.execute = function (req, res) {
         let date;
         const inArgs = decoded.inArguments[0] || {};
         for (let uc of (inArgs.userConfig || [])) {
-            const eachConditionResults = (uc.dynamicAttribute || []).map(da => {
+            const eachConditionResults = (uc.dynamicAttributes || []).map(da => {
                 console.log({da})
 
                 /* TODO: lt gt operator to be used only for int types */

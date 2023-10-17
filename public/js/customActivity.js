@@ -18,7 +18,7 @@ define([
 
         $(window).ready(onRender);
 
-        connection.on('requestedSchema', handelSchema)
+        connection.on('requestedSchema', handleSchema)
         connection.on('initActivity', initialize);
         connection.on('requestedTokens', onGetTokens);
         connection.on('requestedEndpoints', onGetEndpoints);
@@ -36,7 +36,7 @@ define([
         if (isLocal) {
             preLocalSetup();
             postLocalSetup();
-            handelSchema(local.schema);
+            handleSchema(local.schema);
         }
 
         /* local: ends */
@@ -62,7 +62,7 @@ define([
             console.log(dataSources);
         }
 
-        function handelSchema(schema) {
+        function handleSchema(schema) {
             console.log("####Schema without strignify#####", schema);
             console.log('*** Schema ***', JSON.stringify(schema))
             schemadata = schema;
@@ -106,31 +106,46 @@ define([
             };
 
             /* validate the operand */
-            (config[0].dynamicAttribute || []).forEach((da, i) => {
+            (config.dynamicAttributes || []).forEach((da, i) => {
                 if (!da.operand) {
                     res.valid = false;
-                    res.errorMsgs.push(`${i + 1} Dynamic attribute value cannot be empty`);
+                    res.errorMsgs.push(`Dynamic attribute ${i + 1} value cannot be empty`);
                 }
             });
 
             if (!res.valid) {
                 $('#modalTitle').text(`Invalid configuration (Group ${group})`);
-                let errorMsgHtml = res.errorMsgs.map(e => `<li>${e}</li>`);
+                let errorMsgHtml = res.errorMsgs.map(e => `<li>${e}</li>`).join("");
                 $('#modalBody').html(`<p>Following are the errors:</p><ul>${errorMsgHtml}</ul>`);
                 $('#infoModal').modal('show');
             }
             return res.valid;
         }
 
+        function getDynamicAttributes(tab) {
+            const dynamicAttributes = [];
+
+            let dynamicAttProps = $(`#dynamicAttribute-${tab} .attribute-select`);
+            let dynamicAttOps = $(`#dynamicAttribute-${tab} .operator-select`);
+            let dynamicAttOperands = $(`#dynamicAttribute-${tab} .operand-input`);
+
+            for (let i = 0; i < dynamicAttProps.length; i++) {
+                dynamicAttributes.push({
+                    property: dynamicAttProps[i].value,
+                    operator: dynamicAttOps[i].value,
+                    operand: dynamicAttOperands[i].value
+                });
+            }
+            return dynamicAttributes;
+        }
+
         function parseUserConfig() {
-            const userConfig = [];
+            const userConfigs = [];
             const totalTabs = $('.removeGroup').length;
 
             for (let i = 1; i <= totalTabs; i++) {
                 /* Read UI values */
-                let dynamicAttProp = $(`#dynamicAtt-prop-${i}`).val();
-                let dynamicAttOp = $(`#dynamicAtt-op-${i}`).val();
-                let dynamicAttOperand = $(`#dynamicAtt-operand-${i}`).val();
+                const dynamicAttributes = getDynamicAttributes(i);
 
                 let dateAttProp = $(`#dateAtt-prop-${i}`).val();
                 let dateAttDuration = $(`#dateAtt-duration-${i}`).val();
@@ -142,13 +157,9 @@ define([
 
                 /* Add to array of configs */
                 /* TODO: logical op is hardcoded for now */
-                userConfig.push({
+                let userConfig = {
                     dynamicAttributeLogicalOperator: 'and',
-                    dynamicAttribute: [{
-                        property: dynamicAttProp,
-                        operator: dynamicAttOp,
-                        operand: dynamicAttOperand
-                    }],
+                    dynamicAttributes: dynamicAttributes,
                     dateAttribute: {
                         property: dateAttProp,
                         duration: dateAttDuration,
@@ -158,19 +169,19 @@ define([
                         extendWait: dateAttExtendWait,
                         extendTime: dateAttExtendTime
                     }
-                });
+                };
 
-                if (!validateConfig(userConfig.slice(-1), i)) {
+                if (!validateConfig(userConfig, i)) {
                     break;
                 }
+                userConfigs.push(userConfig);
             }
-            console.log({userConfig});
+            console.log({userConfigs});
 
-            return userConfig;
+            return userConfigs;
         }
 
         function reloadUserConfig() {
-            // var newData = handelSchema();
 
             var hasInArguments = Boolean(
                 payload['arguments'] &&
@@ -181,12 +192,16 @@ define([
 
             var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
 
+            if (!hasInArguments) {
+                addGroup();
+                return;
+            }
+
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
                 $.each(userConfigs, function (index, userConfig) {
-                    if (index != 0) {
-                        addGroup();
-                    }
+                    const dynamicAttLength = userConfig.dynamicAttributes.length || 1;
+                    addGroup(dynamicAttLength);
                 })
             });
 
@@ -211,10 +226,12 @@ define([
                     let pos = index + 1;
 
                     /* populate the values */
-                    let dynamicAttribute = userConfig.dynamicAttribute[0];
-                    $(`#dynamicAtt-prop-${pos}`).val(dynamicAttribute.property);
-                    $(`#dynamicAtt-op-${pos}`).val(dynamicAttribute.operator);
-                    $(`#dynamicAtt-operand-${pos}`).val(dynamicAttribute.operand);
+                    let dynamicAttributes = userConfig.dynamicAttributes || [];
+                    for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
+                        $(`#dynamicAttribute-${pos} .attribute-select`).eq(i).val(dynamicAttribute.property);
+                        $(`#dynamicAttribute-${pos} .operator-select`).eq(i).val(dynamicAttribute.operator);
+                        $(`#dynamicAttribute-${pos} .operand-input`).eq(i).val(dynamicAttribute.operand);
+                    }
 
                     $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
                     $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
@@ -241,7 +258,7 @@ define([
             const inArgsObj = {};
 
             userConfigs.forEach(uc => {
-                (uc.dynamicAttribute || []).forEach(da => {
+                (uc.dynamicAttributes || []).forEach(da => {
                     inArgs.push(da.property);
                 });
                 inArgs.push(uc.dateAttribute.property);
@@ -398,7 +415,15 @@ define([
                                 {
                                     userConfig: [
                                         {
-                                            "dynamicAttribute": [{
+                                            "dynamicAttributes": [{
+                                                "property": "FirstName",
+                                                "operator": "lt",
+                                                "operand": "Mocking"
+                                            }, {
+                                                "property": "LastName",
+                                                "operator": "gt",
+                                                "operand": "Henry"
+                                            }, {
                                                 "property": "LastName",
                                                 "operator": "gt",
                                                 "operand": "Henry"
@@ -414,7 +439,7 @@ define([
                                             }
                                         },
                                         {
-                                            "dynamicAttribute": [{
+                                            "dynamicAttributes": [{
                                                 "property": "FirstName",
                                                 "operator": "le",
                                                 "operand": "Johny"
@@ -430,7 +455,7 @@ define([
                                             }
                                         },
                                         {
-                                            "dynamicAttribute": [{
+                                            "dynamicAttributes": [{
                                                 "property": "FirstName",
                                                 "operator": "eq",
                                                 "operand": "Pro"
