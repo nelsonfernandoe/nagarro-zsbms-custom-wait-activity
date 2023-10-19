@@ -12,6 +12,10 @@ define([
         var steps = [{"label": "Configure Postcard", "key": "step1"}];
         var schemadata = {};
         var eventDefinitionKey;
+        var dataExtensionId;
+        var dataExtensionName;
+        var dataExtensionPrimaryKey;
+        var activityInstanceId;
 
         var currentStep = steps[0].key;
 
@@ -66,10 +70,19 @@ define([
             console.log("####Schema without strignify#####", schema);
             console.log('*** Schema ***', JSON.stringify(schema))
             schemadata = schema;
+            parsePrimary();
             // var getattributes = [];
             reloadUserConfig();
         }
 
+
+        function parsePrimary() {
+            const schema = schemadata.schema;
+            const primaryKeyObj = ((schema || []).filter(s => s.isPrimaryKey))[0];
+            if (primaryKeyObj) {
+                dataExtensionPrimaryKey = primaryKey.name;
+            }
+        }
 
         function onRequestedInteraction(interaction) {
             console.log('*** requestedInteraction ***');
@@ -190,7 +203,7 @@ define([
                 payload['arguments'].execute.inArguments.length > 0
             );
             const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
-            const hasUserConfig = inArguments[0].userConfig &&  inArguments[0].userConfig.length;
+            const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
 
             if (!hasInArguments || !hasUserConfig) {
                 addGroup();
@@ -272,11 +285,18 @@ define([
 
         function save() {
             const userConfig = parseUserConfig();
-
+            const activityInfo = {
+                eventDefinitionKey,
+                dataExtensionId,
+                dataExtensionPrimaryKey,
+                dataExtensionName,
+                activityInstanceId
+            };
             const inArgs = getInArgFromConfig(userConfig);
             payload['arguments'].execute.inArguments = [{
                 tokens: authTokens,
                 userConfig,
+                activityInfo,
                 ...inArgs,
             }];
 
@@ -289,6 +309,8 @@ define([
         function onRequestedTriggerEventDefinition(eventDefinitionModel) {
             if (eventDefinitionModel) {
                 eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
+                dataExtensionId = eventDefinitionModel.dataExtensionId;
+                dataExtensionName = eventDefinitionModel.dataExtensionName;
                 console.log(">>>Event Definition Key " + eventDefinitionKey);
                 /*If you want to see all*/
                 console.log('>>>Request Trigger',
@@ -414,30 +436,30 @@ define([
                             inArguments: [
                                 {
                                     userConfig: [],
-                                     empty:[   {
-                                            "dynamicAttributes": [{
-                                                "property": "FirstName",
-                                                "operator": "lt",
-                                                "operand": "Mocking"
-                                            }, {
-                                                "property": "LastName",
-                                                "operator": "gt",
-                                                "operand": "Henry"
-                                            }, {
-                                                "property": "LastName",
-                                                "operator": "gt",
-                                                "operand": "Henry"
-                                            }],
-                                            "dateAttribute": {
-                                                "property": "LoginDate",
-                                                "duration": "2",
-                                                "unit": "weeks",
-                                                "timeline": "On",
-                                                "timeZone": "Indian/Maldives",
-                                                "extendWait": true,
-                                                "extendTime": "03:30 AM"
-                                            }
-                                        },
+                                    empty: [{
+                                        "dynamicAttributes": [{
+                                            "property": "FirstName",
+                                            "operator": "lt",
+                                            "operand": "Mocking"
+                                        }, {
+                                            "property": "LastName",
+                                            "operator": "gt",
+                                            "operand": "Henry"
+                                        }, {
+                                            "property": "LastName",
+                                            "operator": "gt",
+                                            "operand": "Henry"
+                                        }],
+                                        "dateAttribute": {
+                                            "property": "LoginDate",
+                                            "duration": "2",
+                                            "unit": "weeks",
+                                            "timeline": "On",
+                                            "timeZone": "Indian/Maldives",
+                                            "extendWait": true,
+                                            "extendTime": "03:30 AM"
+                                        }
+                                    },
                                         {
                                             "dynamicAttributes": [{
                                                 "property": "FirstName",

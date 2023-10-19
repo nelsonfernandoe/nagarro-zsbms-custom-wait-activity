@@ -243,6 +243,15 @@ function addGroup(dynamicAttLength = 1) {
 
 function getDynamicAttributeHTML(tab) {
     return ' <div class="row dynamic-attribute-row dynamic-attribute-row-'+ tab +' mb-3" data-group-pos="' + tab + '">' +
+        ' <div class="row logical-op">' +
+        /*'   <div class="custom-control custom-radio custom-control-inline">' +
+        '     <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">' +
+        '     <label class="custom-control-label" for="customRadioInline1">AND</label>' +
+        '   </div>' +
+        '   <div class="custom-control custom-radio custom-control-inline">' +
+        '     <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">' +
+        '     <label class="custom-control-label" for="customRadioInline2">OR</label>' +
+        '   </div>' +*/
         ' <div class="col-md-3">' +
         ' <select id = "dynamicAtt-prop-' + tab +
         '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
@@ -253,28 +262,32 @@ function getDynamicAttributeHTML(tab) {
         '  </select>' +
         ' </div>' +
         '  <div class="col-md-3">' +
-        ' <select id = "dynamicAtt-op-' + tab +
+        '   <select id = "dynamicAtt-op-' + tab +
         '"   aria-label="Dynamic Attribute" class="form-select operator-select" style="font-size: 12px;">' +
         // '  <option>Select Relationship</option>' +
-        '  <option value="eq">equals</option>' +
-        '  <option value="gt">greater than</option>' +
-        '  <option value="ge">greater than equals</option>' +
-        '  <option value="lt">lesser than </option>' +
-        '  <option value="le">lesser than equals</option>' +
-        '  </select>' +
-        '  </div>' +
-        '  <div class="col-md-3">' +
-        '       <div class="form-input">' +
-        '           <input id = "dynamicAtt-operand-' + tab + '"  type="text" class="form-control operand-input" id="usr">' +
-        '       </div>' +
-        '  </div>' +
-        '  <div class="col-md-3 actions">' +
-        '    <button class="btn add-da" data-group-pos="' + tab + '">' +
-        '        <i class="fa fa-plus"></i></i>' +
-        '    </button>' +
-        '    <button class="btn remove-da" data-group-pos="' + tab + '">' +
-        '        <i class="fa fa-remove"></i></i>' +
-        '    </button>' +
+        '       <option value="eq">equals</option>' +
+        '       <option value="gt">greater than</option>' +
+        '       <option value="ge">greater than equals</option>' +
+        '       <option value="lt">lesser than </option>' +
+        '       <option value="le">lesser than equals</option>' +
+        '   </select>' +
+        '   </div>' +
+        '   <div class="col-md-3">' +
+        '        <div class="form-input">' +
+        '            <input id = "dynamicAtt-operand-' + tab + '"  type="text" class="form-control operand-input" id="usr">' +
+        '        </div>' +
+        '   </div>' +
+        '   <div class="col-md-3 actions">' +
+        '     <button class="btn add-da" data-group-pos="' + tab + '">' +
+        '         <i class="fa fa-plus"></i></i>' +
+        '     </button>' +
+        /*'     <button class="btn add-layer-da" title="Add a layer" data-group-pos="' + tab + '">' +
+        '         <img src="images/add-layer.svg" alt="Add layer" style="width: 16px"/>\n' +
+        '     </button>' +*/
+        '     <button class="btn remove-da" data-group-pos="' + tab + '">' +
+        '         <i class="fa fa-remove"></i></i>' +
+        '     </button>' +
+        '   </div>' +
         '  </div>' +
         ' </div>';
 }

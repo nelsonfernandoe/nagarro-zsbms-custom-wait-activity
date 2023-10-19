@@ -1,6 +1,7 @@
 'use strict';
 var util = require('util');
 const moment = require('moment-timezone');
+const apiService = require('./sfmc-api-service');
 
 // Deps
 const Path = require('path');
@@ -23,7 +24,7 @@ function logData(req) {
         cookies: req.cookies,
         ip: req.ip,
         path: req.path,
-        host: req.host,
+        host: req.hostname,
         fresh: req.fresh,
         stale: req.stale,
         protocol: req.protocol,
@@ -41,7 +42,7 @@ function logData(req) {
     console.log("cookies: " + req.cookies);
     console.log("ip: " + req.ip);
     console.log("path: " + req.path);
-    console.log("host: " + req.host);
+    console.log("host: " + req.hostname);
     console.log("fresh: " + req.fresh);
     console.log("stale: " + req.stale);
     console.log("protocol: " + req.protocol);
@@ -66,7 +67,43 @@ exports.save = function (req, res) {
     // Data from the req and put it in an array accessible to the main app.
     //console.log( req.body );
     logData(req);
-    res.send(200, 'Save');
+    apiService("TEST TIME DUMMY", {
+        "inArguments": [{
+            "tokens": {
+                "token": "0ehL-s1ljyuP-h2IgS4Z9aSLmBWSqCVZkSeBno2GB7h8vDbWVX073r3oX0dbl8o2cFQ-Xs0VbQVCu8UCkPc9FBcnXPR9ZvFAcRl8OU4dwK3SZjlUiErmxttnBg47uFsmXJddliRxUdVvFyCe4tjk8hSYY8m6TelekoSSFjYut22HTZ_PQ1No0WmMMv_gDlZn3MsB989-9rIyh2sDXu_LXija8B5b9xN8PssGCzz9XK4J2Tj5RRGquFqNo0y85R2iYNI-hY2rGHjazDk3mDa7I1Q",
+                "fuel2token": "7nUP1ZuDajzbbWecJisYBt3z",
+                "expires": 1697610005891,
+                "stackKey": "S7",
+                "EID": 7229188,
+                "MID": 7229188,
+                "UID": 717508163
+            },
+            "userConfig": [{
+                "dynamicAttributeLogicalOperator": "and",
+                "dynamicAttributes": [{"property": "FirstName", "operator": "eq", "operand": "JOHN"}],
+                "dateAttribute": {
+                    "property": "PurchaseDate",
+                    "duration": "2",
+                    "unit": "days",
+                    "timeline": "Before",
+                    "timeZone": "Asia/Calcutta",
+                    "extendWait": true,
+                    "extendTime": "04:00 AM"
+                }
+            }],
+            "FirstName": "Johnny",
+            "PurchaseDate": "10/4/2023 12:00:00 AM"
+        }],
+        "outArguments": [],
+        "activityObjectID": "0a074b98-bef8-4c9f-b3a7-db94ab1dda5b",
+        "journeyId": "61f97634-5a98-4706-bb84-cbf384e5284f",
+        "activityId": "0a074b98-bef8-4c9f-b3a7-db94ab1dda5b",
+        "definitionInstanceId": "2a37f99b-5b85-4893-adb4-d38a5c9c91a3",
+        "activityInstanceId": "4e115c74-6bea-40ba-84ea-2bc09ee51bae",
+        "keyValue": "test213@test.com",
+        "mode": 0
+    });
+    res.status(200).send('Save');
 };
 
 /*
@@ -156,32 +193,36 @@ exports.execute = function (req, res) {
         }
 
         if (decoded && decoded.inArguments && decoded.inArguments.length > 0) {
+            const decodedArgs = decoded.inArguments[0];
 
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
+            apiService(waitTime, decoded)
+                .then(resp => {
+                    // decoded in arguments
+                    var request = require('request');
+                    var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
+                    console.log('In execute, decoded args: ', decodedArgs);
 
-            /* TODO: write it back to the Data Extension as attribute */
+                    request({
+                        url: url,
+                        method: "POST",
+                        json: {
+                            inArg: decoded.inArguments[0],
+                            computedWait: waitTime,
+                            decoded: decoded
+                        },
+                    }, function (error, response, body) {
+                        if (!error) {
+                            console.log(body);
+                        }
+                    });
+                }).catch(err => {
 
-
-            // decoded in arguments
-            var decodedArgs = decoded.inArguments[0];
-            var request = require('request');
-            var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
-            console.log('In execute, decoded args: ', decodedArgs);
-
-            request({
-                url: url,
-                method: "POST",
-                json: {
-                    inArg: decoded.inArguments[0],
-                    computedWait: waitTime,
-                    decoded: decoded
-                },
-            }, function (error, response, body) {
-                if (!error) {
-                    console.log(body);
-                }
+                console.error('Error in execute method: ', err);
+                return res.status(500).end();
             });
+
             //logData(req);
             //res.send(200, 'Execute');
         } else {
