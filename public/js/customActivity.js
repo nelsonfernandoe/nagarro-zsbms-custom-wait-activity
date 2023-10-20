@@ -170,6 +170,7 @@ define([
 
                 /* Add to array of configs */
                 /* TODO: logical op is hardcoded for now */
+                /* TODO: trim the input values */
                 let userConfig = {
                     dynamicAttributeLogicalOperator: 'and',
                     dynamicAttributes: dynamicAttributes,

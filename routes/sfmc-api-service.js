@@ -48,12 +48,13 @@ async function upsertDE(activityInfo, data, isSecondTime) {
     const deId = activityInfo.dataExtensionId;
     const deName = activityInfo.dataExtensionName;
     const activityInstanceId = activityInfo.activityInstanceId;
-
+    const accessToken = getAccessToken();
     try {
         const response = await axios
             .post(`https://${ENV_SUB_DOMAIN}.rest.marketingcloudapis.com/hub/v1/dataevents/${deId}/rowset`,
                 data,
-                {headers: {'content-type': 'application/json'}});
+                {headers: {'content-type': 'application/json',
+                 Authorization: `Bearer ${accessToken}`}});
         console.log('  `-- Upsert success. Response: ', response.data);
 
     } catch (error) {
@@ -69,10 +70,14 @@ async function upsertDE(activityInfo, data, isSecondTime) {
     }
 }
 
+function getAccessToken() {
+    return process.env.ACCESS_TOKEN;
+}
+
 async function createDEFieldSOAP(fieldName, deName) {
     console.log('Creating field in DE via SOAP:', {fieldName, deName});
     const deExternalKey = await getDECustomerKeySOAP(deName);
-    const accessToken = process.env.ACCESS_TOKEN;
+    const accessToken = getAccessToken();
 
     const body = `<?xml version="1.0" encoding="UTF-8"?>
     <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -119,7 +124,7 @@ async function createDEFieldSOAP(fieldName, deName) {
 async function getDECustomerKeySOAP(deName) {
     console.log('Getting customer key via SOAP: ', {deName});
     let customerKey;
-    const accessToken = process.env.ACCESS_TOKEN;
+    const accessToken = getAccessToken();
 
     const body = `<?xml version="1.0" encoding="UTF-8"?>
     <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -167,7 +172,7 @@ async function getDECustomerKeySOAP(deName) {
     return customerKey;
 }
 
-function getDEId(eventKey) {
+/*function getDEId(eventKey) {
     axios
         .get(`https://${ENV_SUB_DOMAIN}.rest.marketingcloudapis.com/interaction/v1/eventDefinitions/key:${eventKey}`)
         .then(function (response) {
@@ -176,17 +181,18 @@ function getDEId(eventKey) {
         }).catch(function (error) {
         console.error(error);
     });
-}
+}*/
 
 function isAuthenticated() {
     console.log('Checking is authenticated..');
     const currentTime = new Date();
     const expiryTime = new Date(process.env.TOKEN_TTL);
 
-    console.log('  `-- ACCESS_TOKEN = ', !!process.env.ACCESS_TOKEN);
+    let accessToken = getAccessToken();
+    console.log('  `-- ACCESS_TOKEN = ', !!accessToken);
     console.log('  `-- Current date = ', currentTime);
     console.log('  `-- Token expiry date = ', expiryTime);
-    let isAuthenticated = process.env.ACCESS_TOKEN && currentTime.getTime() < expiryTime.getTime();
+    let isAuthenticated = accessToken && currentTime.getTime() < expiryTime.getTime();
     console.log('  `-- is authenticated? Result = ', isAuthenticated)
     return isAuthenticated;
 }
@@ -211,7 +217,7 @@ async function authenticate() {
         process.env.ACCESS_TOKEN = response.data.access_token;
         process.env.TOKEN_TTL = ttl;
         console.log('  `-- Env values set up as below:');
-        console.log('    `-- ACCESS_TOKEN:', process.env.ACCESS_TOKEN);
+        console.log('    `-- ACCESS_TOKEN:', getAccessToken());
         console.log('    `-- TOKEN_TTL:', process.env.TOKEN_TTL);
     } catch (error) {
         console.error(error.message);
