@@ -27,7 +27,7 @@ module.exports = async function saveWaitTime(waitTime, decoded) {
         const colName = getWaitTimeColName(decoded.activityInstanceId);
 
         const data = [{
-            key: {
+            keys: {
                 [activityInfo.dataExtensionPrimaryKey]: decoded.keyValue
             },
             values: {
