@@ -66,7 +66,7 @@ async function upsertDE(activityInfo, data, isSecondTime) {
         if (errRes.errorcode === 10006 && isFieldNotAvailableError && !isSecondTime) {
             const colName = getWaitTimeColName(activityInstanceId);
             await createDEFieldSOAP(colName, deName);
-            await upsertDE(deId, data, true);
+            await upsertDE(activityInfo, data, true);
         } else {
             throw  new Error(errRes);
         }
