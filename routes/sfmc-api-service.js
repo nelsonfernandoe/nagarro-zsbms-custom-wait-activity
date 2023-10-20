@@ -8,6 +8,8 @@ const ENV_CLIENT_SECRET = process.env.CLIENT_SECRET;
 const ENV_MID = process.env.MID;
 
 module.exports = async function saveWaitTime(waitTime, decoded) {
+    console.log('Save WAIT TIME called: ',{waitTime, decoded});
+
     const inArgs = decoded.inArguments[0] || {};
     const activityInfo = inArgs.activityInfo;
     try {
@@ -24,14 +26,14 @@ module.exports = async function saveWaitTime(waitTime, decoded) {
         activityInfo.activityInstanceId = decoded.activityInstanceId;
         const colName = getWaitTimeColName(decoded.activityInstanceId);
 
-        const data = {
+        const data = [{
             key: {
                 [activityInfo.dataExtensionPrimaryKey]: decoded.keyValue
             },
             values: {
                 [colName]: waitTime
             }
-        };
+        }];
         try {
             await upsertDE(activityInfo, data);
         } catch (e) {
@@ -58,7 +60,7 @@ async function upsertDE(activityInfo, data, isSecondTime) {
         console.log('  `-- Upsert success. Response: ', response.data);
 
     } catch (error) {
-        console.error(error);
+        console.error('Error in upsert rest api: ', error.response.data);
         let isFieldNotAvailableError = (error.additionalErrors || []).some(ae => ae.errorcode === 10000);
         if (error.errorcode === 10006 && isFieldNotAvailableError && isSecondTime) {
             const colName = getWaitTimeColName(activityInstanceId);
@@ -116,7 +118,7 @@ async function createDEFieldSOAP(fieldName, deName) {
             throw new Error("SOAP response failed");
         }
     } catch (error) {
-        console.error('Add column SOAP API Failed. ', error);
+        console.error('Add column SOAP API Failed. ', error.response);
         throw error;
     }
 }
