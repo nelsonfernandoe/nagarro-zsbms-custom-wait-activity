@@ -1,5 +1,6 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
+const {insights} = require("@salesforce-ux/design-system/design-tokens/dist/bg-standard.common");
 
 const ENV_SUB_DOMAIN = process.env.SUB_DOMAIN;
 const ENV_CLIENT_ID = process.env.CLIENT_ID;
@@ -18,18 +19,17 @@ module.exports = async function saveWaitTime(waitTime, decoded) {
         throw e;
     }
 
-    await createDEFieldSOAP('js_testing_instace_wait', 'abc custom activity');
-
     if (activityInfo) {
         activityInfo.activityId = decoded.activityId;
         activityInfo.activityInstanceId = decoded.activityInstanceId;
+        const colName = getWaitTimeColName(decoded.activityInstanceId);
 
         const data = {
             key: {
                 [activityInfo.dataExtensionPrimaryKey]: decoded.keyValue
             },
             values: {
-                [activityInfo.activityInstanceId]: waitTime
+                [colName]: waitTime
             }
         };
         try {
@@ -60,7 +60,8 @@ async function upsertDE(activityInfo, data, isSecondTime) {
         console.error(error);
         let isFieldNotAvailableError = (error.additionalErrors || []).some(ae => ae.errorcode === 10000);
         if (error.errorcode === 10006 && isFieldNotAvailableError && isSecondTime) {
-            await createDEFieldSOAP(activityInstanceId, deName);
+            const colName = getWaitTimeColName(activityInstanceId);
+            await createDEFieldSOAP(colName, deName);
             await upsertDE(deId, data, true);
         } else {
             throw  error;
@@ -158,6 +159,7 @@ async function getDECustomerKeySOAP(deName) {
         } else {
             throw new Error("SOAP response failed");
         }
+        console.log('  `-- DE Ext key: ', customerKey);
     } catch (error) {
         console.error('Getting DE Ext key failed.. ', error.response);
         throw error;
@@ -215,4 +217,8 @@ async function authenticate() {
         console.error(error.message);
         throw error;
     }
+}
+
+function getWaitTimeColName(activityInstanceId) {
+    return `wait_time_${activityInstanceId}`;
 }
