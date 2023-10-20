@@ -181,6 +181,7 @@ exports.execute = function (req, res) {
                 break;
             }
         }// loop ends
+        console.log('Final wait time computed: ', date);
         return date;
     }
 
@@ -197,31 +198,34 @@ exports.execute = function (req, res) {
 
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
-            apiService(waitTime, decoded)
-                .then(resp => {
-                    // decoded in arguments
-                    var request = require('request');
-                    var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
-                    console.log('In execute, decoded args: ', decodedArgs);
+            if (waitTime) {
+                apiService(waitTime, decoded)
+                    .then(resp => {
+                        // decoded in arguments
+                        var request = require('request');
+                        var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
+                        console.log('In execute, decoded args: ', decodedArgs);
 
-                    request({
-                        url: url,
-                        method: "POST",
-                        json: {
-                            inArg: decoded.inArguments[0],
-                            computedWait: waitTime,
-                            decoded: decoded
-                        },
-                    }, function (error, response, body) {
-                        if (!error) {
-                            console.log(body);
-                        }
-                    });
-                }).catch(err => {
+                        request({
+                            url: url,
+                            method: "POST",
+                            json: {
+                                inArg: decoded.inArguments[0],
+                                computedWait: waitTime,
+                                decoded: decoded
+                            },
+                        }, function (error, response, body) {
+                            if (!error) {
+                                console.log(body);
+                            }
+                        });
+                    }).catch(err => {
 
-                console.error('Error in execute method: ', err);
-                return res.status(500).end();
-            });
+                    console.error('Error in execute method: ', err);
+                    return res.status(500).end();
+                });
+            }
+
 
             //logData(req);
             //res.send(200, 'Execute');
