@@ -58,14 +58,15 @@ $(document).on('click', '.removeGroup', function (event) {
 $(document).on('click', 'button.add-da', function (event) {
     let currentTab = $(this).attr('data-group-pos');
     const dynamicAttribute = getDynamicAttributeHTML(currentTab);
-    let currentActionDiv = $($($(this).parent())).parent();
+    let currentActionDiv = $(this).parents().eq(2);
     $(dynamicAttribute).insertAfter(currentActionDiv);
     configureRemoveDArow(currentTab);
 });
 
 $(document).on('click', 'button.remove-da', function (event) {
     let currentTab = $(this).attr('data-group-pos');
-    let currentActionDiv = $($($(this).parent())).parent();
+    let currentActionDiv = $(this).parents().eq(2);
+    // let currentActionDiv = $($($(this).parent())).parent();
     currentActionDiv.remove();
     configureRemoveDArow(currentTab);
 });

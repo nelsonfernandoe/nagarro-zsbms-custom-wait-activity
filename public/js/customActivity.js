@@ -80,7 +80,7 @@ define([
             const schema = schemadata.schema;
             const primaryKeyObj = ((schema || []).filter(s => s.isPrimaryKey))[0];
             if (primaryKeyObj) {
-                dataExtensionPrimaryKey = primaryKey.name;
+                dataExtensionPrimaryKey = primaryKeyObj.name;
             }
         }
 
