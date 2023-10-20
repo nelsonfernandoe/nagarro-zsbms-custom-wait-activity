@@ -61,8 +61,9 @@ async function upsertDE(activityInfo, data, isSecondTime) {
 
     } catch (error) {
         console.error('Error in upsert rest api: ', error.response.data);
-        let isFieldNotAvailableError = (error.additionalErrors || []).some(ae => ae.errorcode === 10000);
-        if (error.errorcode === 10006 && isFieldNotAvailableError && isSecondTime) {
+        const errRes =  error.response.data;
+        let isFieldNotAvailableError = (errRes.additionalErrors || []).some(ae => ae.errorcode === 10000);
+        if (errRes.errorcode === 10006 && isFieldNotAvailableError && isSecondTime) {
             const colName = getWaitTimeColName(activityInstanceId);
             await createDEFieldSOAP(colName, deName);
             await upsertDE(deId, data, true);
