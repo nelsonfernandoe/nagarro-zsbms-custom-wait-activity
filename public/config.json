@@ -22,16 +22,8 @@
       ],
       "outArguments": [
         {
-          "discountCode": {
-            "dataType": "Text",
-            "direction": "out",
-            "access": "visible"
-          },
-          "discount": {
-            "dataType": "Number",
-            "direction": "out",
-            "access": "visible"
-          }
+          "discountCode": "Value",
+          "discount": "Value2"
         }
       ],
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",

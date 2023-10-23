@@ -192,7 +192,10 @@ exports.execute = function (req, res) {
 
 
             //logData(req);
-            //res.send(200, 'Execute');
+            res.status(200).send( {
+                "discountCode": "10/4/2023 12:00:00 AM",
+                "discount": 22
+            });
         } else {
             console.error('inArguments invalid.');
             return res.status(400).end();
