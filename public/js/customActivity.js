@@ -211,7 +211,7 @@ define([
                 }
             });
             try {
-                const myJson = await response.json(); //extract JSON from the http response
+                const myJson = await response; //extract JSON from the http response
                 waitTimeColumnName = fieldName;
             } catch (err) {
                 console.log('Error when calling create DE column API.', err);
