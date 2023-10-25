@@ -202,7 +202,8 @@ define([
         }
 
         async function createWaitTimeDECol() {
-            let fieldName = `wait_time_${activityInstanceId}`;
+            const currentTime = moment(new Date()).format('YYYYMMDDHHmmss');
+            let fieldName = `wait_time_${currentTime}`;
             const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
                 method: 'POST',
                 body: JSON.stringify({fieldName: fieldName, deName: dataExtensionName}), // string or object
@@ -220,7 +221,6 @@ define([
         }
 
         function reloadUserConfig() {
-
             const hasInArguments = Boolean(
                 payload['arguments'] &&
                 payload['arguments'].execute &&
@@ -235,8 +235,16 @@ define([
                 return;
             }
 
-            if (!inArguments[0].activityInfo.waitTimeColumnName) {
-                createWaitTimeDECol().then();
+            if (!inArguments[0].activityInfo.waitTimeColumnName || true) {
+                $('#wait-time-col').css('display', 'none');
+                createWaitTimeDECol().then(res => {
+                    $('#wait-time-col').css('display', 'inline');
+                    $('#wait-time-col').attr('title', waitTimeColumnName);
+                });
+            } else {
+                waitTimeColumnName = inArguments[0].activityInfo.waitTimeColumnName
+                $('#wait-time-col').css('display', 'inline');
+                $('#wait-time-col').attr('title', waitTimeColumnName);
             }
 
             $.each(inArguments, function (index, inArgument) {
