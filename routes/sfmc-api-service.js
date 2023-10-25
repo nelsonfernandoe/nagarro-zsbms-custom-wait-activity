@@ -174,7 +174,7 @@ async function getDECustomerKeySOAP(deName) {
         }
         console.log('  `-- DE Ext key: ', customerKey);
     } catch (error) {
-        console.error('Getting DE Ext key failed.. ', error.response);
+        console.error('Getting DE Ext key failed.. ', error.response.data);
         throw error;
     }
     return customerKey;
@@ -238,5 +238,8 @@ function getWaitTimeColName(activityInstanceId) {
 }
 
 exports.createColumn = async function (fieldName, deName) {
+    if (!isAuthenticated()) {
+        await authenticate();
+    }
     await createDEFieldSOAP(fieldName, deName);
 };
