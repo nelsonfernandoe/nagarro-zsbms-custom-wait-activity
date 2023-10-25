@@ -17,6 +17,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.raw({type: 'application/jwt'}));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 // Express in Development Mode
 if ('development' == app.get('env')) {
