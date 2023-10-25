@@ -201,24 +201,22 @@ define([
             return userConfigs;
         }
 
-        function CreateWaitTimeDECol() {
-            const userAction = async () => {
-                let fieldName = `wait_time_${activityInstanceId}`;
-                const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
-                    method: 'POST',
-                    body: {fieldName: fieldName, deName: dataExtensionName}, // string or object
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                try {
-                    const myJson = await response.json(); //extract JSON from the http response
-                    waitTimeColumnName = fieldName;
-                } catch (err) {
-                    console.log('Error when calling create DE column API.', err);
+        async function createWaitTimeDECol() {
+            let fieldName = `wait_time_${activityInstanceId}`;
+            const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
+                method: 'POST',
+                body: {fieldName: fieldName, deName: dataExtensionName}, // string or object
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-                // do something with myJson
+            });
+            try {
+                const myJson = await response.json(); //extract JSON from the http response
+                waitTimeColumnName = fieldName;
+            } catch (err) {
+                console.log('Error when calling create DE column API.', err);
             }
+            // do something with myJson
         }
 
         function reloadUserConfig() {
@@ -238,7 +236,7 @@ define([
             }
 
             if (!inArguments[0].activityInfo.waitTimeColumnName) {
-                CreateWaitTimeDECol();
+                createWaitTimeDECol().then();
             }
 
             $.each(inArguments, function (index, inArgument) {
