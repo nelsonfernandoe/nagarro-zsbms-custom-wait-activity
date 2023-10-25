@@ -163,7 +163,7 @@ exports.execute = function (req, res) {
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
             if (waitTime) {
-                apiService(waitTime, decoded)
+                apiService.saveWaitTime(waitTime, decoded)
                     .then(resp => {
                         // decoded in arguments
                         var request = require('request');

@@ -205,7 +205,7 @@ define([
             let fieldName = `wait_time_${activityInstanceId}`;
             const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
                 method: 'POST',
-                body: {fieldName: fieldName, deName: dataExtensionName}, // string or object
+                body: JSON.stringify({fieldName: fieldName, deName: dataExtensionName}), // string or object
                 headers: {
                     'Content-Type': 'application/json'
                 }
