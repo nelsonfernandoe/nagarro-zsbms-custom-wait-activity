@@ -24,7 +24,8 @@ exports.saveWaitTime = async function (waitTime, decoded) {
     if (activityInfo) {
         activityInfo.activityId = decoded.activityId;
         activityInfo.activityInstanceId = decoded.activityInstanceId;
-        const colName = getWaitTimeColName(decoded.activityInstanceId);
+        const colName = activityInfo.waitTimeColumnName;
+        // const colName = getWaitTimeColName(decoded.activityInstanceId);
 
         const data = [{
             keys: {
@@ -68,7 +69,8 @@ async function upsertDE(activityInfo, data, isSecondTime) {
         const errRes = error.response.data;
         let isFieldNotAvailableError = (errRes.additionalErrors || []).some(ae => ae.errorcode === 10000);
         if (errRes.errorcode === 10006 && isFieldNotAvailableError && !isSecondTime) {
-            const colName = getWaitTimeColName(activityInstanceId);
+            const colName = activityInfo.waitTimeColumnName;
+            // const colName = getWaitTimeColName(activityInstanceId);
             await createDEFieldSOAP(colName, deName);
             await upsertDE(activityInfo, data, true);
         } else {
