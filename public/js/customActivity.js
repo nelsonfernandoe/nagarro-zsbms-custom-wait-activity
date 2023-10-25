@@ -235,7 +235,7 @@ define([
                 return;
             }
 
-            if (!inArguments[0].activityInfo.waitTimeColumnName || true) {
+            if (!inArguments[0].activityInfo.waitTimeColumnName) {
                 $('#wait-time-col').css('display', 'none');
                 createWaitTimeDECol().then(res => {
                     $('#wait-time-col').css('display', 'inline');
