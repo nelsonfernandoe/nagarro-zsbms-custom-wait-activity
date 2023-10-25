@@ -225,7 +225,7 @@ exports.validate = function (req, res) {
 };
 
 exports.createColumn = async function (req, res) {
-    console.log('Create a DE column req: ', req);
+    console.log('Create a DE column req: ', req.body);
     const body = req.body;
     const fieldName = body.fieldName;
     const deName = body.deName;
