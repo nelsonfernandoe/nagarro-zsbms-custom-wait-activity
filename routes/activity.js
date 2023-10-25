@@ -229,6 +229,7 @@ exports.createColumn = async function (req, res) {
     const body = req.body;
     const fieldName = body.fieldName;
     const deName = body.deName;
+    console.log('Create a DE column inputs: ', {fieldName, deName});
     if (!fieldName || !deName) {
         res.status(400).send('Bad request');
     }
