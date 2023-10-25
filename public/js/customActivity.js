@@ -16,6 +16,7 @@ define([
         var dataExtensionName;
         var dataExtensionPrimaryKey;
         var activityInstanceId;
+        var waitTimeColumnName;
 
         var currentStep = steps[0].key;
 
@@ -66,11 +67,16 @@ define([
             console.log(dataSources);
         }
 
+        async function checkAndCreateDECol() {
+
+        }
+
         function handleSchema(schema) {
             console.log("####Schema without strignify#####", schema);
             console.log('*** Schema ***', JSON.stringify(schema))
             schemadata = schema;
             parsePrimary();
+
             // var getattributes = [];
             reloadUserConfig();
         }
@@ -195,6 +201,26 @@ define([
             return userConfigs;
         }
 
+        function CreateWaitTimeDECol() {
+            const userAction = async () => {
+                let fieldName = `wait_time_${activityInstanceId}`;
+                const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
+                    method: 'POST',
+                    body: {fieldName: fieldName, deName: dataExtensionName}, // string or object
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                try {
+                    const myJson = await response.json(); //extract JSON from the http response
+                    waitTimeColumnName = fieldName;
+                } catch (err) {
+                    console.log('Error when calling create DE column API.', err);
+                }
+                // do something with myJson
+            }
+        }
+
         function reloadUserConfig() {
 
             const hasInArguments = Boolean(
@@ -209,6 +235,10 @@ define([
             if (!hasInArguments || !hasUserConfig) {
                 addGroup();
                 return;
+            }
+
+            if (!inArguments[0].activityInfo.waitTimeColumnName) {
+                CreateWaitTimeDECol();
             }
 
             $.each(inArguments, function (index, inArgument) {
@@ -291,6 +321,7 @@ define([
                 dataExtensionId,
                 dataExtensionPrimaryKey,
                 dataExtensionName,
+                waitTimeColumnName,
                 activityInstanceId
             };
             const inArgs = getInArgFromConfig(userConfig);

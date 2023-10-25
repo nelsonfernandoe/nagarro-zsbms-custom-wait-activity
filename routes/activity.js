@@ -12,42 +12,42 @@ var http = require('https');
 exports.logExecuteData = [];
 
 function logData(req) {
-   /* exports.logExecuteData.push({
-        body: req.body,
-        headers: req.headers,
-        trailers: req.trailers,
-        method: req.method,
-        url: req.url,
-        params: req.params,
-        query: req.query,
-        route: req.route,
-        cookies: req.cookies,
-        ip: req.ip,
-        path: req.path,
-        host: req.hostname,
-        fresh: req.fresh,
-        stale: req.stale,
-        protocol: req.protocol,
-        secure: req.secure,
-        originalUrl: req.originalUrl
-    });
-    console.log("body: " + util.inspect(req.body));
-    console.log("headers: " + req.headers);
-    console.log("trailers: " + req.trailers);
-    console.log("method: " + req.method);
-    console.log("url: " + req.url);
-    console.log("params: " + util.inspect(req.params));
-    console.log("query: " + util.inspect(req.query));
-    console.log("route: " + req.route);
-    console.log("cookies: " + req.cookies);
-    console.log("ip: " + req.ip);
-    console.log("path: " + req.path);
-    console.log("host: " + req.hostname);
-    console.log("fresh: " + req.fresh);
-    console.log("stale: " + req.stale);
-    console.log("protocol: " + req.protocol);
-    console.log("secure: " + req.secure);
-    console.log("originalUrl: " + req.originalUrl);*/
+    /* exports.logExecuteData.push({
+         body: req.body,
+         headers: req.headers,
+         trailers: req.trailers,
+         method: req.method,
+         url: req.url,
+         params: req.params,
+         query: req.query,
+         route: req.route,
+         cookies: req.cookies,
+         ip: req.ip,
+         path: req.path,
+         host: req.hostname,
+         fresh: req.fresh,
+         stale: req.stale,
+         protocol: req.protocol,
+         secure: req.secure,
+         originalUrl: req.originalUrl
+     });
+     console.log("body: " + util.inspect(req.body));
+     console.log("headers: " + req.headers);
+     console.log("trailers: " + req.trailers);
+     console.log("method: " + req.method);
+     console.log("url: " + req.url);
+     console.log("params: " + util.inspect(req.params));
+     console.log("query: " + util.inspect(req.query));
+     console.log("route: " + req.route);
+     console.log("cookies: " + req.cookies);
+     console.log("ip: " + req.ip);
+     console.log("path: " + req.path);
+     console.log("host: " + req.hostname);
+     console.log("fresh: " + req.fresh);
+     console.log("stale: " + req.stale);
+     console.log("protocol: " + req.protocol);
+     console.log("secure: " + req.secure);
+     console.log("originalUrl: " + req.originalUrl);*/
 }
 
 /*
@@ -192,7 +192,7 @@ exports.execute = function (req, res) {
 
 
             //logData(req);
-            res.status(200).send( {
+            res.status(200).send({
                 "discountCode": "10/4/2023 12:00:00 AM",
                 "discount": 22
             });
@@ -222,4 +222,22 @@ exports.validate = function (req, res) {
     //console.log( req.body );
     logData(req);
     res.send(200, 'Validate');
+};
+
+exports.createColumn = async function (req, res) {
+    console.log('Create a DE column req: ', req);
+    const body = req.body;
+    const fieldName = body.fieldName;
+    const deName = body.deName;
+    if (!fieldName || !deName) {
+        res.status(400).send('Bad request');
+    }
+    try {
+        await apiService.createColumn(fieldName, deName);
+        console.log('Column created');
+        res.status(200).send();
+    } catch (err) {
+        console.log('Error when creating a Column');
+        res.status(500).send();
+    }
 };

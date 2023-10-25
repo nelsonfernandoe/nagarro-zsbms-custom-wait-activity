@@ -7,8 +7,8 @@ const ENV_CLIENT_ID = process.env.CLIENT_ID;
 const ENV_CLIENT_SECRET = process.env.CLIENT_SECRET;
 const ENV_MID = process.env.MID;
 
-module.exports = async function saveWaitTime(waitTime, decoded) {
-    console.log('Save WAIT TIME called: ',{waitTime, decoded});
+exports.saveWaitTime = async function (waitTime, decoded) {
+    console.log('Save WAIT TIME called: ', {waitTime, decoded});
 
     const inArgs = decoded.inArguments[0] || {};
     const activityInfo = inArgs.activityInfo;
@@ -55,13 +55,17 @@ async function upsertDE(activityInfo, data, isSecondTime) {
         const response = await axios
             .post(`https://${ENV_SUB_DOMAIN}.rest.marketingcloudapis.com/hub/v1/dataevents/${deId}/rowset`,
                 data,
-                {headers: {'content-type': 'application/json',
-                 Authorization: `Bearer ${accessToken}`}});
+                {
+                    headers: {
+                        'content-type': 'application/json',
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
         console.log('  `-- Upsert success. Response: ', response.data);
 
     } catch (error) {
         console.error('Error in upsert rest api: ', error.response.data);
-        const errRes =  error.response.data;
+        const errRes = error.response.data;
         let isFieldNotAvailableError = (errRes.additionalErrors || []).some(ae => ae.errorcode === 10000);
         if (errRes.errorcode === 10006 && isFieldNotAvailableError && !isSecondTime) {
             const colName = getWaitTimeColName(activityInstanceId);
@@ -118,6 +122,7 @@ async function createDEFieldSOAP(fieldName, deName) {
         if (response.OverallStatus[0] !== 'OK') {
             throw new Error("SOAP response failed");
         }
+        return true;
     } catch (error) {
         console.error('Add column SOAP API Failed. ', error.response);
         throw error;
@@ -231,3 +236,7 @@ async function authenticate() {
 function getWaitTimeColName(activityInstanceId) {
     return `wait_time_${activityInstanceId}`;
 }
+
+exports.createColumn = async function (fieldName, deName) {
+    await createDEFieldSOAP(fieldName, deName);
+};
