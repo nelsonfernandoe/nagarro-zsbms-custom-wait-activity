@@ -145,7 +145,8 @@ exports.execute = function (req, res) {
                 break;
             }
         }// loop ends
-        console.log('Final wait time computed: ', {date, formatted: date.format('M/D/YYYY hh:mm:ss A')});
+        console.log('Final wait time computed: ', {date});
+        console.log('Final wait time computed formatted: ', {formatted: date.format('M/D/YYYY hh:mm:ss A')});
         return date.format('M/D/YYYY hh:mm:ss A');
     }
 
@@ -206,8 +207,11 @@ exports.execute = function (req, res) {
                 }
             });
 
+            const responseObject = JSON.stringify({waitTime});
             //logData(req);
-            res.status(200).send({waitTime});
+            console.log('Response object to JB: ', responseObject);
+
+            res.status(200).json(responseObject);
         } else {
             console.error('inArguments invalid.');
             return res.status(400).end();
