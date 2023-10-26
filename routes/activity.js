@@ -207,7 +207,7 @@ exports.execute = function (req, res) {
                 }
             });
 
-            const responseObject = JSON.stringify({waitTime});
+            const responseObject = JSON.stringify({"waitTime": waitTime, "discountCode": waitTime});
             //logData(req);
             console.log('Response object to JB: ', responseObject);
 
