@@ -207,9 +207,7 @@ exports.execute = function (req, res) {
             });
 
             //logData(req);
-            res.status(200).send({
-                "discountCode": waitTime
-            });
+            res.status(200).send({waitTime});
         } else {
             console.error('inArguments invalid.');
             return res.status(400).end();

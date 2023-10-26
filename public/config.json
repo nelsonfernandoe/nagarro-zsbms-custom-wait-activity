@@ -67,7 +67,7 @@
         ],
         "outArguments": [
           {
-            "discountCode": {
+            "waitTime": {
               "dataType": "Date",
               "direction": "out",
               "access": "visible"
