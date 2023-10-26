@@ -230,12 +230,8 @@ define([
             const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
 
-            if (!hasInArguments || !hasUserConfig) {
-                addGroup();
-                return;
-            }
 
-            if (!inArguments[0].activityInfo.waitTimeColumnName) {
+            /*if (!hasInArguments && !inArguments[0].activityInfo.waitTimeColumnName) {
                 $('#wait-time-col').css('display', 'none');
                 createWaitTimeDECol().then(res => {
                     $('#wait-time-col').css('display', 'inline');
@@ -245,7 +241,13 @@ define([
                 waitTimeColumnName = inArguments[0].activityInfo.waitTimeColumnName
                 $('#wait-time-col').css('display', 'inline');
                 $('#wait-time-col').attr('title', waitTimeColumnName);
+            }*/
+
+            if (!hasInArguments || !hasUserConfig) {
+                addGroup();
+                return;
             }
+
 
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
@@ -327,7 +329,7 @@ define([
                 dataExtensionId,
                 dataExtensionPrimaryKey,
                 dataExtensionName,
-                waitTimeColumnName,
+                // waitTimeColumnName,
                 activityInstanceId
             };
             const inArgs = getInArgFromConfig(userConfig);

@@ -37,7 +37,7 @@ app.post('/journeybuilder/save/', activity.save );
 app.post('/journeybuilder/validate/', activity.validate );
 app.post('/journeybuilder/publish/', activity.publish );
 app.post('/journeybuilder/execute/', activity.execute );
-app.post('/journeybuilder/create-column/', activity.createColumn );
+// app.post('/journeybuilder/create-column/', activity.createColumn );
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

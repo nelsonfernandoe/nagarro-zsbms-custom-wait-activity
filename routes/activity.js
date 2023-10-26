@@ -162,7 +162,7 @@ exports.execute = function (req, res) {
 
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
-            if (waitTime) {
+            /*if (waitTime) {
                 apiService.saveWaitTime(waitTime, decoded)
                     .then(resp => {
                         // decoded in arguments
@@ -188,13 +188,27 @@ exports.execute = function (req, res) {
                     console.error('Error in execute method: ', err);
                     return res.status(500).end();
                 });
-            }
+            }*/
 
+            var request = require('request');
+            var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
+            request({
+                url: url,
+                method: "POST",
+                json: {
+                    inArg: decoded.inArguments[0],
+                    computedWait: waitTime,
+                    decoded: decoded
+                },
+            }, function (error, response, body) {
+                if (!error) {
+                    console.log(body);
+                }
+            });
 
             //logData(req);
             res.status(200).send({
-                "discountCode": "10/4/2023 12:00:00 AM",
-                "discount": 22
+                "discountCode": waitTime
             });
         } else {
             console.error('inArguments invalid.');

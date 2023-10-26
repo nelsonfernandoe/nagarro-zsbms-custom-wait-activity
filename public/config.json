@@ -20,12 +20,7 @@
           "contact": "{{Contact}}"
         }
       ],
-      "outArguments": [
-        {
-          "discountCode": "Value",
-          "discount": "Value2"
-        }
-      ],
+      "outArguments": [],
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
       "verb": "POST",
       "body": "",
@@ -74,11 +69,6 @@
           {
             "discountCode": {
               "dataType": "Date",
-              "direction": "out",
-              "access": "visible"
-            },
-            "discount": {
-              "dataType": "Number",
               "direction": "out",
               "access": "visible"
             }
