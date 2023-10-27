@@ -21,7 +21,7 @@
         }
       ],
       "outArguments": [{
-        "waitTime": ""
+        "waitTime": "10/27/2023 01:40:00 PM"
       }],
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
       "verb": "POST",
