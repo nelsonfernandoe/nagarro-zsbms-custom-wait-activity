@@ -252,6 +252,7 @@ define([
 
             if (!hasInArguments || !hasUserConfig) {
                 addGroup();
+                updateUIDropdownsWithSchema();
                 return;
             }
 
@@ -265,15 +266,7 @@ define([
             });
 
             /* update UI dropdowns from schema */
-            $(".attribute-select").html('');
-            $(".attibute-date").html('');
-            for (var i = 0; i < schemadata.schema.length; i++) {
-                //  getattributes.push(schema.schema[i].name);
-                $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
-                if (schemadata.schema[i].type == 'Date') {
-                    $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
-                }
-            }
+            updateUIDropdownsWithSchema();
 
 
             /* based on the payload config, repopulate the UI */
@@ -351,6 +344,18 @@ define([
 
             console.log('Save done: ', {payload});
             connection.trigger('updateActivity', payload);
+        }
+
+        function updateUIDropdownsWithSchema() {
+            $(".attribute-select").html('');
+            $(".attibute-date").html('');
+            for (var i = 0; i < schemadata.schema.length; i++) {
+                //  getattributes.push(schema.schema[i].name);
+                $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+                if (schemadata.schema[i].type == 'Date') {
+                    $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+                }
+            }
         }
 
         function onRequestedTriggerEventDefinition(eventDefinitionModel) {
