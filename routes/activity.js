@@ -149,8 +149,12 @@ exports.execute = function (req, res) {
             }
         }// loop ends
         console.log('Final wait time computed: ', {date});
-        console.log('Final wait time computed formatted: ', {formatted: date.format('M/D/YYYY hh:mm:ss A')});
-        return date.format('M/D/YYYY hh:mm:ss A');
+        if (date) {
+            console.log('Final wait time computed formatted: ', {formatted: date.format('M/D/YYYY hh:mm:ss A')});
+            return date.format('M/D/YYYY hh:mm:ss A');
+        } else {
+            return date;
+        }
     }
 
     JWT(req.body, process.env.jwtSecret, (err, decoded) => {
@@ -190,7 +194,7 @@ exports.execute = function (req, res) {
 
             const responseObject = {"waitTime": waitTime, "discountCode": waitTime, branchResult: path};
             //logData(req);
-            console.log('Response object to JB: ',  JSON.stringify(responseObject));
+            console.log('Response object to JB: ', JSON.stringify(responseObject));
 
             if (waitTime && useDEColumnForWaitTime) {
                 console.log('Saving wait time...');
