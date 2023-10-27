@@ -173,7 +173,7 @@ exports.execute = function (req, res) {
                 },
             }, function (error, response, body) {
                 if (!error) {
-                    console.log('Error in posting to PipeDream: ', body);
+                    console.log('Response of PipeDream: ', body);
                 }
             });
         }
@@ -194,9 +194,9 @@ exports.execute = function (req, res) {
             } else {
                 postToPipeDream(waitTime);
             }
-            const responseObject = JSON.stringify({"waitTime": waitTime, "discountCode": waitTime});
+            const responseObject = {"waitTime": waitTime, "discountCode": waitTime};
             //logData(req);
-            console.log('Response object to JB: ', responseObject);
+            console.log('Response object to JB: ',  JSON.stringify(responseObject));
 
             res.status(200).json(responseObject);
         } else {
