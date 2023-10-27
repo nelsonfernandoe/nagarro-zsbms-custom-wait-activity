@@ -184,8 +184,8 @@ exports.execute = function (req, res) {
 
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
-
-            const responseObject = {"waitTime": waitTime, "discountCode": waitTime};
+            const path = waitTime ? 'wait' : 'reminder';
+            const responseObject = {"waitTime": waitTime, "discountCode": waitTime, branchResult: path};
             //logData(req);
             console.log('Response object to JB: ',  JSON.stringify(responseObject));
 

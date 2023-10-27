@@ -6,6 +6,23 @@
     "category": "custom"
   },
   "type": "REST",
+  "outcomes": [
+    {
+      "arguments": {
+        "branchResult": "wait",
+        "some argument": "passed from config.json for buy_item"
+      }
+    },
+    {
+      "arguments": {
+        "branchResult": "reminder",
+        "some argument": "passed from config.json for hold_item"
+      },
+      "metaData": {
+        "label": "Reminder path"
+      }
+    }
+  ],
   "lang": {
     "en-US": {
       "name": "Custom Wait Activity Demo",
