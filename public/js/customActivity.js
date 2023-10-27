@@ -33,7 +33,7 @@ define([
         //connection.on('requestedDataSources', onRequestedDataSources);
 
 
-        let useDEColumnForWaitTime = true;
+        let useDEColumnForWaitTime = false;
 
         /* for local data mocking */
         let local;

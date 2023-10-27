@@ -15,11 +15,7 @@
   },
   "arguments": {
     "execute": {
-      "inArguments": [
-        {
-          "contact": "{{Contact}}"
-        }
-      ],
+      "inArguments": [],
       "outArguments": [],
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
       "verb": "POST",

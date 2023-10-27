@@ -9,7 +9,7 @@ const JWT = require(Path.join(__dirname, '..', 'lib', 'jwtDecoder.js'));
 var util = require('util');
 var http = require('https');
 
-let useDEColumnForWaitTime = true;
+let useDEColumnForWaitTime = false;
 
 exports.logExecuteData = [];
 
@@ -77,6 +77,7 @@ exports.save = function (req, res) {
  */
 exports.execute = function (req, res) {
     function computeWaitTime(decoded) {
+        console.log('Computing wait time...');
         let date;
         const inArgs = decoded.inArguments[0] || {};
         for (let uc of (inArgs.userConfig || [])) {
@@ -183,7 +184,13 @@ exports.execute = function (req, res) {
 
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
+
+            const responseObject = {"waitTime": waitTime, "discountCode": waitTime};
+            //logData(req);
+            console.log('Response object to JB: ',  JSON.stringify(responseObject));
+
             if (waitTime && useDEColumnForWaitTime) {
+                console.log('Saving wait time...');
                 apiService.saveWaitTime(waitTime, decoded)
                     .then(resp => {
                         postToPipeDream(waitTime);
@@ -194,9 +201,6 @@ exports.execute = function (req, res) {
             } else {
                 postToPipeDream(waitTime);
             }
-            const responseObject = {"waitTime": waitTime, "discountCode": waitTime};
-            //logData(req);
-            console.log('Response object to JB: ',  JSON.stringify(responseObject));
 
             res.status(200).json(responseObject);
         } else {
