@@ -33,6 +33,8 @@ define([
         //connection.on('requestedDataSources', onRequestedDataSources);
 
 
+        let useDEColumnForWaitTime = true;
+
         /* for local data mocking */
         let local;
         const isLocal = (location.hostname === "localhost" || location.hostname === "127.0.0.1");
@@ -202,6 +204,7 @@ define([
         }
 
         async function createWaitTimeDECol() {
+            console.log('Creating column from client side... ')
             const currentTime = moment(new Date()).format('YYYYMMDDHHmmss');
             let fieldName = `wait_time_${currentTime}`;
             const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
@@ -214,6 +217,7 @@ define([
             try {
                 const myJson = await response; //extract JSON from the http response
                 waitTimeColumnName = fieldName;
+                localStorage.setItem(waitTimeColumnName, waitTimeColumnName);
             } catch (err) {
                 console.log('Error when calling create DE column API.', err);
             }
@@ -230,18 +234,21 @@ define([
             const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
 
-
-            /*if (!hasInArguments && !inArguments[0].activityInfo.waitTimeColumnName) {
-                $('#wait-time-col').css('display', 'none');
-                createWaitTimeDECol().then(res => {
+            if (useDEColumnForWaitTime) {
+                if (!hasInArguments && !inArguments[0].activityInfo.waitTimeColumnName) {
+                    $('#wait-time-col').css('display', 'none');
+                    createWaitTimeDECol().then(res => {
+                        $('#wait-time-col').css('display', 'inline');
+                        $('#wait-time-col').attr('title', waitTimeColumnName);
+                    });
+                } else {
+                    waitTimeColumnName = inArguments[0].activityInfo.waitTimeColumnName;
                     $('#wait-time-col').css('display', 'inline');
                     $('#wait-time-col').attr('title', waitTimeColumnName);
-                });
+                }
             } else {
-                waitTimeColumnName = inArguments[0].activityInfo.waitTimeColumnName
-                $('#wait-time-col').css('display', 'inline');
-                $('#wait-time-col').attr('title', waitTimeColumnName);
-            }*/
+                $('#wait-time-col').css('display', 'none');
+            }
 
             if (!hasInArguments || !hasUserConfig) {
                 addGroup();
@@ -329,7 +336,7 @@ define([
                 dataExtensionId,
                 dataExtensionPrimaryKey,
                 dataExtensionName,
-                // waitTimeColumnName,
+                waitTimeColumnName,
                 activityInstanceId
             };
             const inArgs = getInArgFromConfig(userConfig);

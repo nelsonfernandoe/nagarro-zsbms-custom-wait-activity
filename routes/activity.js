@@ -9,6 +9,8 @@ const JWT = require(Path.join(__dirname, '..', 'lib', 'jwtDecoder.js'));
 var util = require('util');
 var http = require('https');
 
+let useDEColumnForWaitTime = true;
+
 exports.logExecuteData = [];
 
 function logData(req) {
@@ -158,39 +160,7 @@ exports.execute = function (req, res) {
             return res.status(401).end();
         }
 
-        if (decoded && decoded.inArguments && decoded.inArguments.length > 0) {
-            const decodedArgs = decoded.inArguments[0];
-
-            /* determine the wait date time */
-            const waitTime = computeWaitTime(decoded);
-            /*if (waitTime) {
-                apiService.saveWaitTime(waitTime, decoded)
-                    .then(resp => {
-                        // decoded in arguments
-                        var request = require('request');
-                        var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
-                        console.log('In execute, decoded args: ', decodedArgs);
-
-                        request({
-                            url: url,
-                            method: "POST",
-                            json: {
-                                inArg: decoded.inArguments[0],
-                                computedWait: waitTime,
-                                decoded: decoded
-                            },
-                        }, function (error, response, body) {
-                            if (!error) {
-                                console.log(body);
-                            }
-                        });
-                    }).catch(err => {
-
-                    console.error('Error in execute method: ', err);
-                    return res.status(500).end();
-                });
-            }*/
-
+        function postToPipeDream(waitTime) {
             var request = require('request');
             var url = 'https://eovh1wtxwmjdfw3.m.pipedream.net';
             request({
@@ -203,10 +173,27 @@ exports.execute = function (req, res) {
                 },
             }, function (error, response, body) {
                 if (!error) {
-                    console.log(body);
+                    console.log('Error in posting to PipeDream: ', body);
                 }
             });
+        }
 
+        if (decoded && decoded.inArguments && decoded.inArguments.length > 0) {
+            const decodedArgs = decoded.inArguments[0];
+
+            /* determine the wait date time */
+            const waitTime = computeWaitTime(decoded);
+            if (waitTime && useDEColumnForWaitTime) {
+                apiService.saveWaitTime(waitTime, decoded)
+                    .then(resp => {
+                        postToPipeDream(waitTime);
+                    }).catch(err => {
+                    console.error('Error in execute method: ', err);
+                    return res.status(500).end();
+                });
+            } else {
+                postToPipeDream(waitTime);
+            }
             const responseObject = JSON.stringify({"waitTime": waitTime, "discountCode": waitTime});
             //logData(req);
             console.log('Response object to JB: ', responseObject);
