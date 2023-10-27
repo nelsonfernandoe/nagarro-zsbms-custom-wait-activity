@@ -235,7 +235,7 @@ define([
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
 
             if (useDEColumnForWaitTime) {
-                if (!hasInArguments && !inArguments[0].activityInfo.waitTimeColumnName) {
+                if (!hasInArguments || !inArguments[0].activityInfo.waitTimeColumnName) {
                     $('#wait-time-col').css('display', 'none');
                     createWaitTimeDECol().then(res => {
                         $('#wait-time-col').css('display', 'inline');
