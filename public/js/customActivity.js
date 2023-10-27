@@ -231,7 +231,7 @@ define([
                 payload['arguments'].execute.inArguments &&
                 payload['arguments'].execute.inArguments.length > 0
             );
-            const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
+            const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : [];
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
 
             if (useDEColumnForWaitTime) {
