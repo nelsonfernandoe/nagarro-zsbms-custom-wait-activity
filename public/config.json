@@ -21,7 +21,7 @@
         }
       ],
       "outArguments": [{
-        "discountCode": ""
+        "waitTime": ""
       }],
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
       "verb": "POST",
