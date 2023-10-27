@@ -11,6 +11,9 @@
       "arguments": {
         "branchResult": "wait",
         "some argument": "passed from config.json for buy_item"
+      },
+      "metaData": {
+        "label": "Waiting path"
       }
     },
     {
