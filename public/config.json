@@ -20,7 +20,9 @@
           "contact": "{{Contact}}"
         }
       ],
-      "outArguments": [],
+      "outArguments": [{
+        "discountCode": ""
+      }],
       "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
       "verb": "POST",
       "body": "",
