@@ -197,7 +197,7 @@ exports.execute = function (req, res) {
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
 
-            const path = waitTime ? 'wait' : 'reminder';
+            const path = waitTime ? 'wait_path' : 'reminder_path';
             console.log('Path selected: ', path);
 
             const responseObject = {"branchResult": path, "waitTime": waitTime};

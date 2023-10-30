@@ -9,7 +9,7 @@
   "outcomes": [
     {
       "arguments": {
-        "branchResult": "wait"
+        "branchResult": "wait_path"
       },
       "metaData": {
         "label": "Waiting path"
@@ -17,7 +17,7 @@
     },
     {
       "arguments": {
-        "branchResult": "reminder"
+        "branchResult": "reminder_path"
       },
       "metaData": {
         "label": "Reminder path"
