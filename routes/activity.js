@@ -72,7 +72,7 @@ exports.save = function (req, res) {
 
     // const dt = moment(new Date());
     // console.log({dt: dt.toString()});
-    // dt.tz('Etc/GMT-2');
+    // dt.tz('America/New_York');
     // console.log({dt: dt.toString()});
 
     res.status(200).send('Save');
@@ -155,9 +155,9 @@ exports.execute = function (req, res) {
             }
         }// loop ends
         console.log('Wait time computed: ', {date});
-        date.tz('America/New_York');
-        console.log('Final wait time computed after tz change: ', {date});
         if (date) {
+            date.tz('America/New_York');
+            console.log('Final wait time computed after tz change: ', {date});
             console.log('Final wait time computed formatted in tz: ', {formatted: date.format('M/D/YYYY hh:mm:ss A')});
             return date.format('M/D/YYYY hh:mm:ss A');
         } else {
