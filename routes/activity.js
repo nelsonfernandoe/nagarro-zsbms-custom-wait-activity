@@ -69,6 +69,12 @@ exports.save = function (req, res) {
     // Data from the req and put it in an array accessible to the main app.
     //console.log( req.body );
     logData(req);
+
+    // const dt = moment(new Date());
+    // console.log({dt: dt.toString()});
+    // dt.tz('Etc/GMT-2');
+    // console.log({dt: dt.toString()});
+
     res.status(200).send('Save');
 };
 
@@ -148,9 +154,11 @@ exports.execute = function (req, res) {
                 break;
             }
         }// loop ends
-        console.log('Final wait time computed: ', {date});
+        console.log('Wait time computed: ', {date});
+        date.tz('Etc/GMT-2');
+        console.log('Final wait time computed after tz change: ', {date});
         if (date) {
-            console.log('Final wait time computed formatted: ', {formatted: date.format('M/D/YYYY hh:mm:ss A')});
+            console.log('Final wait time computed formatted in tz: ', {formatted: date.format('M/D/YYYY hh:mm:ss A')});
             return date.format('M/D/YYYY hh:mm:ss A');
         } else {
             return date;
