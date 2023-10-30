@@ -9,8 +9,7 @@
   "outcomes": [
     {
       "arguments": {
-        "branchResult": "wait",
-        "some argument": "passed from config.json for buy_item"
+        "branchResult": "wait"
       },
       "metaData": {
         "label": "Waiting path"
@@ -18,8 +17,7 @@
     },
     {
       "arguments": {
-        "branchResult": "reminder",
-        "some argument": "passed from config.json for hold_item"
+        "branchResult": "reminder"
       },
       "metaData": {
         "label": "Reminder path"
@@ -85,6 +83,13 @@
           {
             "waitTime": {
               "dataType": "Date",
+              "direction": "out",
+              "access": "visible"
+            }
+          },
+          {
+            "branchResult": {
+              "dataType": "Text",
               "direction": "out",
               "access": "visible"
             }
