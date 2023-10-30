@@ -192,7 +192,7 @@ exports.execute = function (req, res) {
             const path = waitTime ? 'wait' : 'reminder';
             console.log('Path selected: ', path);
 
-            const responseObject = {"waitTime": waitTime, "discountCode": waitTime, branchResult: path};
+            const responseObject = {"waitTime": waitTime, branchResult: path};
             //logData(req);
             console.log('Response object to JB: ', JSON.stringify(responseObject));
 
