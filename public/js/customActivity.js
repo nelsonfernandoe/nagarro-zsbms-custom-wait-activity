@@ -120,6 +120,20 @@ define([
             console.log(endpoints);
         }
 
+        function validateDynamicAtts(dynamicAttributes) {
+            for (const da of (dynamicAttributes || [])) {
+                if (da.logicalOp) {
+                    if (!validateDynamicAtts(da.dynamicAttributes))
+                        return false;
+                } else {
+                    if (!da.operand) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         function validateConfig(config, group) {
             const res = {
                 valid: true,
@@ -127,12 +141,10 @@ define([
             };
 
             /* validate the operand */
-            (config.dynamicAttributes || []).forEach((da, i) => {
-                if (!da.operand) {
-                    res.valid = false;
-                    res.errorMsgs.push(`Dynamic attribute ${i + 1} value cannot be empty`);
-                }
-            });
+            if (!validateDynamicAtts(config.dynamicAttributes.dynamicAttributes)) {
+                res.valid = false;
+                res.errorMsgs.push(`Dynamic attribute value cannot be empty`);
+            }
 
             if (!res.valid) {
                 $('#modalTitle').text(`Invalid configuration (Group ${group})`);
@@ -143,21 +155,35 @@ define([
             return res.valid;
         }
 
-        function getDynamicAttributes(tab) {
-            const dynamicAttributes = [];
 
-            let dynamicAttProps = $(`#dynamicAttribute-${tab} .attribute-select`);
-            let dynamicAttOps = $(`#dynamicAttribute-${tab} .operator-select`);
-            let dynamicAttOperands = $(`#dynamicAttribute-${tab} .operand-input`);
+        function getDynamicAttributes(dynamicAttGroup) {
+            const children = dynamicAttGroup.children;
+            let logicalOp;
+            let logicalOpGroup;
+            let dynamicAttributes = [];
 
-            for (let i = 0; i < dynamicAttProps.length; i++) {
-                dynamicAttributes.push({
-                    property: dynamicAttProps[i].value,
-                    operator: dynamicAttOps[i].value,
-                    operand: dynamicAttOperands[i].value
-                });
+            for (let child of children) {
+                console.log(child);
+                let classes = [...(child.classList || [])];
+                if (classes.includes('logical-ops')) {
+                    /* operator div */
+                    logicalOp = child.children[0].children[0].checked ? 'and' : 'or';
+                } else if (classes.includes('dynamic-attribute-row')) {
+                    /* da row */
+                    child.children[1].children[0].value;
+                    dynamicAttributes.push({
+                        property: child.children[0].children[0].value,
+                        operator: child.children[1].children[0].value,
+                        operand: child.children[2].children[0].children[0].value
+                    });
+                } else if (classes.includes('logical-op-group')) {
+                    /* da group */
+                    logicalOpGroup = getDynamicAttributes(child);
+                    dynamicAttributes.push(logicalOpGroup);
+                }
             }
-            return dynamicAttributes;
+
+            return {logicalOp, dynamicAttributes};
         }
 
         function parseUserConfig() {
@@ -166,7 +192,9 @@ define([
 
             for (let i = 1; i <= totalTabs; i++) {
                 /* Read UI values */
-                const dynamicAttributes = getDynamicAttributes(i);
+                let dynamicAttGroup = $(`#dynamicAttribute-${i} .row.logical-op-group`);
+                const dynamicAttributes = getDynamicAttributes(dynamicAttGroup[0]);
+                console.log('Final da group: ', dynamicAttributes);
 
                 let dateAttProp = $(`#dateAtt-prop-${i}`).val();
                 let dateAttDuration = $(`#dateAtt-duration-${i}`).val();
@@ -180,7 +208,6 @@ define([
                 /* TODO: logical op is hardcoded for now */
                 /* TODO: trim the input values */
                 let userConfig = {
-                    dynamicAttributeLogicalOperator: 'and',
                     dynamicAttributes: dynamicAttributes,
                     dateAttribute: {
                         property: dateAttProp,

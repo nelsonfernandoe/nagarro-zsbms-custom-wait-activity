@@ -4,6 +4,8 @@
 
 $('.select').timezones();
 
+let radioBtnId = 1;
+
 $(document).ready(function () {
     /* add initial tab data on page load */
     // addGroup();
@@ -58,7 +60,15 @@ $(document).on('click', '.removeGroup', function (event) {
 $(document).on('click', 'button.add-da', function (event) {
     let currentTab = $(this).attr('data-group-pos');
     const dynamicAttribute = getDynamicAttributeHTML(currentTab);
-    let currentActionDiv = $(this).parents().eq(2);
+    let currentActionDiv = $(this).parents().eq(1);
+    $(dynamicAttribute).insertAfter(currentActionDiv);
+    configureRemoveDArow(currentTab);
+});
+
+$(document).on('click', 'button.add-layer-da', function (event) {
+    let currentTab = $(this).attr('data-group-pos');
+    const dynamicAttribute = getDynamicAttributeHTML(currentTab, true);
+    let currentActionDiv = $(this).parents().eq(1);
     $(dynamicAttribute).insertAfter(currentActionDiv);
     configureRemoveDArow(currentTab);
 });
@@ -242,17 +252,27 @@ function addGroup(dynamicAttLength = 1) {
 }
 
 
-function getDynamicAttributeHTML(tab) {
-    return ' <div class="row dynamic-attribute-row dynamic-attribute-row-'+ tab +' mb-3" data-group-pos="' + tab + '">' +
-        ' <div class="row logical-op">' +
-        /*'   <div class="custom-control custom-radio custom-control-inline">' +
-        '     <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">' +
-        '     <label class="custom-control-label" for="customRadioInline1">AND</label>' +
-        '   </div>' +
-        '   <div class="custom-control custom-radio custom-control-inline">' +
-        '     <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">' +
-        '     <label class="custom-control-label" for="customRadioInline2">OR</label>' +
-        '   </div>' +*/
+function getDynamicAttributeHTML(tab, group) {
+    let logicalOp = '';
+    let logicalOpEnd = '';
+    if (group) {
+        logicalOp = ' <div class="row logical-op-group">' +
+            '   <div class="logical-ops mb-2" style="display: flex">' +
+            '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
+            '     <input type="radio" id="customRadioInline1" name="customRadioInline'+radioBtnId+'" class="custom-control-input" checked="">' +
+            '     <label class="custom-control-label active" for="customRadioInline'+radioBtnId+'"">AND</label>' +
+            '   </div>' +
+            '   <div class="custom-control custom-radio custom-control-inline">' +
+            '     <input type="radio" id="customRadioInline2" name="customRadioInline'+radioBtnId+'"" class="custom-control-input">' +
+            '     <label class="custom-control-label" for="customRadioInline'+radioBtnId+'">OR</label>' +
+            '   </div>'+
+            '</div>';
+        logicalOpEnd = '   </div>' ;
+        radioBtnId++;
+    }
+
+    return logicalOp +
+        '<div class="row dynamic-attribute-row dynamic-attribute-row-' + tab + ' mb-3" data-group-pos="' + tab + '">' +
         ' <div class="col-md-3">' +
         ' <select id = "dynamicAtt-prop-' + tab +
         '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
@@ -282,14 +302,14 @@ function getDynamicAttributeHTML(tab) {
         '     <button class="btn add-da" data-group-pos="' + tab + '">' +
         '         <i class="fa fa-plus"></i></i>' +
         '     </button>' +
-        /*'     <button class="btn add-layer-da" title="Add a layer" data-group-pos="' + tab + '">' +
+        '     <button class="btn add-layer-da" title="Add a layer" data-group-pos="' + tab + '">' +
         '         <img src="images/add-layer.svg" alt="Add layer" style="width: 16px"/>\n' +
-        '     </button>' +*/
+        '     </button>' +
         '     <button class="btn remove-da" data-group-pos="' + tab + '">' +
         '         <i class="fa fa-remove"></i></i>' +
         '     </button>' +
-        '   </div>' +
         '  </div>' +
+        logicalOpEnd +
         ' </div>';
 }
 

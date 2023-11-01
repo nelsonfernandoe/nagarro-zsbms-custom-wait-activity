@@ -56,3 +56,9 @@ button.nav-link.active {
 button#remove {
     background-color: var(--bms-primary);
 }
+
+.logical-op-group {
+    border: 1px solid black;
+    padding: 1.5rem 1rem;
+    margin-bottom: 1rem;
+}
