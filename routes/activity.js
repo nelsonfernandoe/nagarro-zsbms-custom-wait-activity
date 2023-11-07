@@ -84,14 +84,13 @@ exports.save = function (req, res) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function (req, res) {
-    function computeWaitTime(decoded) {
-        console.log('Computing wait time...');
-        let date;
-        const inArgs = decoded.inArguments[0] || {};
-        for (let uc of (inArgs.userConfig || [])) {
-            const eachConditionResults = (uc.dynamicAttributes || []).map(da => {
-                console.log({da})
+    function deduceDG(uc) {
 
+        const eachConditionResults = (uc.dynamicAttributes || []).map(da => {
+            console.log({da})
+            if (da.logicalOp) {
+               return deduceDG(da);
+            } else {
                 /* TODO: lt gt operator to be used only for int types */
                 switch (da.operator) {
                     case "eq":
@@ -109,11 +108,21 @@ exports.execute = function (req, res) {
                     default:
                         return false;
                 }
-            });
+            }
+        });
 
-            let isAnd = uc.dynamicAttributeLogicalOperator === 'and';
-            const dgConditionMatches = eachConditionResults.reduce((acc, curr) => isAnd ? acc && curr : acc || curr);
-            console.log({bools: eachConditionResults, out: dgConditionMatches});
+        let isAnd = uc.logicalOp === 'and';
+        const dgConditionMatches = eachConditionResults.reduce((acc, curr) => isAnd ? acc && curr : acc || curr);
+        console.log({bools: eachConditionResults, out: dgConditionMatches});
+        return dgConditionMatches;
+    }
+
+    function computeWaitTime(decoded) {
+        console.log('Computing wait time...');
+        let date;
+        const inArgs = decoded.inArguments[0] || {};
+        for (let uc of (inArgs.userConfig || [])) {
+            const dgConditionMatches = deduceDG(uc);
 
             /* dynamic attributes matches the specified condition for the Journey data */
             if (dgConditionMatches) {
