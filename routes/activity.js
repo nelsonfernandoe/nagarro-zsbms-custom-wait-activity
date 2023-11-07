@@ -217,6 +217,7 @@ exports.execute = function (req, res) {
             //logData(req);
             console.log('Response object to JB: ', JSON.stringify(responseObject));
 
+            // Old logic to save the wait time in the data extension
             if (waitTime && useDEColumnForWaitTime) {
                 console.log('Saving wait time...');
                 apiService.saveWaitTime(waitTime, decoded)
