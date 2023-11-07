@@ -245,3 +245,64 @@ exports.createColumn = async function (fieldName, deName) {
     }
     await createDEFieldSOAP(fieldName, deName);
 };
+
+
+exports.exitContact = async function (journeyName, contactKey) {
+    console.log('Exiting contact logic started..', {journeyName, contactKey});
+
+    if (!journeyName || !contactKey) {
+        throw new Error('Journey name or contact key is invalid.');
+    }
+
+    if (!isAuthenticated()) {
+        await authenticate();
+    }
+
+    try {
+        const journeyKey = await getJourneyKey(journeyName);
+
+        const accessToken = getAccessToken();
+        const data = [
+            {
+                "ContactKey": contactKey,
+                "DefinitionKey": journeyKey
+            }
+        ];
+        const response = await axios
+            .post(`https://${ENV_SUB_DOMAIN}.rest.marketingcloudapis.com/interaction/v1/interactions/contactexit`,
+                data,
+                {
+                    headers: {
+                        'content-type': 'application/json',
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+        if (response.data.errors && response.data.errors.length === 0) {
+            console.log('  `-- Contact exit success. Response: ', response.data);
+        } else {
+            console.log('  `-- Error in response from exit contact api.', response.data);
+        }
+
+    } catch (error) {
+        console.error('Error in exit contact rest api: ', error.response.data);
+        throw  new Error(error);
+    }
+};
+
+async function getJourneyKey(journeyName) {
+    const accessToken = getAccessToken();
+    try {
+        const resp = await axios
+            .get(`https://${ENV_SUB_DOMAIN}.rest.marketingcloudapis.com/interaction/v1/interactions/?name=${journeyName}`,
+                {headers: {Authorization: `Bearer ${accessToken}`}});
+        const respData = resp.data;
+        if (respData && respData.items && respData.items[0] && respData.items[0].key) {
+            return respData.items[0].key;
+        } else {
+            throw new Error('Unexpected repsonse for journey key api.');
+        }
+    } catch (error) {
+        console.error('Error in getJourneyKey api: ', error);
+        throw error;
+    }
+}

@@ -75,6 +75,8 @@ exports.save = function (req, res) {
     // dt.tz('America/New_York');
     // console.log({dt: dt.toString()});
 
+    // apiService.exitContact('Testing custom activity N v2', 'johna@gmail.com');
+
     res.status(200).send('Save');
 };
 
@@ -197,7 +199,18 @@ exports.execute = function (req, res) {
             /* determine the wait date time */
             const waitTime = computeWaitTime(decoded);
 
-            const path = waitTime ? 'wait_path' : 'reminder_path';
+            let path;
+            if (waitTime) {
+                path = 'wait_path';
+            } else {
+                path = 'reminder_path';
+                apiService.exitContact(decodedArgs.activityInfo.journeyName, decoded.keyValue)
+                    .then(res => {
+                        console.log('Contact exited successfully');
+                    }).catch(e => {
+                    console.log('Error in exiting the contact.');
+                });
+            }
             console.log('Path selected: ', path);
 
             const responseObject = {"branchResult": path, "waitTime": waitTime};

@@ -6,24 +6,6 @@
     "category": "custom"
   },
   "type": "REST",
-  "outcomes": [
-    {
-      "arguments": {
-        "branchResult": "wait_path"
-      },
-      "metaData": {
-        "label": "Waiting path"
-      }
-    },
-    {
-      "arguments": {
-        "branchResult": "reminder_path"
-      },
-      "metaData": {
-        "label": "Reminder path"
-      }
-    }
-  ],
   "lang": {
     "en-US": {
       "name": "Custom Wait Activity Demo",

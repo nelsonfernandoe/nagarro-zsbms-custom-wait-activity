@@ -11,6 +11,7 @@ define([
         var lastStepEnabled = false;
         var steps = [{"label": "Configure Postcard", "key": "step1"}];
         var schemadata = {};
+        var journeyName;
         var eventDefinitionKey;
         var dataExtensionId;
         var dataExtensionName;
@@ -352,6 +353,7 @@ define([
         function save() {
             const userConfig = parseUserConfig();
             const activityInfo = {
+                journeyName,
                 eventDefinitionKey,
                 dataExtensionId,
                 dataExtensionPrimaryKey,
@@ -387,6 +389,7 @@ define([
 
         function onRequestedTriggerEventDefinition(eventDefinitionModel) {
             if (eventDefinitionModel) {
+                journeyName = eventDefinitionModel.name;
                 eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
                 dataExtensionId = eventDefinitionModel.dataExtensionId;
                 dataExtensionName = eventDefinitionModel.dataExtensionName;
