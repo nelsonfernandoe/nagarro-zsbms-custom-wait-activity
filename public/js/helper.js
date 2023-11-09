@@ -62,7 +62,8 @@ $(document).on('click', 'button.add-da', function (event) {
     const dynamicAttribute = getDynamicAttributeHTML(currentTab);
     let currentActionDiv = $(this).parents().eq(1);
     $(dynamicAttribute).insertAfter(currentActionDiv);
-    configureRemoveDArow(currentTab);
+    let currentGroup = $(this).parents().eq(2);
+    configureRemoveDArow(currentTab, {currentGroup: currentGroup[0], currentGroupParent: currentGroup.parent()[0]});
 });
 
 $(document).on('click', 'button.add-layer-da', function (event) {
@@ -70,25 +71,68 @@ $(document).on('click', 'button.add-layer-da', function (event) {
     const dynamicAttribute = getDynamicAttributeHTML(currentTab, true);
     let currentActionDiv = $(this).parents().eq(1);
     $(dynamicAttribute).insertAfter(currentActionDiv);
-    configureRemoveDArow(currentTab);
+    let currentGroup = $(this).parents().eq(2);
+    configureRemoveDArow(currentTab, {currentGroup: currentGroup[0], currentGroupParent: currentGroup.parent()[0]});
 });
 
 $(document).on('click', 'button.remove-da', function (event) {
     let currentTab = $(this).attr('data-group-pos');
-    let currentActionDiv = $(this).parents().eq(2);
-    // let currentActionDiv = $($($(this).parent())).parent();
-    currentActionDiv.remove();
-    configureRemoveDArow(currentTab);
-});
-
-function configureRemoveDArow(tab) {
-    const rows = $(`div.dynamic-attribute-row-${tab}`).length;
-    if (rows > 1) {
-        $(`.dynamic-attribute-row-${tab} button.remove-da`).css('display', 'inline-block');
+    let currentGroup = $(this).parents().eq(2);
+    let currentGroupParent = currentGroup.parent()[0]
+    if (currentGroup && currentGroup.children && [...currentGroup.children()].length < 3) {
+        currentGroup.remove();
     } else {
-        $(`.dynamic-attribute-row-${tab} button.remove-da`).css('display', 'none');
+        let currentActionDiv = $(this).parents().eq(1);
+        currentActionDiv.remove();
     }
 
+    configureRemoveDArow(currentTab, {currentGroup: currentGroup[0], currentGroupParent});
+});
+
+function configureRemoveDArow(tab, currentGroupDetails, isSecondTime) {
+    const rows = $(`div.dynamic-attribute-row-${tab}`).length;
+    if (!currentGroupDetails) {
+        if (rows > 1) {
+            $(`.dynamic-attribute-row-${tab} button.remove-da`).css('display', 'inline-block');
+        } else {
+            $(`.dynamic-attribute-row-${tab} button.remove-da`).css('display', 'none');
+        }
+        return;
+    }
+
+    let logicalOp = 0;
+    let dynamicAttributes = 0;
+    let logicalOpGroup = 0;
+    const currentGroup = currentGroupDetails.currentGroup;
+    const currentGroupParent = currentGroupDetails.currentGroupParent;
+    [...currentGroup.children].forEach(child => {
+        let classes = [...(child.classList || [])];
+        if (classes.includes('logical-ops')) {
+            /* operator div */
+            logicalOp++;
+        } else if (classes.includes('dynamic-attribute-row')) {
+            dynamicAttributes++;
+        } else if (classes.includes('logical-op-group')) {
+            /* da group */
+            logicalOpGroup++;
+        }
+    });
+
+    let isRootNode = currentGroupParent ? ([...currentGroupParent.classList] || []).includes('parent-group') : false;
+    let displayValue = ((logicalOpGroup > 0 || isRootNode) && dynamicAttributes < 2) ? 'none' : 'inline-block';
+
+    [...currentGroup.children].forEach(child => {
+        let classes = [...(child.classList || [])];
+
+        if (classes.includes('dynamic-attribute-row')) {
+            // child.children[3].children[2].style.display = displayValue;
+            child.children[3].children[2].setAttribute("style", `display:${displayValue}`);
+        }
+    });
+
+    if (currentGroupParent && !isSecondTime) {
+        configureRemoveDArow(tab, {currentGroup: currentGroupParent, currentGroupParent: undefined}, true);
+    }
 }
 
 function configureRemoveGroupBtn() {
@@ -111,7 +155,7 @@ function addGroup(dynamicAttLength = 1) {
         '<form class="" onsubmit="return false">' +
         ' <div class="container">' +
         '  <div class="row">' +
-        '   <div id="dynamicAttribute-' + grouplength + '" class="col-lg-12 col-md col">' +
+        '   <div id="dynamicAttribute-' + grouplength + '" class="col-lg-12 col-md col parent-group">' +
         '     <div class="justify-content-md-left row">' +
         '           <div class="col-lg-7 col">' +
         '   <h5 style="font-size: 15px; text-align: left;">Dynamic Attribute</h5>' +
@@ -259,15 +303,15 @@ function getDynamicAttributeHTML(tab, group) {
         logicalOp = ' <div class="row logical-op-group">' +
             '   <div class="logical-ops mb-2" style="display: flex">' +
             '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
-            '     <input type="radio" id="customRadioInline1" name="customRadioInline'+radioBtnId+'" class="custom-control-input" checked="">' +
-            '     <label class="custom-control-label active" for="customRadioInline'+radioBtnId+'"">AND</label>' +
+            '     <input type="radio" id="customRadioInline1" name="customRadioInline' + radioBtnId + '" class="custom-control-input" checked="">' +
+            '     <label class="custom-control-label active" for="customRadioInline' + radioBtnId + '"">AND</label>' +
             '   </div>' +
             '   <div class="custom-control custom-radio custom-control-inline">' +
-            '     <input type="radio" id="customRadioInline2" name="customRadioInline'+radioBtnId+'"" class="custom-control-input">' +
-            '     <label class="custom-control-label" for="customRadioInline'+radioBtnId+'">OR</label>' +
-            '   </div>'+
+            '     <input type="radio" id="customRadioInline2" name="customRadioInline' + radioBtnId + '"" class="custom-control-input">' +
+            '     <label class="custom-control-label" for="customRadioInline' + radioBtnId + '">OR</label>' +
+            '   </div>' +
             '</div>';
-        logicalOpEnd = '   </div>' ;
+        logicalOpEnd = '   </div>';
         radioBtnId++;
     }
 

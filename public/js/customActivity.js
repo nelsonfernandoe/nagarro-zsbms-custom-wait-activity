@@ -158,6 +158,9 @@ define([
 
 
         function getDynamicAttributes(dynamicAttGroup) {
+            if (!dynamicAttGroup) {
+                return;
+            }
             const children = dynamicAttGroup.children;
             let logicalOp;
             let logicalOpGroup;
@@ -194,6 +197,9 @@ define([
             for (let i = 1; i <= totalTabs; i++) {
                 /* Read UI values */
                 let dynamicAttGroup = $(`#dynamicAttribute-${i} .row.logical-op-group`);
+                if (!(dynamicAttGroup && dynamicAttGroup.length)) {
+                    continue;
+                }
                 const dynamicAttributes = getDynamicAttributes(dynamicAttGroup[0]);
                 console.log('Final da group: ', dynamicAttributes);
 
