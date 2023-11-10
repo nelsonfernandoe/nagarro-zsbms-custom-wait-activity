@@ -53,6 +53,21 @@ button.nav-link.active {
     color: var(--bms-primary);
 }
 
+button i.fa{
+    color: var(--bms-primary);
+}
+
 button#remove {
     background-color: var(--bms-primary);
 }
+
+.logical-op-group {
+    border: 1px solid var(--bms-primary);
+    padding: 1.5rem 1rem;
+    margin-bottom: 1rem;
+}
+
+/*#group-tab-list{
+    height: 80vh;
+    overflow-x: scroll;
+}*/
