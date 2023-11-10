@@ -351,10 +351,13 @@ define([
         function updateUIDropdownsWithSchema() {
             $(".attribute-select").html('');
             $(".attibute-date").html('');
-            for (var i = 0; i < schemadata.schema.length; i++) {
+            for (let i = 0; i < schemadata.schema.length; i++) {
                 //  getattributes.push(schema.schema[i].name);
+                if(!schemadata.schema[i].name)
+                    continue;
+
                 $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
-                if (schemadata.schema[i].type == 'Date') {
+                if (schemadata.schema[i].type === 'Date') {
                     $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
                 }
             }
@@ -378,6 +381,8 @@ define([
 
             console.log("Work inside");
             console.log("Schema data", schemadata);
+            updateUIDropdownsWithSchema();
+            /*
             $(".attribute-select").html('');
             $(".attibute-date").html('');
             for (var i = 0; i < schemadata.schema.length; i++) {
@@ -385,7 +390,7 @@ define([
                 if (schemadata.schema[i].type == 'Date') {
                     $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
                 }
-            }
+            }*/
         });
 
         $('#btn-preview').click(function () {
