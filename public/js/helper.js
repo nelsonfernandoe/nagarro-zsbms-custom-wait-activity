@@ -39,6 +39,7 @@ $(document).on('click', '.dynamicgroup', function (event) {
 
 $(document).on('click', '#addGroup', function (event) {
     addGroup();
+    configureAddGroupButton();
 });
 
 $(document).on('click', '.removeGroup', function (event) {
@@ -55,6 +56,7 @@ $(document).on('click', '.removeGroup', function (event) {
     $("#v-pills-dynamic" + lengthid).css('display', 'block');
 
     configureRemoveGroupBtn();
+    configureAddGroupButton();
 });
 
 $(document).on('click', 'button.add-da', function (event) {
@@ -133,6 +135,14 @@ function configureRemoveDArow(tab, currentGroupDetails, isSecondTime) {
     if (currentGroupParent && !isSecondTime) {
         configureRemoveDArow(tab, {currentGroup: currentGroupParent, currentGroupParent: undefined}, true);
     }
+}
+
+function configureAddGroupButton(){
+    const totalTabs = $('.nav-link.dynamicgroup').length;
+    if (totalTabs >= 19)
+        $("#addGroup").css('display', 'none');
+    else
+        $("#addGroup").css('display', 'block');
 }
 
 function configureRemoveGroupBtn() {

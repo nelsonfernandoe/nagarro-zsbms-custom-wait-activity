@@ -211,36 +211,37 @@ exports.execute = function (req, res) {
             let path;
             if (waitTime) {
                 path = 'wait_path';
+                console.log('Path selected: ', path);
+                const responseObject = {"waitTime": waitTime};
+                console.log('Response object to JB: ', JSON.stringify(responseObject));
+                res.status(200).json(responseObject);
+
             } else {
                 path = 'reminder_path';
+                console.log('Path selected: ', path);
                 apiService.exitContact(decodedArgs.activityInfo.journeyName, decoded.keyValue)
                     .then(res => {
                         console.log('Contact exited successfully');
+                        res.status(500).json({});
                     }).catch(e => {
                     console.log('Error in exiting the contact.');
                 });
             }
-            console.log('Path selected: ', path);
-
-            const responseObject = {"branchResult": path, "waitTime": waitTime};
-            //logData(req);
-            console.log('Response object to JB: ', JSON.stringify(responseObject));
 
             // Old logic to save the wait time in the data extension
             if (waitTime && useDEColumnForWaitTime) {
                 console.log('Saving wait time...');
                 apiService.saveWaitTime(waitTime, decoded)
                     .then(resp => {
-                        postToPipeDream(waitTime);
+                        // postToPipeDream(waitTime);
                     }).catch(err => {
                     console.error('Error in execute method: ', err);
                     return res.status(500).end();
                 });
             } else {
-                postToPipeDream(waitTime);
+                // postToPipeDream(waitTime);
             }
 
-            res.status(200).json(responseObject);
         } else {
             console.error('inArguments invalid.');
             return res.status(400).end();
