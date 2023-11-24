@@ -17,7 +17,7 @@
     "execute": {
       "inArguments": [],
       "outArguments": [],
-      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/execute/",
+      "url": "https://dynamic-time-render.onrender.com/journeybuilder/execute/",
       "verb": "POST",
       "body": "",
       "header": "",
@@ -30,17 +30,17 @@
     "validate": {
       "verb": "POST",
       "format": "json",
-      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/validate/"
+      "url": "https://dynamic-time-render.onrender.com/journeybuilder/validate/"
     },
     "publish": {
       "verb": "POST",
       "format": "json",
-      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/publish/"
+      "url": "https://dynamic-time-render.onrender.com/journeybuilder/publish/"
     },
     "Save": {
       "verb": "POST",
       "format": "json",
-      "url": "https://zs-bms-custom-wait.onrender.com/journeybuilder/save/"
+      "url": "https://dynamic-time-render.onrender.com/journeybuilder/save/"
     }
   },
   "wizardSteps": [
