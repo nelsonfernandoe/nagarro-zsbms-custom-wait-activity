@@ -168,7 +168,7 @@ function addGroup(dynamicAttLength = 1) {
 
     const dynamicAttributes = Array(dynamicAttLength)
         .fill(1).map((v, i) => getDynamicAttributeHTML(grouplength, i + 1)).join("");
-
+  
     const addnewTab = '       <div role="tabpanel" id="v-pills-dynamic' + grouplength + '" aria-labelledby="v-pills-dynamic' + grouplength + '-tab" class="fade tab-pane dynamic-tabs1"> ' +
         '<form class="" onsubmit="return false">' +
         ' <div class="container">' +
@@ -353,6 +353,11 @@ function getDynamicAttributeHTML(tab, group) {
         '       <option value="ge">greater than equals</option>' +
         '       <option value="lt">lesser than </option>' +
         '       <option value="le">lesser than equals</option>' +
+        '       <option value="ew">ends With</option>' +
+        '       <option value="sw">start with</option>' +
+        '       <option value="eiww">exist in whole word</option>' +
+        '       <option value="co">contains</option>' +
+        '       <option value="dnco">does not contains</option>' +
         '   </select>' +
         '   </div>' +
         '   <div class="col-md-3">' +
