@@ -98,6 +98,7 @@ define([
             console.log(interaction);
         }
 
+        // used by sfmc we use using to mock sfmc call(local testing of initalizer tmethos of smfc)
         function initialize(data) {
             console.log('initialize started: ', data);
             if (data) {
@@ -156,7 +157,7 @@ define([
             return res.valid;
         }
 
-
+        // used in parse user config ( parsing config and validation)
         function getDynamicAttributes(dynamicAttGroup) {
             if (!dynamicAttGroup) {
                 return;
@@ -236,7 +237,7 @@ define([
 
             return userConfigs;
         }
-
+//old logic fn
         async function createWaitTimeDECol() {
             console.log('Creating column from client side... ')
             const currentTime = moment(new Date()).format('YYYYMMDDHHmmss');
@@ -381,6 +382,7 @@ define([
             connection.trigger('updateActivity', payload);
         }
 
+        // update bug with this method drop down one
         function updateUIDropdownsWithSchema() {
             $(".attribute-select").html('');
             $(".attibute-date").html('');
@@ -411,6 +413,38 @@ define([
         }
 
         $(document).on('click', '#addGroup', function (event) {
+
+            console.log("Work inside");
+            console.log("Schema data", schemadata);
+            updateUIDropdownsWithSchema();
+            /*
+            $(".attribute-select").html('');
+            $(".attibute-date").html('');
+            for (var i = 0; i < schemadata.schema.length; i++) {
+                $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+                if (schemadata.schema[i].type == 'Date') {
+                    $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+                }
+            }*/
+        });
+
+        $(document).on('click', 'button.add-da', function (event) {
+
+            console.log("Work inside");
+            console.log("Schema data", schemadata);
+            updateUIDropdownsWithSchema();
+            /*
+            $(".attribute-select").html('');
+            $(".attibute-date").html('');
+            for (var i = 0; i < schemadata.schema.length; i++) {
+                $(".attribute-select").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+                if (schemadata.schema[i].type == 'Date') {
+                    $(".attibute-date").append('<option value="' + schemadata.schema[i].name + '">' + schemadata.schema[i].name + '</option>');
+                }
+            }*/
+        });
+
+        $(document).on('click', 'button.add-layer-da',  function (event) {
 
             console.log("Work inside");
             console.log("Schema data", schemadata);

@@ -105,6 +105,24 @@ exports.execute = function (req, res) {
                         return inArgs[da.property] > da.operand;
                     case "ge":
                         return inArgs[da.property] >= da.operand;
+                    case "ew":
+                            return inArgs[da.property].endsWith(da.operand);
+                    case "sw":
+                            return inArgs[da.property].startsWith(da.operand);
+                    case "eiww":
+                            return inArgs[da.property].includes(da.operand);
+                    case "co":
+                            return inArgs[da.property].includes(a.operand);    
+                    case "dnco":
+                            return !inArgs[da.property].includes(da.operand);
+                    // case "iAo":
+                    //         return !inArgs[da.property].includes(da.operand);
+                    // case "bA":
+                    //         return !inArgs[da.property].includes(da.operand);
+                    // case "aA":
+                    //         return !inArgs[da.property].includes(da.operand);                 
+
+
                     default:
                         return false;
                 }
