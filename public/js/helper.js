@@ -349,10 +349,10 @@ function getDynamicAttributeHTML(tab, group) {
         '"   aria-label="Dynamic Attribute" class="form-select operator-select" style="font-size: 12px;">' +
         // '  <option>Select Relationship</option>' +
         '       <option value="eq">equals</option>' +
-        '       <option value="gt">greater than</option>' +
-        '       <option value="ge">greater than equals</option>' +
-        '       <option value="lt">lesser than </option>' +
-        '       <option value="le">lesser than equals</option>' +
+        '       <option value="gt">is after</option>' +
+        '       <option value="ge">is on or after </option>' +
+        '       <option value="lt">is before</option>' +
+        '       <option value="le">is on or before </option>' +
         '       <option value="ew">ends With</option>' +
         '       <option value="sw">start with</option>' +
         '       <option value="eiww">exist in whole word</option>' +
