@@ -313,8 +313,8 @@ define([
                     console.log({index, userConfig});
                     let pos = index + 1;
 
-                    /* populate the values */
-                    let dynamicAttributes = userConfig.dynamicAttributes || [];
+                    /* populate the values(error here now) */
+                    let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
                     for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
                         $(`#dynamicAttribute-${pos} .attribute-select`).eq(i).val(dynamicAttribute.property);
                         $(`#dynamicAttribute-${pos} .operator-select`).eq(i).val(dynamicAttribute.operator);
