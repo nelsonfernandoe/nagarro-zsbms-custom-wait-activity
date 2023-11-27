@@ -267,6 +267,7 @@ define([
                 payload['arguments'].execute.inArguments.length > 0
             );
             const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : [];
+            // error line
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
 
             if (useDEColumnForWaitTime) {
@@ -343,9 +344,11 @@ define([
         function getInArgFromConfig(userConfigs) {
             const inArgs = [];
             const inArgsObj = {};
-
+            console.log("getInArgFromConfig  userConfigs", userConfigs);
+            // error on done stage
             userConfigs.forEach(uc => {
-                (uc.dynamicAttributes || []).forEach(da => {
+                console.log("aaaaaaaaaaaaaaaaaaa", uc, uc.dynamicAttributes);
+                (uc.dynamicAttributes.dynamicAttributes || []).forEach(da => {
                     inArgs.push(da.property);
                 });
                 inArgs.push(uc.dateAttribute.property);
@@ -368,13 +371,16 @@ define([
                 waitTimeColumnName,
                 activityInstanceId
             };
+            
             const inArgs = getInArgFromConfig(userConfig);
+            console.log("wwwwwwwwwwwwwwww", inArgs);
             payload['arguments'].execute.inArguments = [{
                 tokens: authTokens,
                 userConfig,
                 activityInfo,
                 ...inArgs,
             }];
+            console.log("metadata payload", payload['metaData']);
 
             payload['metaData'].isConfigured = true;
 
@@ -549,7 +555,7 @@ define([
 
             /* this is for local test */
             $(document).on('click', '#done', function (event) {
-                // save();
+                save();
                 parseUserConfig();
             });
 
