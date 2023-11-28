@@ -162,6 +162,7 @@ function configureRemoveGroupBtn() {
 }
 
 function addGroup(dynamicAttLength = 1) {
+    console.log("addGroup helper class");
     const grouplength = $(".dynamicgroup").length + 1;
 
     const addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
@@ -315,6 +316,7 @@ function addGroup(dynamicAttLength = 1) {
 
 
 function getDynamicAttributeHTML(tab, group) {
+    console.log("addGroup getDynamicAttributeHTML class");
     let logicalOp = '';
     let logicalOpEnd = '';
     if (group) {
