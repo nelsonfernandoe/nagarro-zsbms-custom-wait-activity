@@ -308,23 +308,27 @@ define([
             /* based on the payload config, repopulate the UI */
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
-
+            
                 console.log("userConfig values reload", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log({index, userConfig}); 
+                    console.log({ index, userConfig });
                     let pos = index + 1;
-                    /* populate the values(error here now) */
+                    
+                    /* populate the values */
                     console.log("userConfig.dynamicAttributes", userConfig.dynamicAttributes);
                     let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
                     console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
+            
                     for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
                         let pos_dynamic = i + 1;
-                        console.log("i", i,"dynamicAttribute", dynamicAttribute, "pos", pos);
-                        $(`#dynamicAttribute-${pos_dynamic} .attribute-select`).eq(i).val(dynamicAttribute.property);
-                        $(`#dynamicAttribute-${pos_dynamic} .operator-select`).eq(i).val(dynamicAttribute.operator);
-                        $(`#dynamicAttribute-${pos_dynamic} .operand-input`).eq(i).val(dynamicAttribute.operand);
+                        console.log("i", i, "dynamicAttribute", dynamicAttribute, "pos_dynamic", pos_dynamic);
+            
+                        // Update the IDs to be unique for each dynamic attribute
+                        $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .attribute-select`).val(dynamicAttribute.property);
+                        $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operator-select`).val(dynamicAttribute.operator);
+                        $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operand-input`).val(dynamicAttribute.operand);
                     }
-
+            
                     $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
                     $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
                     $(`#dateAtt-unit-${pos}`).val(userConfig.dateAttribute.unit);
@@ -332,17 +336,17 @@ define([
                     $(`#dateAtt-tz-${pos}`).val(userConfig.dateAttribute.timeZone);
                     $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait).change();
                     $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
-
+            
                     /* to activate tab1 */
                     $(".dynamic-tabs1").css('display', 'none');
                     $(".dynamic-tabs1").removeClass('active');
                     $(".dynamicgroup").removeClass('active');
                     $("#v-pills-dynamic1-tab").addClass('active');
-                    // $('#v-pills-dynamic' + grouplength).addClass('active');
                     $("#v-pills-dynamic1").addClass('show active');
                     $("#v-pills-dynamic1").css('display', 'block');
                 });
             });
+            
         }
 
         function getInArgFromConfig(userConfigs) {
