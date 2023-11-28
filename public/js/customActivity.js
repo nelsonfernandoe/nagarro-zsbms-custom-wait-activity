@@ -311,18 +311,18 @@ define([
 
                 console.log("userConfig values reload", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log({index, userConfig});
+                    console.log({index, userConfig}); 
                     let pos = index + 1;
-
                     /* populate the values(error here now) */
                     console.log("userConfig.dynamicAttributes", userConfig.dynamicAttributes);
                     let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
                     console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
                     for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
+                        let pos_dynamic = i + 1;
                         console.log("i", i,"dynamicAttribute", dynamicAttribute, "pos", pos);
-                        $(`#dynamicAttribute-${pos} .attribute-select`).eq(i).val(dynamicAttribute.property);
-                        $(`#dynamicAttribute-${pos} .operator-select`).eq(i).val(dynamicAttribute.operator);
-                        $(`#dynamicAttribute-${pos} .operand-input`).eq(i).val(dynamicAttribute.operand);
+                        $(`#dynamicAttribute-${pos_dynamic} .attribute-select`).eq(i).val(dynamicAttribute.property);
+                        $(`#dynamicAttribute-${pos_dynamic} .operator-select`).eq(i).val(dynamicAttribute.operator);
+                        $(`#dynamicAttribute-${pos_dynamic} .operand-input`).eq(i).val(dynamicAttribute.operand);
                     }
 
                     $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
