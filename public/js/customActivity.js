@@ -296,7 +296,7 @@ define([
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
                 $.each(userConfigs, function (index, userConfig) {
-                    const dynamicAttLength = (userConfig.dynamicAttributes || []).length || 1;
+                    const dynamicAttLength = (userConfig.dynamicAttributes.dynamicAttributes || []).length || 1;
                     addGroup(dynamicAttLength);
                 })
             });
