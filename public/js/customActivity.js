@@ -315,9 +315,11 @@ define([
                     let pos = index + 1;
 
                     /* populate the values(error here now) */
-                    console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes);
+                    console.log("userConfig.dynamicAttributes", userConfig.dynamicAttributes);
                     let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
+                    console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
                     for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
+                        console.log("i", i,"dynamicAttribute", dynamicAttribute, "pos", pos);
                         $(`#dynamicAttribute-${pos} .attribute-select`).eq(i).val(dynamicAttribute.property);
                         $(`#dynamicAttribute-${pos} .operator-select`).eq(i).val(dynamicAttribute.operator);
                         $(`#dynamicAttribute-${pos} .operand-input`).eq(i).val(dynamicAttribute.operand);
