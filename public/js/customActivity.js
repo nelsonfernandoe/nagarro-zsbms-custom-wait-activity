@@ -309,11 +309,13 @@ define([
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
 
+                console.log("userConfig values reload", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
                     console.log({index, userConfig});
                     let pos = index + 1;
 
                     /* populate the values(error here now) */
+                    console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes);
                     let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
                     for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
                         $(`#dynamicAttribute-${pos} .attribute-select`).eq(i).val(dynamicAttribute.property);
