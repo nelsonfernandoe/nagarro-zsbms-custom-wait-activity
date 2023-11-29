@@ -295,7 +295,9 @@ define([
 
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
+                console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzz", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
+                    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", userConfigs.dynamicAttributes, userConfigs.dynamicAttributes.dynamicAttributes);
                     const dynamicAttLength = (userConfig.dynamicAttributes.dynamicAttributes || []).length || 1;
                     addGroup(dynamicAttLength);
                 })
@@ -390,7 +392,7 @@ define([
             }];
             console.log("metadata payload", payload['metaData']);
 
-            payload['metaData'].isConfigured = true;
+            //payload['metaData'].isConfigured = true;
 
             console.log('Save done: ', {payload});
             connection.trigger('updateActivity', payload);
