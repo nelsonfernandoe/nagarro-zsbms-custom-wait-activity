@@ -198,12 +198,12 @@ define([
             for (let i = 1; i <= totalTabs; i++) {
                 /* Read UI values */
                 let dynamicAttGroup = $(`#dynamicAttribute-${i} .row.logical-op-group`);
-                console.log("dynamicAttGroup values while saving", dynamicAttGroup);
+                console.log("dynamicAttGroup values while saving", JSON.stringify(dynamicAttGroup));
                 if (!(dynamicAttGroup && dynamicAttGroup.length)) {
                     continue;
                 }
                 const dynamicAttributes = getDynamicAttributes(dynamicAttGroup[0]);
-                console.log('Final da group: ', dynamicAttributes,dynamicAttGroup[0] );
+                console.log('Final da group: ', JSON.stringify(dynamicAttributes),JSON.stringify(dynamicAttGroup[0]) );
 
                 let dateAttProp = $(`#dateAtt-prop-${i}`).val();
                 let dateAttDuration = $(`#dateAtt-duration-${i}`).val();
@@ -229,14 +229,14 @@ define([
                     }
                 };
 
-                console.log("useConfig after values addition", userConfig);
+                console.log("useConfig after values addition",JSON.stringify( userConfig));
 
                 if (!validateConfig(userConfig, i)) {
                     break;
                 }
                 userConfigs.push(userConfig);
             }
-            console.log({userConfigs});
+            console.log("user config at last parseUserConfig",JSON.stringify({userConfigs}));
 
             return userConfigs;
         }
@@ -357,7 +357,7 @@ define([
         function getInArgFromConfig(userConfigs) {
             const inArgs = [];
             const inArgsObj = {};
-            console.log("getInArgFromConfig  userConfigs", userConfigs);
+            console.log("getInArgFromConfig  userConfigs", JSON.stringify(userConfigs));
             // error on done stage
             userConfigs.forEach(uc => {
                 console.log("aaaaaaaaaaaaaaaaaaa", uc, uc.dynamicAttributes);
@@ -375,7 +375,7 @@ define([
 
         function save() {
             const userConfig = parseUserConfig();
-            console.log("userConfig save function", userConfig);
+            console.log("userConfig save function", JSON.stringify(userConfig));
             const activityInfo = {
                 journeyName,
                 eventDefinitionKey,
@@ -387,7 +387,7 @@ define([
             };
             
             const inArgs = getInArgFromConfig(userConfig);
-            console.log("inArgs: save function", inArgs);
+            console.log("inArgs: save function", JSON.stringify(inArgs));
             payload['arguments'].execute.inArguments = [{
                 tokens: authTokens,
                 userConfig,
@@ -398,7 +398,7 @@ define([
 
             //payload['metaData'].isConfigured = true;
 
-            console.log('Save done: ', {payload});
+            console.log('Save done: ',JSON.stringify( {payload}));
             connection.trigger('updateActivity', payload);
         }
 
