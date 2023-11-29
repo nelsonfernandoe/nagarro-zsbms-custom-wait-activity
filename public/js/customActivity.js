@@ -297,7 +297,7 @@ define([
                 const userConfigs = inArgument.userConfig || [];
                 console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzz", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", userConfigs.dynamicAttributes, userConfigs.dynamicAttributes.dynamicAttributes);
+                    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", userConfig.dynamicAttributes,userConfig.dynamicAttributes.dynamicAttributes);
                     const dynamicAttLength = (userConfig.dynamicAttributes.dynamicAttributes || []).length || 1;
                     addGroup(dynamicAttLength);
                 })
