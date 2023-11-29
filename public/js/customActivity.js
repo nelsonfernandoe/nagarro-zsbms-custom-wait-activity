@@ -198,11 +198,12 @@ define([
             for (let i = 1; i <= totalTabs; i++) {
                 /* Read UI values */
                 let dynamicAttGroup = $(`#dynamicAttribute-${i} .row.logical-op-group`);
+                console.log("dynamicAttGroup values while saving", dynamicAttGroup);
                 if (!(dynamicAttGroup && dynamicAttGroup.length)) {
                     continue;
                 }
                 const dynamicAttributes = getDynamicAttributes(dynamicAttGroup[0]);
-                console.log('Final da group: ', dynamicAttributes);
+                console.log('Final da group: ', dynamicAttributes,dynamicAttGroup[0] );
 
                 let dateAttProp = $(`#dateAtt-prop-${i}`).val();
                 let dateAttDuration = $(`#dateAtt-duration-${i}`).val();
@@ -227,6 +228,8 @@ define([
                         extendTime: dateAttExtendTime
                     }
                 };
+
+                console.log("useConfig after values addition", userConfig);
 
                 if (!validateConfig(userConfig, i)) {
                     break;
@@ -372,6 +375,7 @@ define([
 
         function save() {
             const userConfig = parseUserConfig();
+            console.log("userConfig save function", userConfig);
             const activityInfo = {
                 journeyName,
                 eventDefinitionKey,
@@ -383,7 +387,7 @@ define([
             };
             
             const inArgs = getInArgFromConfig(userConfig);
-            console.log("wwwwwwwwwwwwwwww", inArgs);
+            console.log("inArgs: save function", inArgs);
             payload['arguments'].execute.inArguments = [{
                 tokens: authTokens,
                 userConfig,
