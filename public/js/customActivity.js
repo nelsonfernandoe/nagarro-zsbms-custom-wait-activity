@@ -159,6 +159,7 @@ define([
 
         // used in parse user config ( parsing config and validation)
         function getDynamicAttributes(dynamicAttGroup) {
+            console.log("getDynamicAttributes: dynamicAttGroup", dynamicAttGroup);
             if (!dynamicAttGroup) {
                 return;
             }
@@ -170,8 +171,10 @@ define([
             for (let child of children) {
                 console.log(child);
                 let classes = [...(child.classList || [])];
+                console.log("getDynamicAttributes: classes included", JSON.stringify(classes));
                 if (classes.includes('logical-ops')) {
                     /* operator div */
+                    console.log("getDynamicAttributes: logical-ops entry", JSON.stringify(child.children[0].children[0].checked ? 'and' : 'or'));
                     logicalOp = child.children[0].children[0].checked ? 'and' : 'or';
                 } else if (classes.includes('dynamic-attribute-row')) {
                     /* da row */
@@ -181,13 +184,20 @@ define([
                         operator: child.children[1].children[0].value,
                         operand: child.children[2].children[0].children[0].value
                     });
+                    console.log("getDynamicAttributes: dynamic-attribute-row entry", JSON.stringify({
+                        property: child.children[0].children[0].value,
+                        operator: child.children[1].children[0].value,
+                        operand: child.children[2].children[0].children[0].value
+                    }));
                 } else if (classes.includes('logical-op-group')) {
                     /* da group */
                     logicalOpGroup = getDynamicAttributes(child);
                     dynamicAttributes.push(logicalOpGroup);
+                    console.log("getDynamicAttributes: logical-op-group entry", JSON.stringify(logicalOpGroup));
                 }
             }
-
+            
+            console.log("getDynamicAttributes: {logicalOp, dynamicAttributes}", {logicalOp, dynamicAttributes});
             return {logicalOp, dynamicAttributes};
         }
 
