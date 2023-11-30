@@ -197,7 +197,7 @@ define([
                 }
             }
             
-            console.log("getDynamicAttributes: {logicalOp, dynamicAttributes}", {logicalOp, dynamicAttributes});
+            console.log("getDynamicAttributes: {logicalOp, dynamicAttributes}",JSON.stringify({logicalOp, dynamicAttributes}));
             return {logicalOp, dynamicAttributes};
         }
 
