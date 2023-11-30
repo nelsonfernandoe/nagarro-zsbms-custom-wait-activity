@@ -280,9 +280,11 @@ define([
                 payload['arguments'].execute.inArguments.length > 0
             );
             const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : [];
+            console.log("reloadUserConfig: inArguments", JSON.stringify(inArguments));
             // error line
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
-
+            console.log("reloadUserConfig: userConfig", JSON.stringify(inArguments[0].userConfig));
+            console.log("reloadUserConfig: hasUserConfig", hasUserConfig);
             if (useDEColumnForWaitTime) {
                 if (!hasInArguments || !(inArguments[0].activityInfo && inArguments[0].activityInfo.waitTimeColumnName)) {
                     $('#wait-time-col').css('display', 'none');
@@ -308,9 +310,9 @@ define([
 
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
-                console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzz", userConfigs);
+                console.log("reloadUserConfig: userConfigs", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", userConfig.dynamicAttributes,userConfig.dynamicAttributes.dynamicAttributes);
+                    console.log("reloadUserConfig: userConfig", userConfig,userConfig.dynamicAttributes,userConfig.dynamicAttributes.dynamicAttributes);
                     const dynamicAttLength = (userConfig.dynamicAttributes.dynamicAttributes || []).length || 1;
                     addGroup(dynamicAttLength);
                 })
@@ -416,6 +418,7 @@ define([
         function updateUIDropdownsWithSchema() {
             $(".attribute-select").html('');
             $(".attibute-date").html('');
+            console.log("updateUIDropdownsWithSchema: schemadata", JSON.stringify(schemadata));
             for (let i = 0; i < schemadata.schema.length; i++) {
                 //  getattributes.push(schema.schema[i].name);
                 if(!schemadata.schema[i].name)
