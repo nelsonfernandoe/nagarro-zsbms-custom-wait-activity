@@ -310,9 +310,9 @@ define([
 
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
-                console.log("reloadUserConfig: userConfigs", userConfigs);
+                console.log("reloadUserConfig: userConfigs for loop", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log("reloadUserConfig: userConfig", userConfig,userConfig.dynamicAttributes,userConfig.dynamicAttributes.dynamicAttributes);
+                    console.log("reloadUserConfig: userConfig for loop", userConfig,userConfig.dynamicAttributes,userConfig.dynamicAttributes.dynamicAttributes);
                     const dynamicAttLength = (userConfig.dynamicAttributes.dynamicAttributes || []).length || 1;
                     addGroup(dynamicAttLength);
                 })
