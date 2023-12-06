@@ -330,12 +330,19 @@ function getinnerHtmlStructure(userConfigValues){
     console.log("innder html here");
     for(let i=0;i< dynamicAttributes.length;i++){
         if(dynamicAttributes[i].logicalOp ){
+            console.log("getinnerHtmlStructure: if condition ");
             innerHtml+= getinnerHtmlStructure(dynamicAttributes[i].dynamicAttributes);
+            console.log("getinnerHtmlStructure: if condition output", innerHtml, dynamicAttributes[i].logicalOp);
         }else{
+            console.log("getinnerHtmlStructure: else condition ", i);
             if(i==0){
+                console.log("getinnerHtmlStructure: else if condition ");
                 innerHtml+= getDynamicAttributeHTML(i, 1);
+                console.log("getinnerHtmlStructure: else if condition output", innerHtml);
             }else{
-                    innerHtml+= getDynamicAttributeHTML(i, 0);
+                console.log("getinnerHtmlStructure: else else condition ");
+                innerHtml+= getDynamicAttributeHTML(i, 0);
+                console.log("getinnerHtmlStructure: else else conditionoutput", innerHtml);    
             }
             
         }
