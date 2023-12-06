@@ -348,6 +348,7 @@ function getinnerHtmlStructure(userConfigValues){
                 '     <label class="custom-control-label" for="customRadioInline' + radioBtnId + '">OR</label>' +
                 '   </div>' +
                 '</div>';
+                innerHtml += getDynamicAttributeHTML(i, 0);
                 console.log("getinnerHtmlStructure: else if condition output", innerHtml);
             }else{
                 console.log("getinnerHtmlStructure: else else condition ");
