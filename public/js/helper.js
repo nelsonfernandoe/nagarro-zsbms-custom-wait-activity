@@ -158,15 +158,17 @@ function configureRemoveGroupBtn() {
 // }
 
 function addGroup(dynamicAttLength = 1, userConfigValues = []) {
-    console.log("addGroup helper class");
+    console.log("addGroup helper class",dynamicAttLength, userConfigValues);
     const grouplength = $(".dynamicgroup").length + 1;
     let lengthOfInsideHtml = dynamicAttLength;
     const addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
     
     let dynamicAttributes = '';
     if(userConfigValues.length > 0){
+        console.log("inside add group check userconfig length if");
         dynamicAttributes = getinnerHtmlStructure(userConfigValues);
     }else{
+        console.log("inside add group check userconfig length else");
         dynamicAttributes=  Array(lengthOfInsideHtml)
         .fill(1).map((v, i) => getDynamicAttributeHTML(grouplength, i + 1)).join("");
     }

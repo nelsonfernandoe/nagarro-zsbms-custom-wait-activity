@@ -314,7 +314,7 @@ define([
                 $.each(userConfigs, function (index, userConfig) {
                     console.log("reloadUserConfig: userConfig for loop", userConfig,userConfig.dynamicAttributes);
                     const dynamicAttLength = (userConfig.dynamicAttributes || []).length || 1;
-                    addGroup(dynamicAttLength,userConfig.dynamicAttributes);
+                    addGroup(dynamicAttLength,userConfig.dynamicAttributes.dynamicAttributes);
                 })
             });
 
