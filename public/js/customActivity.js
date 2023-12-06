@@ -309,7 +309,7 @@ define([
 
 
             $.each(inArguments, function (index, inArgument) {
-                const userConfigs = inArgument.userConfig.dynamicAttributes.dynamicAttributes || [];
+                const userConfigs = inArgument.userConfig || [];
                 console.log("reloadUserConfig: userConfigs for loop", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
                     console.log("reloadUserConfig: userConfig for loop", userConfig,userConfig.dynamicAttributes);
