@@ -153,15 +153,24 @@ function configureRemoveGroupBtn() {
         $(".removeGroup").css('display', 'block');
 }
 
-function addGroup(dynamicAttLength = 1) {
+// function getInsideComponents(){
+
+// }
+
+function addGroup(dynamicAttLength = 1, userConfigValues = []) {
     console.log("addGroup helper class");
     const grouplength = $(".dynamicgroup").length + 1;
-
+    let lengthOfInsideHtml = dynamicAttLength;
     const addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
-
-    const dynamicAttributes = Array(dynamicAttLength)
+    
+    let dynamicAttributes = '';
+    if(userConfigValues.length > 0){
+        dynamicAttributes = getinnerHtmlStructure(userConfigValues);
+    }else{
+        dynamicAttributes=  Array(lengthOfInsideHtml)
         .fill(1).map((v, i) => getDynamicAttributeHTML(grouplength, i + 1)).join("");
-  
+    }
+    
     const addnewTab = '       <div role="tabpanel" id="v-pills-dynamic' + grouplength + '" aria-labelledby="v-pills-dynamic' + grouplength + '-tab" class="fade tab-pane dynamic-tabs1"> ' +
         '<form class="" onsubmit="return false">' +
         ' <div class="container">' +
@@ -304,6 +313,34 @@ function addGroup(dynamicAttLength = 1) {
 
     /* remove DA row button functionality */
     configureRemoveDArow(grouplength);
+}
+
+function getinnerHtmlStructure(userConfigValues){
+
+    let innerHtml= '';
+
+    // if(userConfigValues.length > 0){
+    //     lengthOfInsideHtml = userConfigValues && userConfigValues.dynamicAttributes && userConfigValues.dynamicAttributes.length;
+    // }
+
+    let dynamicAttributes =userConfigValues && userConfigValues.dynamicAttributes || [];
+
+    console.log("innder html here");
+    for(let i=0;i< dynamicAttributes.length;i++){
+        if(dynamicAttributes[i].logicalOp ){
+            innerHtml+= getinnerHtmlStructure(dynamicAttributes[i].dynamicAttributes);
+        }else{
+            if(i==0){
+                innerHtml+= getDynamicAttributeHTML(i, 1);
+            }else{
+                    innerHtml+= getDynamicAttributeHTML(i, 0);
+            }
+            
+        }
+    }
+    console.log("innder html final", innerHtml);
+    return innerHtml;
+
 }
 
 
