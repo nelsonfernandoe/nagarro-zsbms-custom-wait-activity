@@ -337,7 +337,17 @@ function getinnerHtmlStructure(userConfigValues){
             console.log("getinnerHtmlStructure: else condition ", i);
             if(i==0){
                 console.log("getinnerHtmlStructure: else if condition ");
-                innerHtml+= getDynamicAttributeHTML(i, 1);
+                innerHtml+= ' <div class="row logical-op-group">' +
+                '   <div class="logical-ops mb-2" style="display: flex">' +
+                '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
+                '     <input type="radio" id="customRadioInline1" name="customRadioInline' + radioBtnId + '" class="custom-control-input" checked="">' +
+                '     <label class="custom-control-label active" for="customRadioInline' + radioBtnId + '"">AND</label>' +
+                '   </div>' +
+                '   <div class="custom-control custom-radio custom-control-inline">' +
+                '     <input type="radio" id="customRadioInline2" name="customRadioInline' + radioBtnId + '"" class="custom-control-input">' +
+                '     <label class="custom-control-label" for="customRadioInline' + radioBtnId + '">OR</label>' +
+                '   </div>' +
+                '</div>';
                 console.log("getinnerHtmlStructure: else if condition output", innerHtml);
             }else{
                 console.log("getinnerHtmlStructure: else else condition ");
@@ -347,6 +357,8 @@ function getinnerHtmlStructure(userConfigValues){
             
         }
     }
+    logicalOpEnd = '   </div>';
+        radioBtnId++;
     console.log("innder html final", innerHtml);
     return innerHtml;
 
@@ -357,21 +369,21 @@ function getDynamicAttributeHTML(tab, group) {
     console.log("getDynamicAttributeHTML: tab, group", tab, group);
     let logicalOp = '';
     let logicalOpEnd = '';
-    if (group) {
-        logicalOp = ' <div class="row logical-op-group">' +
-            '   <div class="logical-ops mb-2" style="display: flex">' +
-            '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
-            '     <input type="radio" id="customRadioInline1" name="customRadioInline' + radioBtnId + '" class="custom-control-input" checked="">' +
-            '     <label class="custom-control-label active" for="customRadioInline' + radioBtnId + '"">AND</label>' +
-            '   </div>' +
-            '   <div class="custom-control custom-radio custom-control-inline">' +
-            '     <input type="radio" id="customRadioInline2" name="customRadioInline' + radioBtnId + '"" class="custom-control-input">' +
-            '     <label class="custom-control-label" for="customRadioInline' + radioBtnId + '">OR</label>' +
-            '   </div>' +
-            '</div>';
-        logicalOpEnd = '   </div>';
-        radioBtnId++;
-    }
+    // if (group) {
+    //     logicalOp = ' <div class="row logical-op-group">' +
+    //         '   <div class="logical-ops mb-2" style="display: flex">' +
+    //         '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
+    //         '     <input type="radio" id="customRadioInline1" name="customRadioInline' + radioBtnId + '" class="custom-control-input" checked="">' +
+    //         '     <label class="custom-control-label active" for="customRadioInline' + radioBtnId + '"">AND</label>' +
+    //         '   </div>' +
+    //         '   <div class="custom-control custom-radio custom-control-inline">' +
+    //         '     <input type="radio" id="customRadioInline2" name="customRadioInline' + radioBtnId + '"" class="custom-control-input">' +
+    //         '     <label class="custom-control-label" for="customRadioInline' + radioBtnId + '">OR</label>' +
+    //         '   </div>' +
+    //         '</div>';
+    //     logicalOpEnd = '   </div>';
+    //     radioBtnId++;
+    // }
 
     return logicalOp +
         '<div class="row dynamic-attribute-row dynamic-attribute-row-' + tab + ' mb-3" data-group-pos="' + tab + '">' +
