@@ -329,10 +329,10 @@ function getinnerHtmlStructure(userConfigValues){
 
     console.log("getinnerHtmlStructure: innder html here", userConfigValues);
     for(let i=0;i< userConfigValues.length;i++){
-        if(dynamicAttributes[i].logicalOp ){
+        if(userConfigValues[i].logicalOp ){
             console.log("getinnerHtmlStructure: if condition ");
-            innerHtml+= getinnerHtmlStructure(dynamicAttributes[i].dynamicAttributes);
-            console.log("getinnerHtmlStructure: if condition output", innerHtml, dynamicAttributes[i].logicalOp);
+            innerHtml+= getinnerHtmlStructure(userConfigValues[i].dynamicAttributes);
+            console.log("getinnerHtmlStructure: if condition output", innerHtml, userConfigValues[i].logicalOp);
         }else{
             console.log("getinnerHtmlStructure: else condition ", i);
             if(i==0){
