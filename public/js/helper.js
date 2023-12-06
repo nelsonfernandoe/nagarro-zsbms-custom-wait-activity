@@ -327,7 +327,7 @@ function getinnerHtmlStructure(userConfigValues){
 
     let dynamicAttributes =userConfigValues && userConfigValues.dynamicAttributes || [];
 
-    console.log("innder html here");
+    console.log("getinnerHtmlStructure: innder html here", userConfigValues);
     for(let i=0;i< dynamicAttributes.length;i++){
         if(dynamicAttributes[i].logicalOp ){
             console.log("getinnerHtmlStructure: if condition ");
