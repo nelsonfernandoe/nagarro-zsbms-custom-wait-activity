@@ -317,7 +317,7 @@ function addGroup(dynamicAttLength = 1, userConfigValues = []) {
     configureRemoveDArow(grouplength);
 }
 
-function getinnerHtmlStructure(userConfigValues){
+function getinnerHtmlStructure(userConfigValues, nameValue= ''){
 
     let innerHtml= '';
 
@@ -331,7 +331,7 @@ function getinnerHtmlStructure(userConfigValues){
     for(let i=0;i< userConfigValues.length;i++){
         if(userConfigValues[i].logicalOp ){
             console.log("getinnerHtmlStructure: if condition ");
-            innerHtml+= getinnerHtmlStructure(userConfigValues[i].dynamicAttributes);
+            innerHtml+= getinnerHtmlStructure(userConfigValues[i].dynamicAttributes,nameValue);
             console.log("getinnerHtmlStructure: if condition output", innerHtml, userConfigValues[i].logicalOp);
         }else{
             console.log("getinnerHtmlStructure: else condition ", i);
@@ -340,15 +340,15 @@ function getinnerHtmlStructure(userConfigValues){
                 innerHtml+= ' <div class="row logical-op-group">' +
                 '   <div class="logical-ops mb-2" style="display: flex">' +
                 '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
-                '     <input type="radio" id="customRadioInline1" name="customRadioInline' + radioBtnId + '" class="custom-control-input" checked="">' +
-                '     <label class="custom-control-label active" for="customRadioInline' + radioBtnId + '"">AND</label>' +
+                '     <input type="radio" id="customRadioInline1" name="customRadioInline' + nameValue+ radioBtnId + '" class="custom-control-input" checked="">' +
+                '     <label class="custom-control-label active" for="customRadioInline' + nameValue +radioBtnId + '"">AND</label>' +
                 '   </div>' +
                 '   <div class="custom-control custom-radio custom-control-inline">' +
-                '     <input type="radio" id="customRadioInline2" name="customRadioInline' + radioBtnId + '"" class="custom-control-input">' +
-                '     <label class="custom-control-label" for="customRadioInline' + radioBtnId + '">OR</label>' +
+                '     <input type="radio" id="customRadioInline2" name="customRadioInline' +nameValue+ radioBtnId + '"" class="custom-control-input">' +
+                '     <label class="custom-control-label" for="customRadioInline' +nameValue+ radioBtnId + '">OR</label>' +
                 '   </div>' +
                 '</div>';
-                innerHtml += getDynamicAttributeHTML(i, 0);
+                innerHtml += getDynamicAttributeHTML(i, 0, nameValue);
                 console.log("getinnerHtmlStructure: else if condition output", innerHtml);
             }else{
                 console.log("getinnerHtmlStructure: else else condition ");
@@ -366,7 +366,7 @@ function getinnerHtmlStructure(userConfigValues){
 }
 
 
-function getDynamicAttributeHTML(tab, group) {
+function getDynamicAttributeHTML(tab, group, nameValue= '') {
     console.log("getDynamicAttributeHTML: tab, group", tab, group);
     let logicalOp = '';
     let logicalOpEnd = '';
@@ -389,7 +389,7 @@ function getDynamicAttributeHTML(tab, group) {
     return logicalOp +
         '<div class="row dynamic-attribute-row dynamic-attribute-row-' + tab + ' mb-3" data-group-pos="' + tab + '">' +
         ' <div class="col-md-3">' +
-        ' <select id = "dynamicAtt-prop-' + tab +
+        ' <select id = "dynamicAtt-prop-' +nameValue+ tab +
         '" aria-label="Dynamic Attribute" class="form-select attribute-select " style="font-size: 12px;">' +
         '   <option>Dynamic Attribute</option>' +
         '   <option value="2">2</option>' +
@@ -398,7 +398,7 @@ function getDynamicAttributeHTML(tab, group) {
         '  </select>' +
         ' </div>' +
         '  <div class="col-md-3">' +
-        '   <select id = "dynamicAtt-op-' + tab +
+        '   <select id = "dynamicAtt-op-' +nameValue+ tab +
         '"   aria-label="Dynamic Attribute" class="form-select operator-select" style="font-size: 12px;">' +
         // '  <option>Select Relationship</option>' +
         '       <option value="eq">equals</option>' +
@@ -415,17 +415,17 @@ function getDynamicAttributeHTML(tab, group) {
         '   </div>' +
         '   <div class="col-md-3">' +
         '        <div class="form-input">' +
-        '            <input id = "dynamicAtt-operand-' + tab + '"  type="text" class="form-control operand-input" id="usr">' +
+        '            <input id = "dynamicAtt-operand-' +nameValue+ tab + '"  type="text" class="form-control operand-input" id="usr">' +
         '        </div>' +
         '   </div>' +
         '   <div class="col-md-3 actions">' +
-        '     <button class="btn add-da" data-group-pos="' + tab + '">' +
+        '     <button class="btn add-da" data-group-pos="' +nameValue+ tab + '">' +
         '         <i class="fa fa-plus"></i></i>' +
         '     </button>' +
-        '     <button class="btn add-layer-da" title="Add a layer" data-group-pos="' + tab + '">' +
+        '     <button class="btn add-layer-da" title="Add a layer" data-group-pos="' + nameValue+tab + '">' +
         '         <img src="images/add-layer.svg" alt="Add layer" style="width: 16px"/>\n' +
         '     </button>' +
-        '     <button class="btn remove-da" data-group-pos="' + tab + '">' +
+        '     <button class="btn remove-da" data-group-pos="' +nameValue+ tab + '">' +
         '         <i class="fa fa-remove"></i></i>' +
         '     </button>' +
         '  </div>' +
