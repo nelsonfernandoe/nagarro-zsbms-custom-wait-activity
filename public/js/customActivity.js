@@ -369,11 +369,13 @@ define([
 
         function configureValuesToHTML(data, nameValue= ''){
             let dynamicValues = data.dynamicAttributes;
+            console.log("configureValuesToHTML: ", dynamicValues);
             for (let i=0;i< dynamicValues.length;i++) {
                         
                     if(dynamicValues[i].logicalOp){
                         configureValuesToHTML(dynamicValues[i],i+nameValue);
                     }else{
+                        console.log("configureValuesToHTML: html", nameValue, i ,$(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).html(),$(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).html());
                         // Update the IDs to be unique for each dynamic attribute
                         $(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).val(dynamicValues[i].property);
                         $(`#dynamicAtt-prop-${nameValue}${i} .operator-select`).val(dynamicValues[i].operator);
