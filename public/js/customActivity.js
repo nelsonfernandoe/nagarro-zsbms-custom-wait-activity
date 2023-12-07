@@ -428,11 +428,11 @@ define([
                     if(dynamicValues[i].logicalOp){
                         configureValuesToHTML(dynamicValues[i],i+nameValue);
                     }else{
-                        console.log("configureValuesToHTML: html", nameValue, i ,$(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).html(),$(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).html());
+                        console.log("configureValuesToHTML: html", nameValue, i ,$(`#dynamicAtt-prop-${nameValue}${i}`).html(),$(`#dynamicAtt-op-${nameValue}${i}`).html(), $(`#dynamicAtt-operand-${nameValue}${i}`).html());
                         // Update the IDs to be unique for each dynamic attribute
                         // console.log($(`#dynamicAtt-prop-0`).html());
                         // id="dynamicAtt-op-0"
-                        $(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).val(dynamicValues[i].property);
+                        $(`#dynamicAtt-prop-${nameValue}${i}`).val(dynamicValues[i].property);
                         $(`#dynamicAtt-op-${nameValue}${i}`).val(dynamicValues[i].operator);
                         $(`#dynamicAtt-operand-${nameValue}${i}`).val(dynamicValues[i].operand);
                     }
