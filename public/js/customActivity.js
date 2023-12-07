@@ -367,7 +367,7 @@ define([
             
         }
 
-        function configureValuesToHTML(data,, nameValue= ''){
+        function configureValuesToHTML(data, nameValue= ''){
             let dynamicValues = data.dynamicAttributes;
             for (let i=0;i< dynamicValues.length;i++) {
                         
@@ -381,6 +381,7 @@ define([
                     }
 
         }
+    }
 
         function getInArgFromConfig(userConfigs) {
             const inArgs = [];
