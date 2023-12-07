@@ -375,9 +375,9 @@ define([
                         configureValuesToHTML(dynamicValues[i],i+nameValue);
                     }else{
                         // Update the IDs to be unique for each dynamic attribute
-                        $(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).val(dynamicAttribute[i].property);
-                        $(`#dynamicAtt-prop-${nameValue}${i} .operator-select`).val(dynamicAttribute[i].operator);
-                        $(`#dynamicAtt-prop-${nameValue}${i} .operand-input`).val(dynamicAttribute[i].operand);
+                        $(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).val(dynamicValues[i].property);
+                        $(`#dynamicAtt-prop-${nameValue}${i} .operator-select`).val(dynamicValues[i].operator);
+                        $(`#dynamicAtt-prop-${nameValue}${i} .operand-input`).val(dynamicValues[i].operand);
                     }
 
         }
