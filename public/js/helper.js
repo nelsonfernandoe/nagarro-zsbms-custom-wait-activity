@@ -331,7 +331,7 @@ function getinnerHtmlStructure(userConfigValues, nameValue= ''){
     for(let i=0;i< userConfigValues.length;i++){
         if(userConfigValues[i].logicalOp ){
             console.log("getinnerHtmlStructure: if condition ");
-            innerHtml+= getinnerHtmlStructure(userConfigValues[i].dynamicAttributes,i);
+            innerHtml+= getinnerHtmlStructure(userConfigValues[i].dynamicAttributes,i+nameValue);
             console.log("getinnerHtmlStructure: if condition output", innerHtml, userConfigValues[i].logicalOp);
         }else{
             console.log("getinnerHtmlStructure: else condition ", i);
@@ -340,12 +340,12 @@ function getinnerHtmlStructure(userConfigValues, nameValue= ''){
                 innerHtml+= ' <div class="row logical-op-group">' +
                 '   <div class="logical-ops mb-2" style="display: flex">' +
                 '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
-                '     <input type="radio" id="customRadioInline1" name="customRadioInline' + nameValue+ radioBtnId + '" class="custom-control-input" checked="">' +
-                '     <label class="custom-control-label active" for="customRadioInline' + nameValue +radioBtnId + '"">AND</label>' +
+                '     <input type="radio" id="customRadioInline1" name="customRadioInline' + nameValue+ i + '" class="custom-control-input" checked="">' +
+                '     <label class="custom-control-label active" for="customRadioInline' + nameValue +i + '"">AND</label>' +
                 '   </div>' +
                 '   <div class="custom-control custom-radio custom-control-inline">' +
-                '     <input type="radio" id="customRadioInline2" name="customRadioInline' +nameValue+ radioBtnId + '"" class="custom-control-input">' +
-                '     <label class="custom-control-label" for="customRadioInline' +nameValue+ radioBtnId + '">OR</label>' +
+                '     <input type="radio" id="customRadioInline2" name="customRadioInline' +nameValue+ i + '"" class="custom-control-input">' +
+                '     <label class="custom-control-label" for="customRadioInline' +nameValue+ i + '">OR</label>' +
                 '   </div>' +
                 '</div>';
                 innerHtml += getDynamicAttributeHTML(i, 0, nameValue);
@@ -359,7 +359,7 @@ function getinnerHtmlStructure(userConfigValues, nameValue= ''){
         }
     }
     innerHtml += '   </div>';
-        radioBtnId++;
+        //radioBtnId++;
     console.log("innder html final", innerHtml);
     return innerHtml;
 
