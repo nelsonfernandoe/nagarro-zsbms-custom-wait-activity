@@ -81,7 +81,7 @@ define([
             parsePrimary();
 
             // var getattributes = [];
-            reloadUserConfig();
+            reloadUserConfig(function(){setValuesInHTML()});
         }
 
 
@@ -272,7 +272,7 @@ define([
             // do something with myJson
         }
 
-        function reloadUserConfig() {
+        function reloadUserConfig(callback) {
             const hasInArguments = Boolean(
                 payload['arguments'] &&
                 payload['arguments'].execute &&
@@ -309,6 +309,7 @@ define([
 
 
             $.each(inArguments, function (index, inArgument) {
+                
                 const userConfigs = inArgument.userConfig || [];
                 console.log("reloadUserConfig: userConfigs for loop", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
@@ -321,8 +322,61 @@ define([
             /* update UI dropdowns from schema */
             updateUIDropdownsWithSchema();
 
+            callback();
 
             /* based on the payload config, repopulate the UI */
+            // $.each(inArguments, function (index, inArgument) {
+            //     const userConfigs = inArgument.userConfig || [];
+            
+            //     console.log("userConfig values reload", userConfigs);
+            //     $.each(userConfigs, function (index, userConfig) {
+            //         console.log({ index, userConfig });
+            //         let pos = index + 1;
+                    
+            //         /* populate the values */
+            //         console.log("userConfig.dynamicAttributes", userConfig.dynamicAttributes);
+            //         let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
+            //         console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
+            
+            //         configureValuesToHTML(userConfig.dynamicAttributes);
+            //         // for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
+            //         //     let pos_dynamic = i + 1;
+            //         //     console.log("i", i, "dynamicAttribute", dynamicAttribute, "pos_dynamic", pos_dynamic);
+            
+            //         //     // Update the IDs to be unique for each dynamic attribute
+            //         //     $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .attribute-select`).val(dynamicAttribute.property);
+            //         //     $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operator-select`).val(dynamicAttribute.operator);
+            //         //     $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operand-input`).val(dynamicAttribute.operand);
+            //         // }
+            
+            //         $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
+            //         $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
+            //         $(`#dateAtt-unit-${pos}`).val(userConfig.dateAttribute.unit);
+            //         $(`#dateAtt-timeline-${pos}`).val(userConfig.dateAttribute.timeline);
+            //         $(`#dateAtt-tz-${pos}`).val(userConfig.dateAttribute.timeZone);
+            //         $(`#dateAtt-extend-${pos}`).prop('checked', userConfig.dateAttribute.extendWait).change();
+            //         $(`#dateAtt-extend-time-${pos}`).val(userConfig.dateAttribute.extendTime);
+            
+            //         /* to activate tab1 */
+            //         $(".dynamic-tabs1").css('display', 'none');
+            //         $(".dynamic-tabs1").removeClass('active');
+            //         $(".dynamicgroup").removeClass('active');
+            //         $("#v-pills-dynamic1-tab").addClass('active');
+            //         $("#v-pills-dynamic1").addClass('show active');
+            //         $("#v-pills-dynamic1").css('display', 'block');
+            //     });
+            // });
+            
+        }
+
+        function setValuesInHTML(){
+            const hasInArguments = Boolean(
+                payload['arguments'] &&
+                payload['arguments'].execute &&
+                payload['arguments'].execute.inArguments &&
+                payload['arguments'].execute.inArguments.length > 0
+            );
+            const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : [];
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
             
@@ -364,7 +418,6 @@ define([
                     $("#v-pills-dynamic1").css('display', 'block');
                 });
             });
-            
         }
 
         function configureValuesToHTML(data, nameValue= ''){
@@ -377,9 +430,11 @@ define([
                     }else{
                         console.log("configureValuesToHTML: html", nameValue, i ,$(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).html(),$(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).html());
                         // Update the IDs to be unique for each dynamic attribute
+                        // console.log($(`#dynamicAtt-prop-0`).html());
+                        // id="dynamicAtt-op-0"
                         $(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).val(dynamicValues[i].property);
-                        $(`#dynamicAtt-prop-${nameValue}${i} .operator-select`).val(dynamicValues[i].operator);
-                        $(`#dynamicAtt-prop-${nameValue}${i} .operand-input`).val(dynamicValues[i].operand);
+                        $(`#dynamicAtt-op-${nameValue}${i}`).val(dynamicValues[i].operator);
+                        $(`#dynamicAtt-operand-${nameValue}${i}`).val(dynamicValues[i].operand);
                     }
 
         }
