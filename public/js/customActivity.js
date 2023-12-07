@@ -336,15 +336,16 @@ define([
                     let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
                     console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
             
-                    for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
-                        let pos_dynamic = i + 1;
-                        console.log("i", i, "dynamicAttribute", dynamicAttribute, "pos_dynamic", pos_dynamic);
+                    configureValuesToHTML(userConfig.dynamicAttributes);
+                    // for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
+                    //     let pos_dynamic = i + 1;
+                    //     console.log("i", i, "dynamicAttribute", dynamicAttribute, "pos_dynamic", pos_dynamic);
             
-                        // Update the IDs to be unique for each dynamic attribute
-                        $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .attribute-select`).val(dynamicAttribute.property);
-                        $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operator-select`).val(dynamicAttribute.operator);
-                        $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operand-input`).val(dynamicAttribute.operand);
-                    }
+                    //     // Update the IDs to be unique for each dynamic attribute
+                    //     $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .attribute-select`).val(dynamicAttribute.property);
+                    //     $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operator-select`).val(dynamicAttribute.operator);
+                    //     $(`#dynamicAttribute-${pos}-row-${pos_dynamic} .operand-input`).val(dynamicAttribute.operand);
+                    // }
             
                     $(`#dateAtt-prop-${pos}`).val(userConfig.dateAttribute.property);
                     $(`#dateAtt-duration-${pos}`).val(userConfig.dateAttribute.duration);
@@ -364,6 +365,21 @@ define([
                 });
             });
             
+        }
+
+        function configureValuesToHTML(data,, nameValue= ''){
+            let dynamicValues = data.dynamicAttributes;
+            for (let i=0;i< dynamicValues.length;i++) {
+                        
+                    if(dynamicValues[i].logicalOp){
+                        configureValuesToHTML(dynamicValues[i],i+nameValue);
+                    }else{
+                        // Update the IDs to be unique for each dynamic attribute
+                        $(`#dynamicAtt-prop-${nameValue}${i} .attribute-select`).val(dynamicAttribute[i].property);
+                        $(`#dynamicAtt-prop-${nameValue}${i} .operator-select`).val(dynamicAttribute[i].operator);
+                        $(`#dynamicAtt-prop-${nameValue}${i} .operand-input`).val(dynamicAttribute[i].operand);
+                    }
+
         }
 
         function getInArgFromConfig(userConfigs) {
