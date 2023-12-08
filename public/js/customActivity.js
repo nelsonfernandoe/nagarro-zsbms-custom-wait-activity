@@ -39,7 +39,7 @@ define([
         /* for local data mocking */
         let local;
         const isLocal = (location.hostname === "localhost" || location.hostname === "127.0.0.1");
-        console.log({isLocal});
+        //console.log({isLocal});
 
         if (isLocal) {
             preLocalSetup();
@@ -51,7 +51,7 @@ define([
 
         function onRender() {
             // JB will respond the first time 'ready' is called with 'initActivity'
-            console.log('On render events:');
+           // console.log('On render events:');
 
             connection.trigger('ready');
             connection.trigger('requestTokens');
@@ -66,8 +66,8 @@ define([
         }
 
         function onRequestedDataSources(dataSources) {
-            console.log('*** requestedDataSources ***');
-            console.log(dataSources);
+            // console.log('*** requestedDataSources ***');
+            // console.log(dataSources);
         }
 
         async function checkAndCreateDECol() {
@@ -75,8 +75,8 @@ define([
         }
 
         function handleSchema(schema) {
-            console.log("####Schema without strignify#####", schema);
-            console.log('*** Schema ***', JSON.stringify(schema))
+            // console.log("####Schema without strignify#####", schema);
+            // console.log('*** Schema ***', JSON.stringify(schema))
             schemadata = schema;
             parsePrimary();
 
@@ -94,13 +94,13 @@ define([
         }
 
         function onRequestedInteraction(interaction) {
-            console.log('*** requestedInteraction ***');
-            console.log(interaction);
+            // console.log('*** requestedInteraction ***');
+            // console.log(interaction);
         }
 
         // used by sfmc we use using to mock sfmc call(local testing of initalizer tmethos of smfc)
         function initialize(data) {
-            console.log('initialize started: ', data);
+           //console.log('initialize started: ', data);
             if (data) {
                 payload = data;
             }
@@ -114,12 +114,12 @@ define([
         }
 
         function onGetTokens(tokens) {
-            console.log(tokens);
+            //console.log(tokens);
             authTokens = tokens;
         }
 
         function onGetEndpoints(endpoints) {
-            console.log(endpoints);
+            //console.log(endpoints);
         }
 
         function validateDynamicAtts(dynamicAttributes) {
@@ -159,7 +159,7 @@ define([
 
         // used in parse user config ( parsing config and validation)
         function getDynamicAttributes(dynamicAttGroup) {
-            console.log("getDynamicAttributes: dynamicAttGroup", dynamicAttGroup);
+            //console.log("getDynamicAttributes: dynamicAttGroup", dynamicAttGroup);
             if (!dynamicAttGroup) {
                 return;
             }
@@ -169,12 +169,12 @@ define([
             let dynamicAttributes = [];
 
             for (let child of children) {
-                console.log(child);
+                //console.log(child);
                 let classes = [...(child.classList || [])];
-                console.log("getDynamicAttributes: classes included", JSON.stringify(classes));
+                //console.log("getDynamicAttributes: classes included", JSON.stringify(classes));
                 if (classes.includes('logical-ops')) {
                     /* operator div */
-                    console.log("getDynamicAttributes: logical-ops entry", JSON.stringify(child.children[0].children[0].checked ? 'and' : 'or'));
+                    //console.log("getDynamicAttributes: logical-ops entry", JSON.stringify(child.children[0].children[0].checked ? 'and' : 'or'));
                     logicalOp = child.children[0].children[0].checked ? 'and' : 'or';
                 } else if (classes.includes('dynamic-attribute-row')) {
                     /* da row */
@@ -184,20 +184,20 @@ define([
                         operator: child.children[1].children[0].value,
                         operand: child.children[2].children[0].children[0].value
                     });
-                    console.log("getDynamicAttributes: dynamic-attribute-row entry", JSON.stringify({
-                        property: child.children[0].children[0].value,
-                        operator: child.children[1].children[0].value,
-                        operand: child.children[2].children[0].children[0].value
-                    }));
+                    // console.log("getDynamicAttributes: dynamic-attribute-row entry", JSON.stringify({
+                    //     property: child.children[0].children[0].value,
+                    //     operator: child.children[1].children[0].value,
+                    //     operand: child.children[2].children[0].children[0].value
+                    // }));
                 } else if (classes.includes('logical-op-group')) {
                     /* da group */
                     logicalOpGroup = getDynamicAttributes(child);
                     dynamicAttributes.push(logicalOpGroup);
-                    console.log("getDynamicAttributes: logical-op-group entry", JSON.stringify(logicalOpGroup));
+                    //console.log("getDynamicAttributes: logical-op-group entry", JSON.stringify(logicalOpGroup));
                 }
             }
             
-            console.log("getDynamicAttributes: {logicalOp, dynamicAttributes}",JSON.stringify({logicalOp, dynamicAttributes}));
+            //console.log("getDynamicAttributes: {logicalOp, dynamicAttributes}",JSON.stringify({logicalOp, dynamicAttributes}));
             return {logicalOp, dynamicAttributes};
         }
 
@@ -208,12 +208,12 @@ define([
             for (let i = 1; i <= totalTabs; i++) {
                 /* Read UI values */
                 let dynamicAttGroup = $(`#dynamicAttribute-${i} .row.logical-op-group`);
-                console.log("dynamicAttGroup values while saving", JSON.stringify(dynamicAttGroup));
+                //console.log("dynamicAttGroup values while saving", JSON.stringify(dynamicAttGroup));
                 if (!(dynamicAttGroup && dynamicAttGroup.length)) {
                     continue;
                 }
                 const dynamicAttributes = getDynamicAttributes(dynamicAttGroup[0]);
-                console.log('Final da group: ', JSON.stringify(dynamicAttributes),JSON.stringify(dynamicAttGroup[0]) );
+                //console.log('Final da group: ', JSON.stringify(dynamicAttributes),JSON.stringify(dynamicAttGroup[0]) );
 
                 let dateAttProp = $(`#dateAtt-prop-${i}`).val();
                 let dateAttDuration = $(`#dateAtt-duration-${i}`).val();
@@ -239,20 +239,20 @@ define([
                     }
                 };
 
-                console.log("useConfig after values addition",JSON.stringify( userConfig));
+                //console.log("useConfig after values addition",JSON.stringify( userConfig));
 
                 if (!validateConfig(userConfig, i)) {
                     break;
                 }
                 userConfigs.push(userConfig);
             }
-            console.log("user config at last parseUserConfig",JSON.stringify({userConfigs}));
+            //console.log("user config at last parseUserConfig",JSON.stringify({userConfigs}));
 
             return userConfigs;
         }
 //old logic fn
         async function createWaitTimeDECol() {
-            console.log('Creating column from client side... ')
+            //console.log('Creating column from client side... ')
             const currentTime = moment(new Date()).format('YYYYMMDDHHmmss');
             let fieldName = `wait_time_${currentTime}`;
             const response = await fetch('https://zs-bms-custom-wait.onrender.com/journeybuilder/create-column', {
@@ -267,7 +267,7 @@ define([
                 waitTimeColumnName = fieldName;
                 localStorage.setItem(waitTimeColumnName, waitTimeColumnName);
             } catch (err) {
-                console.log('Error when calling create DE column API.', err);
+                //console.log('Error when calling create DE column API.', err);
             }
             // do something with myJson
         }
@@ -280,11 +280,11 @@ define([
                 payload['arguments'].execute.inArguments.length > 0
             );
             const inArguments = hasInArguments ? payload['arguments'].execute.inArguments : [];
-            console.log("reloadUserConfig: inArguments", JSON.stringify(inArguments));
+            //console.log("reloadUserConfig: inArguments", JSON.stringify(inArguments));
             // error line
             const hasUserConfig = inArguments[0].userConfig && inArguments[0].userConfig.length;
-            console.log("reloadUserConfig: userConfig", JSON.stringify(inArguments[0].userConfig));
-            console.log("reloadUserConfig: hasUserConfig", hasUserConfig);
+            //console.log("reloadUserConfig: userConfig", JSON.stringify(inArguments[0].userConfig));
+            //console.log("reloadUserConfig: hasUserConfig", hasUserConfig);
             if (useDEColumnForWaitTime) {
                 if (!hasInArguments || !(inArguments[0].activityInfo && inArguments[0].activityInfo.waitTimeColumnName)) {
                     $('#wait-time-col').css('display', 'none');
@@ -311,9 +311,9 @@ define([
             $.each(inArguments, function (index, inArgument) {
                 
                 const userConfigs = inArgument.userConfig || [];
-                console.log("reloadUserConfig: userConfigs for loop", userConfigs);
+                //console.log("reloadUserConfig: userConfigs for loop", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log("reloadUserConfig: userConfig for loop", userConfig,userConfig.dynamicAttributes);
+                    //console.log("reloadUserConfig: userConfig for loop", userConfig,userConfig.dynamicAttributes);
                     const dynamicAttLength = (userConfig.dynamicAttributes || []).length || 1;
                     addGroup(dynamicAttLength,userConfig.dynamicAttributes.dynamicAttributes);
                 })
@@ -380,15 +380,15 @@ define([
             $.each(inArguments, function (index, inArgument) {
                 const userConfigs = inArgument.userConfig || [];
             
-                console.log("userConfig values reload", userConfigs);
+                //console.log("userConfig values reload", userConfigs);
                 $.each(userConfigs, function (index, userConfig) {
-                    console.log({ index, userConfig });
+                    //console.log({ index, userConfig });
                     let pos = index + 1;
                     
                     /* populate the values */
-                    console.log("userConfig.dynamicAttributes", userConfig.dynamicAttributes);
+                    //console.log("userConfig.dynamicAttributes", userConfig.dynamicAttributes);
                     let dynamicAttributes = userConfig.dynamicAttributes.dynamicAttributes || [];
-                    console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
+                    //console.log("userConfig.dynamicAttributes.dynamicAttributes", userConfig.dynamicAttributes.dynamicAttributes);
             
                     configureValuesToHTML(userConfig.dynamicAttributes);
                     // for (let [i, dynamicAttribute] of dynamicAttributes.entries()) {
@@ -422,13 +422,13 @@ define([
 
         function configureValuesToHTML(data, nameValue= ''){
             let dynamicValues = data.dynamicAttributes;
-            console.log("configureValuesToHTML: ", dynamicValues);
+            //console.log("configureValuesToHTML: ", dynamicValues);
             for (let i=0;i< dynamicValues.length;i++) {
                         
                     if(dynamicValues[i].logicalOp){
                         configureValuesToHTML(dynamicValues[i],i+nameValue);
                     }else{
-                        console.log("configureValuesToHTML: html", nameValue, i ,$(`#dynamicAtt-prop-${nameValue}${i}`).html(),$(`#dynamicAtt-op-${nameValue}${i}`).html(), $(`#dynamicAtt-operand-${nameValue}${i}`).html());
+                        //console.log("configureValuesToHTML: html", nameValue, i ,$(`#dynamicAtt-prop-${nameValue}${i}`).html(),$(`#dynamicAtt-op-${nameValue}${i}`).html(), $(`#dynamicAtt-operand-${nameValue}${i}`).html());
                         // Update the IDs to be unique for each dynamic attribute
                         // console.log($(`#dynamicAtt-prop-0`).html());
                         // id="dynamicAtt-op-0"
@@ -443,10 +443,10 @@ define([
         function getInArgFromConfig(userConfigs) {
             const inArgs = [];
             const inArgsObj = {};
-            console.log("getInArgFromConfig  userConfigs", JSON.stringify(userConfigs));
+            //console.log("getInArgFromConfig  userConfigs", JSON.stringify(userConfigs));
             // error on done stage
             userConfigs.forEach(uc => {
-                console.log("aaaaaaaaaaaaaaaaaaa", uc, uc.dynamicAttributes);
+                //console.log("aaaaaaaaaaaaaaaaaaa", uc, uc.dynamicAttributes);
                 (uc.dynamicAttributes.dynamicAttributes || []).forEach(da => {
                     inArgs.push(da.property);
                 });
@@ -461,7 +461,7 @@ define([
 
         function save() {
             const userConfig = parseUserConfig();
-            console.log("userConfig save function", JSON.stringify(userConfig));
+            //console.log("userConfig save function", JSON.stringify(userConfig));
             const activityInfo = {
                 journeyName,
                 eventDefinitionKey,
@@ -473,18 +473,18 @@ define([
             };
             
             const inArgs = getInArgFromConfig(userConfig);
-            console.log("inArgs: save function", JSON.stringify(inArgs));
+            //console.log("inArgs: save function", JSON.stringify(inArgs));
             payload['arguments'].execute.inArguments = [{
                 tokens: authTokens,
                 userConfig,
                 activityInfo,
                 ...inArgs,
             }];
-            console.log("metadata payload", payload['metaData']);
+            //console.log("metadata payload", payload['metaData']);
 
             //payload['metaData'].isConfigured = true;
 
-            console.log('Save done: ',JSON.stringify( {payload}));
+            //console.log('Save done: ',JSON.stringify( {payload}));
             connection.trigger('updateActivity', payload);
         }
 
@@ -492,7 +492,7 @@ define([
         function updateUIDropdownsWithSchema() {
             $(".attribute-select").html('');
             $(".attibute-date").html('');
-            console.log("updateUIDropdownsWithSchema: schemadata", JSON.stringify(schemadata));
+            //console.log("updateUIDropdownsWithSchema: schemadata", JSON.stringify(schemadata));
             for (let i = 0; i < schemadata.schema.length; i++) {
                 //  getattributes.push(schema.schema[i].name);
                 if(!schemadata.schema[i].name)
@@ -511,18 +511,18 @@ define([
                 eventDefinitionKey = eventDefinitionModel.eventDefinitionKey;
                 dataExtensionId = eventDefinitionModel.dataExtensionId;
                 dataExtensionName = eventDefinitionModel.dataExtensionName;
-                console.log(">>>Event Definition Key " + eventDefinitionKey);
+                //console.log(">>>Event Definition Key " + eventDefinitionKey);
                 /*If you want to see all*/
-                console.log('>>>Request Trigger',
-                    JSON.stringify(eventDefinitionModel));
+                // console.log('>>>Request Trigger',
+                //     JSON.stringify(eventDefinitionModel));
             }
 
         }
 
         $(document).on('click', '#addGroup', function (event) {
 
-            console.log("Work inside");
-            console.log("Schema data", schemadata);
+            //console.log("Work inside");
+            //console.log("Schema data", schemadata);
             updateUIDropdownsWithSchema();
             /*
             $(".attribute-select").html('');
@@ -537,8 +537,8 @@ define([
 
         $(document).on('click', 'button.add-da', function (event) {
 
-            console.log("Work inside");
-            console.log("Schema data", schemadata);
+            //console.log("Work inside");
+            //console.log("Schema data", schemadata);
             updateUIDropdownsWithSchema();
             /*
             $(".attribute-select").html('');
@@ -553,8 +553,8 @@ define([
 
         $(document).on('click', 'button.add-layer-da',  function (event) {
 
-            console.log("Work inside");
-            console.log("Schema data", schemadata);
+            //console.log("Work inside");
+            //console.log("Schema data", schemadata);
             updateUIDropdownsWithSchema();
             /*
             $(".attribute-select").html('');
@@ -588,7 +588,7 @@ define([
                 $(`#${dateDurationId}`).prop('disabled', false);
                 $(`#${dateUnitId}`).prop('disabled', false);
             }
-            console.log({optionSelected});
+            //console.log({optionSelected});
         });
 
         $('input.duration-input').on('change', function (e) {
@@ -597,7 +597,7 @@ define([
             if (numVal > 999) {
                 this.value = 999;
             }
-            console.log({value});
+            //console.log({value});
         });
 
         function preLocalSetup() {

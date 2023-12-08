@@ -23,7 +23,7 @@ $(document).on('click', '.select', function () {
 
 $(document).on('click', '.dynamicgroup', function (event) {
     var getlength = $(this).attr('data-length');
-    console.log("length check", getlength);
+    //console.log("length check", getlength);
     if ($(this).attr('data-tab') != undefined) {
         $(".dynamic-tabs1").css('display', 'none');
         $("#" + $(this).attr('data-tab')).css('display', 'block');
@@ -158,17 +158,17 @@ function configureRemoveGroupBtn() {
 // }
 
 function addGroup(dynamicAttLength = 1, userConfigValues = []) {
-    console.log("addGroup helper class",dynamicAttLength, userConfigValues);
+    //console.log("addGroup helper class",dynamicAttLength, userConfigValues);
     const grouplength = $(".dynamicgroup").length + 1;
     let lengthOfInsideHtml = dynamicAttLength;
     const addGroup = ' <button class="nav-link dynamicgroup" id="v-pills-dynamic' + grouplength + '-tab" data-tab="v-pills-dynamic' + grouplength + '" data-bs-toggle="pill" data-bs-target="#v-pills-dynamic' + grouplength + '" type="button" role="tab" aria-controls="v-pills-dynamic' + grouplength + '" data-length="' + grouplength + '" aria-selected="false">Dynamic Group' + grouplength + '</button>';
     
     let dynamicAttributes = '';
     if(userConfigValues.length > 0){
-        console.log("inside add group check userconfig length if");
+        //console.log("inside add group check userconfig length if");
         dynamicAttributes = getinnerHtmlStructure(userConfigValues);
     }else{
-        console.log("inside add group check userconfig length else");
+        //console.log("inside add group check userconfig length else");
         dynamicAttributes=  Array(lengthOfInsideHtml)
         .fill(1).map((v, i) => getDynamicAttributeHTML(grouplength, i + 1)).join("");
     }
@@ -327,16 +327,16 @@ function getinnerHtmlStructure(userConfigValues, nameValue= ''){
 
     //let dynamicAttributes =userConfigValues && userConfigValues.dynamicAttributes || [];
 
-    console.log("getinnerHtmlStructure: innder html here", userConfigValues);
+    //console.log("getinnerHtmlStructure: innder html here", userConfigValues);
     for(let i=0;i< userConfigValues.length;i++){
         if(userConfigValues[i].logicalOp ){
-            console.log("getinnerHtmlStructure: if condition ");
+            //console.log("getinnerHtmlStructure: if condition ");
             innerHtml+= getinnerHtmlStructure(userConfigValues[i].dynamicAttributes,i+nameValue);
-            console.log("getinnerHtmlStructure: if condition output", innerHtml, userConfigValues[i].logicalOp);
+            //console.log("getinnerHtmlStructure: if condition output", innerHtml, userConfigValues[i].logicalOp);
         }else{
-            console.log("getinnerHtmlStructure: else condition ", i);
+            //console.log("getinnerHtmlStructure: else condition ", i);
             if(i==0){
-                console.log("getinnerHtmlStructure: else if condition ");
+                //console.log("getinnerHtmlStructure: else if condition ");
                 innerHtml+= ' <div class="row logical-op-group">' +
                 '   <div class="logical-ops mb-2" style="display: flex">' +
                 '   <div class="custom-control custom-radio custom-control-inline" style="margin-right: 10px">' +
@@ -349,25 +349,25 @@ function getinnerHtmlStructure(userConfigValues, nameValue= ''){
                 '   </div>' +
                 '</div>';
                 innerHtml += getDynamicAttributeHTML(i, 0, nameValue);
-                console.log("getinnerHtmlStructure: else if condition output", innerHtml);
+                //console.log("getinnerHtmlStructure: else if condition output", innerHtml);
             }else{
-                console.log("getinnerHtmlStructure: else else condition ");
+                //console.log("getinnerHtmlStructure: else else condition ");
                 innerHtml+= getDynamicAttributeHTML(i, 0, nameValue) ;
-                console.log("getinnerHtmlStructure: else else conditionoutput", innerHtml);    
+                //console.log("getinnerHtmlStructure: else else conditionoutput", innerHtml);    
             }
             
         }
     }
     innerHtml += '   </div>';
         //radioBtnId++;
-    console.log("innder html final", innerHtml);
+    //console.log("innder html final", innerHtml);
     return innerHtml;
 
 }
 
 
 function getDynamicAttributeHTML(tab, group, nameValue= '') {
-    console.log("getDynamicAttributeHTML: tab, group", tab, group);
+    //console.log("getDynamicAttributeHTML: tab, group", tab, group);
     let logicalOp = '';
     let logicalOpEnd = '';
     if (group) {
