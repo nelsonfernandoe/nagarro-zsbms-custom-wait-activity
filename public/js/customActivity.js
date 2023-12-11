@@ -482,7 +482,7 @@ define([
             }];
             //console.log("metadata payload", payload['metaData']);
 
-            //payload['metaData'].isConfigured = true;
+            payload['metaData'].isConfigured = true;
 
             //console.log('Save done: ',JSON.stringify( {payload}));
             connection.trigger('updateActivity', payload);
