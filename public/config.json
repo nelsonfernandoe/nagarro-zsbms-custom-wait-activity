@@ -27,6 +27,7 @@
     }
   },
   "configurationArguments": {
+    "applicationExtensionKey": "523d7723-93a8-408e-852f-5957952df027",
     "validate": {
       "verb": "POST",
       "format": "json",
@@ -59,8 +60,7 @@
   "schema": {
     "arguments": {
       "execute": {
-        "inArguments": [
-        ],
+        "inArguments": [],
         "outArguments": [
           {
             "waitTime": {
