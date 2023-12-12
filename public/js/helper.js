@@ -415,7 +415,7 @@ function getDynamicAttributeHTML(tab, group, nameValue= '') {
         '   </div>' +
         '   <div class="col-md-3">' +
         '        <div class="form-input">' +
-        '            <input id = "dynamicAtt-operand-' +nameValue+ tab + '"  type="text" class="form-control operand-input" id="usr">' +
+        '            <input type="date" id = "dynamicAtt-operand-' +nameValue+ tab + '"  type="text" class="form-control operand-input" id="usr">' +
         '        </div>' +
         '   </div>' +
         '   <div class="col-md-3 actions">' +

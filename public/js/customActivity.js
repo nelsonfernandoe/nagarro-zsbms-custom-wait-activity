@@ -177,6 +177,8 @@ define([
                     //console.log("getDynamicAttributes: logical-ops entry", JSON.stringify(child.children[0].children[0].checked ? 'and' : 'or'));
                     logicalOp = child.children[0].children[0].checked ? 'and' : 'or';
                 } else if (classes.includes('dynamic-attribute-row')) {
+
+                    console.log("child.children[2].children[0].children[0].value", child.children[2].children[0].children[0].value);
                     /* da row */
                     child.children[1].children[0].value;
                     dynamicAttributes.push({
